@@ -91,7 +91,7 @@
     "react-router": "^7.2.0-pre.3"
   },
   "dependencies": {
-    "@apollo/client-react-streaming": "0.12.2",
+    "@apollo/client-react-streaming": "0.12.3",
     "@types/react-dom": "^19.0.0",
     "promiscade": "^0.0.2"
   }
