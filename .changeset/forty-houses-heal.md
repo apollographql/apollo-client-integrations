@@ -4,7 +4,7 @@
 
 Adds a `dangerous_disableHookValueTransportation` option to `ManualDataTransport`.
 
-If `true`, the `useStaticValueRef` hook will not try to transport values over to the client.
+If `true`, the `useStaticValueRef` hook will not transport values over to the client.
 This hook is used to transport the values of hook calls during SSR to the client, to ensure that
 the client will rehydrate with the exact same values as it rendered on the server.
 
