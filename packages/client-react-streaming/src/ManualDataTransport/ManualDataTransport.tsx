@@ -26,6 +26,8 @@ interface ManualDataTransportOptions {
    */
   reviveFromStream?: (value: any) => any;
   /**
+   * **Read the whole comment before using this option!**
+   *
    * If `true`, the `useStaticValueRef` hook will not try to transport values over to the client.
    * This hook is used to transport the values of hook calls during SSR to the client, to ensure that
    * the client will rehydrate with the exact same values as it rendered on the server.
@@ -41,13 +43,13 @@ interface ManualDataTransportOptions {
    * from hydration mismatches - but it still comes with a risk.
    * When enabling this, you should closely monitor error reporting and user feedback.
    */
-  disableHookValueTransportation?: boolean;
+  dangerous_disableHookValueTransportation?: boolean;
 }
 
 const buildManualDataTransportSSRImpl = ({
   useInsertHtml,
   stringifyForStream = stringify,
-  disableHookValueTransportation,
+  dangerous_disableHookValueTransportation: disableHookValueTransportation,
 }: ManualDataTransportOptions): DataTransportProviderImplementation<HydrationContextOptions> =>
   function ManualDataTransportSSRImpl({
     extraScriptProps,

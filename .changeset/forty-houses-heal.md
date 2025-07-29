@@ -2,7 +2,7 @@
 "@apollo/client-react-streaming": patch
 ---
 
-Adds a `disableHookValueTransportation`option to `ManualDataTransport`.
+Adds a `dangerous_disableHookValueTransportation` option to `ManualDataTransport`.
 
 If `true`, the `useStaticValueRef` hook will not try to transport values over to the client.
 This hook is used to transport the values of hook calls during SSR to the client, to ensure that
