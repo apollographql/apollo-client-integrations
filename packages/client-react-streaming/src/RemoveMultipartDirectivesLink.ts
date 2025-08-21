@@ -1,8 +1,8 @@
 import type { DocumentNode } from "@apollo/client";
 import { ApolloLink } from "@apollo/client";
-import type { RemoveDirectiveConfig } from "@apollo/client/v4-migration";
-import { Observable } from "@apollo/client/utilities";
+import { removeDirectivesFromDocument } from "@apollo/client/utilities/internal";
 import type { DirectiveNode } from "graphql";
+import { of } from "rxjs";
 
 interface RemoveMultipartDirectivesConfig {
   /**
@@ -81,21 +81,23 @@ export class RemoveMultipartDirectivesLink extends ApolloLink {
     let modifiedQuery: DocumentNode | null = query;
     modifiedQuery = removeDirectivesFromDocument(
       this.stripDirectives
-        .map<RemoveDirectiveConfig>((directive) => ({
-          test(node) {
-            let shouldStrip =
-              node.kind === "Directive" && node.name.value === directive;
-            const label = getDirectiveArgumentValue(node, "label");
-            if (
-              label?.kind === "StringValue" &&
-              label.value.startsWith("SsrDontStrip")
-            ) {
-              shouldStrip = false;
-            }
-            return shouldStrip;
-          },
-          remove: true,
-        }))
+        .map<Parameters<typeof removeDirectivesFromDocument>[0][0]>(
+          (directive) => ({
+            test(node) {
+              let shouldStrip =
+                node.kind === "Directive" && node.name.value === directive;
+              const label = getDirectiveArgumentValue(node, "label");
+              if (
+                label?.kind === "StringValue" &&
+                label.value.startsWith("SsrDontStrip")
+              ) {
+                shouldStrip = false;
+              }
+              return shouldStrip;
+            },
+            remove: true,
+          })
+        )
         .concat({
           test(node) {
             if (node.kind !== "Directive") return false;
@@ -111,7 +113,7 @@ export class RemoveMultipartDirectivesLink extends ApolloLink {
     );
 
     if (modifiedQuery === null) {
-      return Observable.of({});
+      return of({});
     }
 
     operation.query = modifiedQuery;

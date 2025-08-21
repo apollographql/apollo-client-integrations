@@ -17,7 +17,7 @@ import {
  *
  * @public
  */
-export class ApolloClient extends UpstreamApolloClient<TCacheShape> {
+export class ApolloClient extends UpstreamApolloClient {
   /**
    * Information about the current package and it's export names, for use in error messages.
    *

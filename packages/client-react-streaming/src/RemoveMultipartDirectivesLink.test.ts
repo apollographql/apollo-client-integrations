@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { fromPartial } from "@total-typescript/shoehorn";
 import type { DocumentNode } from "@apollo/client";
-import { gql, Observable } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { print } from "graphql";
 import { test } from "node:test";
 import assert from "node:assert";
+import { of } from "rxjs";
 
 const { RemoveMultipartDirectivesLink } = await import("#bundled");
 
@@ -55,7 +56,7 @@ test("removes fields with a @defer directive", () => {
   let resultingQuery: DocumentNode;
   link.request(fromPartial({ query: queryWithDefer }), function (operation) {
     resultingQuery = operation.query;
-    return Observable.of({});
+    return of({});
   });
   assert.equal(
     print(resultingQuery!),
@@ -73,7 +74,7 @@ test("`stripDefer` defaults to `true`", () => {
   let resultingQuery: DocumentNode;
   link.request(fromPartial({ query: queryWithDefer }), function (operation) {
     resultingQuery = operation.query;
-    return Observable.of({});
+    return of({});
   });
   assert.equal(
     print(resultingQuery!),
@@ -93,7 +94,7 @@ test("preserves @defer fields with a `SsrDontStrip` label", () => {
     fromPartial({ query: queryWithDeferAndDontStripAnnotation }),
     function (operation) {
       resultingQuery = operation.query;
-      return Observable.of({});
+      return of({});
     }
   );
   assert.equal(
@@ -118,7 +119,7 @@ test("can be configured to not remove @defer fields", () => {
   let resultingQuery: DocumentNode;
   link.request(fromPartial({ query: queryWithDefer }), function (operation) {
     resultingQuery = operation.query;
-    return Observable.of({});
+    return of({});
   });
   assert.equal(
     print(resultingQuery!),
@@ -144,7 +145,7 @@ test("even with `stripDefer: false`, certain fields can be marked for stripping"
     fromPartial({ query: queryWithDeferAndStripAnnotation }),
     function (operation) {
       resultingQuery = operation.query;
-      return Observable.of({});
+      return of({});
     }
   );
   assert.equal(

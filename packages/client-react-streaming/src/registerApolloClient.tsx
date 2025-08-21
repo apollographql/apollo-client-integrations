@@ -2,7 +2,7 @@ import type { ApolloClient, OperationVariables } from "@apollo/client";
 import React from "react";
 import { cache } from "react";
 import type { ReactNode } from "react";
-import type { PreloadQueryOptions } from "./PreloadQuery.js";
+import type { PreloadQuery } from "./PreloadQuery.js";
 import { PreloadQuery as UnboundPreloadQuery } from "./PreloadQuery.js";
 import type { TransportedQueryRef } from "./transportedQueryRef.js";
 
@@ -113,9 +113,9 @@ function and then call \`client.query\` multiple times instead.
   };
 }
 
-function makeGetClient<
-  AC extends Promise<ApolloClient> | ApolloClient,
->(makeClient: () => AC): () => AC {
+function makeGetClient<AC extends Promise<ApolloClient> | ApolloClient>(
+  makeClient: () => AC
+): () => AC {
   // React invalidates the cache on each server request, so the wrapping
   // object is needed to properly detect whether the client is a unique
   // reference or not. We can warn if `cachedMakeWrappedClient` creates a new "wrapper",
@@ -164,18 +164,13 @@ return a new instance every time \`makeClient\` is called.
 }
 
 /**
- * Props for `PreloadQueryComponent`
- * @see {@link PreloadQueryComponent}
+ * @deprecated use `PreloadQuery.Props` instead
  * @public
  */
-export interface PreloadQueryProps<TData, TVariables extends OperationVariables>
-  extends PreloadQueryOptions<TVariables, TData> {
-  children:
-    | ReactNode
-    | ((
-        queryRef: TransportedQueryRef<NoInfer<TData>, NoInfer<TVariables>>
-      ) => ReactNode);
-}
+export type PreloadQueryProps<
+  TData,
+  TVariables extends OperationVariables,
+> = PreloadQuery.Props<TData, TVariables>;
 
 /**
  * Preloads data in React Server Components to be hydrated
@@ -217,7 +212,7 @@ export interface PreloadQueryProps<TData, TVariables extends OperationVariables>
  */
 export interface PreloadQueryComponent {
   <TData, TVariables extends OperationVariables>(
-    props: PreloadQueryProps<TData, TVariables>
+    props: PreloadQuery.Props<TData, TVariables>
   ): React.ReactElement;
 }
 
@@ -225,7 +220,7 @@ function makePreloadQuery(
   getClient: () => Promise<ApolloClient> | ApolloClient
 ) {
   return function PreloadQuery<TData, TVariables extends OperationVariables>(
-    props: PreloadQueryProps<TData, TVariables>
+    props: PreloadQuery.Props<TData, TVariables>
   ): React.ReactElement {
     return <UnboundPreloadQuery getClient={getClient} {...props} />;
   };

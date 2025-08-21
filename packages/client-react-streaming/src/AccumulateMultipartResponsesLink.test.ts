@@ -1,15 +1,24 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Defer20220824Handler } from "@apollo/client/incremental";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 import { ApolloLink, Observable, gql } from "@apollo/client";
 import { test, mock } from "node:test";
 import assert from "node:assert";
 import { fromPartial } from "@total-typescript/shoehorn";
-import type { SubscriptionObserver } from "zen-observable-ts";
+import { ApolloClient, InMemoryCache } from "#bundled";
+import { type Subscriber } from "rxjs";
 
 const { DebounceMultipartResponsesLink: AccumulateMultipartResponsesLink } =
   await import("#bundled");
+
+const client = new ApolloClient({
+  link: new ApolloLink(() => {
+    throw new Error("This link should not be used directly");
+  }),
+  cache: new InMemoryCache(),
+  incrementalHandler: new Defer20220824Handler(),
+});
 
 test("normal queries can resolve synchronously", () => {
   const query = gql`
@@ -24,7 +33,11 @@ test("normal queries can resolve synchronously", () => {
   const nextLink = getFinalLinkWithExposedObserver();
 
   const subscriptionStatus = trackSubscriptionStatus(
-    ApolloLink.from([link, nextLink.link]).request(fromPartial({ query }))
+    ApolloLink.execute(
+      ApolloLink.from([link, nextLink.link]),
+      fromPartial({ query }),
+      { client }
+    )
   );
   assert(nextLink.observer);
 
@@ -58,7 +71,11 @@ test("deferred query will complete synchonously if maxDelay is 0", () => {
   const nextLink = getFinalLinkWithExposedObserver();
 
   const subscriptionStatus = trackSubscriptionStatus(
-    ApolloLink.from([link, nextLink.link]).request(fromPartial({ query }))
+    ApolloLink.execute(
+      ApolloLink.from([link, nextLink.link]),
+      fromPartial({ query }),
+      { client }
+    )
   );
   assert(nextLink.observer);
 
@@ -98,7 +115,11 @@ test("`next` call will be debounced and results will be merged together", () => 
   const nextLink = getFinalLinkWithExposedObserver();
 
   const subscriptionStatus = trackSubscriptionStatus(
-    ApolloLink.from([link, nextLink.link]).request(fromPartial({ query }))
+    ApolloLink.execute(
+      ApolloLink.from([link, nextLink.link]),
+      fromPartial({ query }),
+      { client }
+    )
   );
   assert(nextLink.observer);
 
@@ -128,6 +149,7 @@ test("`next` call will be debounced and results will be merged together", () => 
         data: { slowField: "slow" },
       },
     ],
+    hasNext: true,
   });
 
   mock.timers.tick(899);
@@ -156,6 +178,7 @@ test("`next` call will be debounced and results will be merged together", () => 
         data: { verySlowField: "very slow" },
       },
     ],
+    hasNext: true,
   });
 
   assert.ok(nextLink.observer.closed);
@@ -166,9 +189,7 @@ test("`next` call will be debounced and results will be merged together", () => 
   });
 });
 
-function trackSubscriptionStatus(
-  observable: Observable<Defer20220824Handler.Chunk> | null
-) {
+function trackSubscriptionStatus(observable: Observable<ApolloLink.Result>) {
   assert(observable);
 
   const subscriptionStatus = {
@@ -193,7 +214,7 @@ function trackSubscriptionStatus(
 
 function getFinalLinkWithExposedObserver() {
   const returnValue = {
-    observer: undefined as SubscriptionObserver<ApolloLink.Result> | undefined,
+    observer: undefined as Subscriber<ApolloLink.Result<any>> | undefined,
     link: new ApolloLink(() => {
       return new Observable((observer) => {
         returnValue.observer = observer;

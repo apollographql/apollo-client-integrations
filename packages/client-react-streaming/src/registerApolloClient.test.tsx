@@ -202,13 +202,17 @@ it("warns if calling `query` outside of a React tree, e.g. in a Server Action or
     console.warn = (...args) => (warnArgs = args);
 
     const { query } = registerApolloClient(makeClient);
-    await query({
-      query: gql`
-        query {
-          hello
-        }
-      `,
-    }).catch();
+    try {
+      await query({
+        query: gql`
+          query {
+            hello
+          }
+        `,
+      });
+    } catch {
+      /** */
+    }
     assert.equal(
       warnArgs,
       `The \`query\` shortcut returned from \`registerApolloClient\` 

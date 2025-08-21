@@ -3,24 +3,21 @@ import {
   TeeToReadableStreamLink,
   useWrapTransportedQueryRef,
 } from "@apollo/client-react-streaming";
-import type { QueryManager } from "@apollo/client/core/QueryManager.js";
-import type { NormalizedCacheObject } from "@apollo/client";
+import type { InternalTypes } from "@apollo/client";
 import { ApolloLink, ApolloClient as _ApolloClient } from "@apollo/client";
 import { useApolloClient } from "@apollo/client/react";
 import type { HookWrappers } from "@apollo/client/react/internal";
 import { hydrateIfNecessary } from "./preloader.js";
 
 const wrappers = Symbol.for("apollo.hook.wrappers");
-function getQueryManager(
-  client: _ApolloClient
-): QueryManager<NormalizedCacheObject> & {
+function getQueryManager(client: _ApolloClient): InternalTypes.QueryManager & {
   [wrappers]: HookWrappers;
 } {
   return client["queryManager"];
 }
 
 /** @public */
-export class ApolloClient extends _ApolloClient<any> {
+export class ApolloClient extends _ApolloClient {
   constructor(options: ConstructorParameters<typeof _ApolloClient>[0]) {
     super(options);
     this.setLink(this.link);

@@ -30,7 +30,7 @@ export declare namespace createApolloLoaderHandler {
       TVariables extends OperationVariables = OperationVariables,
     >(
       query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-      options?: PreloadTransportedQueryOptions<NoInfer<TVariables>, TData>
+      options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
     ): unstable_SerializesTo<QueryRef<TData, TVariables>>;
   }
 

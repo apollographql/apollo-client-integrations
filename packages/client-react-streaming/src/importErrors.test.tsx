@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { outsideOf } from "@internal/test-utils/runInConditions.js";
 import { browserEnv } from "@internal/test-utils/react.js";
 import { silenceConsoleErrors } from "@internal/test-utils/console.js";
+import { ApolloLink } from "@apollo/client";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
@@ -62,6 +63,7 @@ test(
           makeClient={() =>
             new bundled.ApolloClient({
               cache: new bundled.InMemoryCache(),
+              link: ApolloLink.empty(),
             })
           }
         >
@@ -99,7 +101,7 @@ test(
                 // @ts-expect-error we want to test exactly this
                 new upstreamPkg.ApolloClient({
                   cache: new upstreamPkg.InMemoryCache(),
-                  connectToDevTools: false,
+                  devtools: { enabled: false },
                 })
               }
             >
@@ -128,7 +130,8 @@ test(
               makeClient={() =>
                 new bundled.ApolloClient({
                   cache: new bundled.InMemoryCache(),
-                  connectToDevTools: false,
+                  devtools: { enabled: false },
+                  link: ApolloLink.empty(),
                 })
               }
             >

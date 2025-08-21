@@ -1,7 +1,8 @@
 import { ApolloLink } from "@apollo/client";
 import { Observable } from "@apollo/client/utilities";
-
-import { mergeIncrementalData } from "@apollo/client/v4-migration";
+import { hasDirectives } from "@apollo/client/utilities/internal";
+import type { InternalTypes } from "@apollo/client";
+import type { Incremental } from "@apollo/client/incremental";
 
 interface AccumulateMultipartResponsesConfig {
   /**
@@ -41,7 +42,10 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
     super();
     this.maxDelay = config.cutoffDelay;
   }
-  request(operation: ApolloLink.Operation, forward?: ApolloLink.ForwardFunction) {
+  request(
+    operation: ApolloLink.Operation,
+    forward?: ApolloLink.ForwardFunction
+  ) {
     if (!forward) {
       throw new Error("This is not a terminal link!");
     }
@@ -57,33 +61,22 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
     // TODO: this could be overwritten with a `@AccumulateMultipartResponsesConfig(maxDelay: 1000)` directive on the operation
     const maxDelay = this.maxDelay;
     let accumulatedData: ApolloLink.Result, maxDelayTimeout: NodeJS.Timeout;
+    const incrementalHandler = (
+      operation.client["queryManager"] as InternalTypes.QueryManager
+    ).incrementalHandler;
+    let incremental: Incremental.IncrementalRequest<
+      Record<string, unknown>,
+      Record<string, unknown>
+    >;
 
     return new Observable<ApolloLink.Result>((subscriber) => {
       const upstreamSubscription = upstream.subscribe({
         next: (result) => {
-          if (accumulatedData) {
-            if (accumulatedData.data && "incremental" in result) {
-              accumulatedData.data = mergeIncrementalData(
-                accumulatedData.data,
-                result
-              );
-            } else if (result.data) {
-              accumulatedData.data = result.data;
-            }
-
-            if (result.errors) {
-              accumulatedData.errors = [
-                ...(accumulatedData.errors || []),
-                ...(result.errors || []),
-              ];
-            }
-
-            // the spec is not mentioning on how to merge these, so we just do a shallow merge?
-            if (result.extensions)
-              accumulatedData.extensions = {
-                ...accumulatedData.extensions,
-                ...result.extensions,
-              };
+          if (incrementalHandler.isIncrementalResult(result)) {
+            incremental ||= incrementalHandler.startRequest({
+              query: operation.query,
+            });
+            accumulatedData = incremental.handle(accumulatedData.data, result);
           } else {
             accumulatedData = result;
           }
