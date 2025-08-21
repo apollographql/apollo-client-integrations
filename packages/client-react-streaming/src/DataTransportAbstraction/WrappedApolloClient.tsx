@@ -278,9 +278,9 @@ class ApolloClientSSRImpl extends ApolloClientClientBaseImpl {
   }
 
   watchQuery<
-    T = any,
+    TData = any,
     TVariables extends OperationVariables = OperationVariables,
-  >(options: OrigApolloClient.WatchQueryOptions<T, TVariables>) {
+  >(options: OrigApolloClient.WatchQueryOptions<TData, TVariables>) {
     if (
       !(options.context as InternalContext | undefined)?.[skipDataTransportKey]
     ) {
