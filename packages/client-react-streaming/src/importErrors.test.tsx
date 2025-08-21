@@ -7,7 +7,7 @@ import { ApolloLink } from "@apollo/client";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
-  const upstreamPkg = await import("@apollo/client/index.js");
+  const upstreamPkg = await import("@apollo/client");
   assert.throws(
     () =>
       new ApolloClient({
@@ -36,7 +36,7 @@ test(
     const Provider = WrapApolloProvider(FakeTransport);
 
     await test("@apollo/client should error", async () => {
-      const upstreamPkg = await import("@apollo/client/index.js");
+      const upstreamPkg = await import("@apollo/client");
       assert.throws(
         () =>
           renderToString(
@@ -91,7 +91,7 @@ test(
 
     await test("@apollo/client should error", async () => {
       using env = await browserEnv();
-      const upstreamPkg = await import("@apollo/client/index.js");
+      const upstreamPkg = await import("@apollo/client");
       const promise = new Promise((_resolve, reject) => {
         env.render(
           document.body,

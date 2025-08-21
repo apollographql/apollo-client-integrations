@@ -31,7 +31,7 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/client-integration-tanstack-start";
-import { HttpLink } from "@apollo/client/index.js";
+import { HttpLink } from "@apollo/client";
 
 export function createRouter() {
   const apolloClient = new ApolloClient({
@@ -59,7 +59,7 @@ export function createRouter() {
 ### `loader` with `preloadQuery` and `useReadQuery`
 
 ```ts
-import { useReadQuery } from "@apollo/client/index.js";
+import { useReadQuery } from "@apollo/client";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/loader-defer")({
@@ -89,7 +89,7 @@ function RouteComponent() {
 You can also use the suspenseful Apollo Client api `useSuspenseQuery` (or `useQueryRef` and `useReadQuery`) directly into your component without a loader:
 
 ```tsx
-import { useSuspenseQuery } from "@apollo/client/index.js";
+import { useSuspenseQuery } from "@apollo/client";
 import { createFileRoute } from "@tanstack/react-router";
 
 export const Route = createFileRoute("/myPage")({

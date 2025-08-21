@@ -3,28 +3,28 @@ import {
   getSuspenseCache,
   unwrapQueryRef,
   wrapQueryRef,
-} from "@apollo/client/react/internal/index.js";
+} from "@apollo/client/react/internal";
 import {
   readFromReadableStream,
   teeToReadableStream,
 } from "./ReadableStreamLink.js";
 import { skipDataTransport } from "./DataTransportAbstraction/index.js";
 import type { ReadableStreamLinkEvent } from "./ReadableStreamLink.js";
-import type { QueryRef } from "@apollo/client/react/index.js";
-import { useApolloClient } from "@apollo/client/react/index.js";
+import type { QueryRef } from "@apollo/client/react";
+import { useApolloClient } from "@apollo/client/react";
 import type {
   DocumentNode,
   ApolloClient,
   OperationVariables,
   TypedDocumentNode,
-} from "@apollo/client/index.js";
+} from "@apollo/client";
 import {
   serializeOptions,
   deserializeOptions,
   type TransportedOptions,
 } from "./DataTransportAbstraction/transportedOptions.js";
 import { useEffect } from "react";
-import { canonicalStringify } from "@apollo/client/cache/index.js";
+import { canonicalStringify } from "@apollo/client/cache";
 import {
   JSONDecodeStream,
   JSONEncodeStream,

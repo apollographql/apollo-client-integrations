@@ -13,7 +13,7 @@ npm i @apollo/client-integration-react-router @apollo/client graphql
 Create an `app/apollo.ts` with that exports a `makeClient` function and an `apolloLoader` created with `createApolloLoaderHandler`:
 
 ```ts
-import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client/index.js";
+import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client";
 import {
   createApolloLoaderHandler,
   ApolloClient,
@@ -38,7 +38,7 @@ Adjust `app/entry.client.tsx`:
 
 ```diff
 +import { makeClient } from "./apollo";
-+import { ApolloProvider } from "@apollo/client/index.js";
++import { ApolloProvider } from "@apollo/client";
 
 startTransition(() => {
 + const client = makeClient();
@@ -57,7 +57,7 @@ Adjust `app/entry.server.tsx`:
 
 ```diff
 +import { makeClient } from "./apollo";
-+import { ApolloProvider } from "@apollo/client/index.js";
++import { ApolloProvider } from "@apollo/client";
 
 export default function handleRequest(
   // ...
