@@ -1,5 +1,24 @@
 # @apollo/client-integration-nextjs
 
+## 0.13.0
+
+### Minor Changes
+
+- a434180: Drop depdendency `ts-invariant`. Please use `setLogVerbosity` from `@apollo/client` instead of `setVerbosity` from `ts-invariant`.
+- a434180: Updating Apollo Client from v3 to v4. Please follow the [Apollo Client migration guide](https://www.apollographql.com/docs/react/migrating/apollo-client-4-migration).
+- a434180: Update signature of PreloadTransportedQueryOptions from `<TVariables, TData>` to `<TData, TVariables>`
+- a434180: Deprecate `PreloadQueryOptions` - please use `PreloadQuery.Options` instead.
+- a434180: Deprecate `PreloadQueryProps` - please use `PreloadQuery.Props` instead.
+
+### Patch Changes
+
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+  - @apollo/client-react-streaming@0.13.0
+
 ## 0.12.3
 
 ### Patch Changes

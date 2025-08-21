@@ -1,5 +1,16 @@
 # @apollo/experimental-nextjs-app-support
 
+## 0.13.0
+
+### Patch Changes
+
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+- Updated dependencies [a434180]
+  - @apollo/client-integration-nextjs@0.13.0
+
 ## 0.12.3
 
 ### Patch Changes
