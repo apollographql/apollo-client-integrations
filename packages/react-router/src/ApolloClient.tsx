@@ -4,12 +4,9 @@ import {
   useWrapTransportedQueryRef,
 } from "@apollo/client-react-streaming";
 import type { QueryManager } from "@apollo/client/core/QueryManager.js";
-import type { NormalizedCacheObject } from "@apollo/client/index.js";
-import {
-  ApolloLink,
-  ApolloClient as _ApolloClient,
-} from "@apollo/client/index.js";
-import { useApolloClient } from "@apollo/client/react/index.js";
+import type { NormalizedCacheObject } from "@apollo/client";
+import { ApolloLink, ApolloClient as _ApolloClient } from "@apollo/client";
+import { useApolloClient } from "@apollo/client/react";
 import type { HookWrappers } from "@apollo/client/react/internal";
 import { hydrateIfNecessary } from "./preloader.js";
 

@@ -4,7 +4,7 @@ import {
   useApolloClient,
   useQueryRefHandlers,
   useReadQuery,
-} from "@apollo/client/react/index.js";
+} from "@apollo/client/react";
 import { useTransition } from "react";
 
 export const Route = createFileRoute("/loader-defer")({

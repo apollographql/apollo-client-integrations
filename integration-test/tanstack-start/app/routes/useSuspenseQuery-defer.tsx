@@ -1,9 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { DEFERRED_QUERY } from "@integration-test/shared/queries";
-import {
-  useApolloClient,
-  useSuspenseQuery,
-} from "@apollo/client/react/index.js";
+import { useApolloClient, useSuspenseQuery } from "@apollo/client/react";
 import { useTransition } from "react";
 
 export const Route = createFileRoute("/useSuspenseQuery-defer")({

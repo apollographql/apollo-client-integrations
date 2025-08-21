@@ -1,14 +1,9 @@
 import { Suspense, useState } from "react";
 import "./App.css";
 import { ApolloClient, InMemoryCache } from "@apollo/client-react-streaming";
-import { SchemaLink } from "@apollo/client/link/schema/index.js";
-import {
-  gql,
-  ApolloLink,
-  Observable,
-  TypedDocumentNode,
-} from "@apollo/client/index.js";
-import { useSuspenseQuery } from "@apollo/client/react/index.js";
+import { SchemaLink } from "@apollo/client/link/schema";
+import { gql, ApolloLink, Observable, TypedDocumentNode } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { schema } from "./schema";
 import { WrappedApolloProvider } from "./Transport";
 

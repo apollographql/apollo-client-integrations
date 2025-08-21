@@ -1,4 +1,4 @@
-import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client/index.js";
+import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client";
 import {
   createApolloLoaderHandler,
   ApolloClient,

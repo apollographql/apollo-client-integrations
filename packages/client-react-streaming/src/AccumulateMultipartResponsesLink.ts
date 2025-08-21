@@ -1,10 +1,7 @@
-import type { Operation, NextLink, FetchResult } from "@apollo/client/index.js";
-import { ApolloLink } from "@apollo/client/index.js";
-import {
-  Observable,
-  hasDirectives,
-  mergeIncrementalData,
-} from "@apollo/client/utilities/index.js";
+import { ApolloLink } from "@apollo/client";
+import { Observable } from "@apollo/client/utilities";
+
+import { mergeIncrementalData } from "@apollo/client/v4-migration";
 
 interface AccumulateMultipartResponsesConfig {
   /**
@@ -44,7 +41,7 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
     super();
     this.maxDelay = config.cutoffDelay;
   }
-  request(operation: Operation, forward?: NextLink) {
+  request(operation: ApolloLink.Operation, forward?: ApolloLink.ForwardFunction) {
     if (!forward) {
       throw new Error("This is not a terminal link!");
     }
@@ -59,9 +56,9 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
 
     // TODO: this could be overwritten with a `@AccumulateMultipartResponsesConfig(maxDelay: 1000)` directive on the operation
     const maxDelay = this.maxDelay;
-    let accumulatedData: FetchResult, maxDelayTimeout: NodeJS.Timeout;
+    let accumulatedData: ApolloLink.Result, maxDelayTimeout: NodeJS.Timeout;
 
-    return new Observable<FetchResult>((subscriber) => {
+    return new Observable<ApolloLink.Result>((subscriber) => {
       const upstreamSubscription = upstream.subscribe({
         next: (result) => {
           if (accumulatedData) {

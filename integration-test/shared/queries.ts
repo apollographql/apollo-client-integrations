@@ -1,4 +1,4 @@
-import { type TypedDocumentNode, gql } from "@apollo/client/index.js";
+import { type TypedDocumentNode, gql } from "@apollo/client";
 
 export interface DynamicProductResult {
   products: {

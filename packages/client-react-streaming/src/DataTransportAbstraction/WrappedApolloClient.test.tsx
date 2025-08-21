@@ -7,10 +7,10 @@ import type {
   TransportIdentifier,
 } from "./DataTransportAbstraction.js";
 
-import type { TypedDocumentNode } from "@apollo/client/index.js";
+import type { TypedDocumentNode } from "@apollo/client";
 import { MockSubscriptionLink } from "@apollo/client/testing/core/mocking/mockSubscriptionLink.js";
-import { gql, DocumentTransform } from "@apollo/client/index.js";
-import { useSuspenseQuery } from "@apollo/client/react/index.js";
+import { gql, DocumentTransform } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { visit, Kind, print, isDefinitionNode } from "graphql";
 import { serializeOptions } from "./transportedOptions.js";
 

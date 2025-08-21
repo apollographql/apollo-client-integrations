@@ -1,22 +1,16 @@
-/* eslint-disable prefer-rest-params */
-import type {
-  ApolloClientOptions,
-  OperationVariables,
-  WatchQueryOptions,
-  NormalizedCacheObject,
-} from "@apollo/client/index.js";
+import type { OperationVariables, NormalizedCacheObject } from "@apollo/client";
 
 import {
   ApolloLink,
   ApolloClient as OrigApolloClient,
   Observable,
-} from "@apollo/client/index.js";
+} from "@apollo/client";
 import type { QueryManager } from "@apollo/client/core/QueryManager.js";
 import { invariant } from "ts-invariant";
 import { createBackpressuredCallback } from "./backpressuredCallback.js";
 import type { InMemoryCache } from "./WrappedInMemoryCache.js";
 import { hookWrappers } from "./hooks.js";
-import type { HookWrappers } from "@apollo/client/react/internal/index.js";
+import type { HookWrappers } from "@apollo/client/react/internal";
 import type {
   ProgressEvent,
   QueryEvent,
@@ -44,12 +38,12 @@ function getQueryManager(
 
 type SimulatedQueryInfo = {
   controller: ReadableStreamDefaultController<ReadableStreamLinkEvent>;
-  options: WatchQueryOptions<OperationVariables, any>;
+  options: OrigApolloClient.WatchQueryOptions<any, OperationVariables>;
 };
 
 interface WrappedApolloClientOptions
   extends Omit<
-    ApolloClientOptions<NormalizedCacheObject>,
+    OrigApolloClient.Options<NormalizedCacheObject>,
     "cache" | "ssrMode" | "ssrForceFetchDelay"
   > {
   cache: InMemoryCache;
@@ -251,7 +245,7 @@ class ApolloClientSSRImpl extends ApolloClientClientBaseImpl {
   }>();
 
   pushEventStream(
-    options: WatchQueryOptions<any, any>
+    options: OrigApolloClient.WatchQueryOptions<any, any>
   ): ReadableStreamDefaultController<ReadableStreamLinkEvent> {
     const id = crypto.randomUUID() as TransportIdentifier;
 
@@ -292,7 +286,7 @@ class ApolloClientSSRImpl extends ApolloClientClientBaseImpl {
   watchQuery<
     T = any,
     TVariables extends OperationVariables = OperationVariables,
-  >(options: WatchQueryOptions<TVariables, T>) {
+  >(options: OrigApolloClient.WatchQueryOptions<T, TVariables>) {
     if (
       !(options.context as InternalContext | undefined)?.[skipDataTransportKey]
     ) {

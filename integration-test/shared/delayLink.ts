@@ -1,4 +1,4 @@
-import { ApolloLink, Observable } from "@apollo/client/index.js";
+import { ApolloLink, Observable } from "@apollo/client";
 
 declare module "@apollo/client" {
   export interface DefaultContext {

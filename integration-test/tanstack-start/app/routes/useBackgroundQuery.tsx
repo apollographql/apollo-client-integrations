@@ -2,7 +2,7 @@ import {
   QueryRef,
   useBackgroundQuery,
   useReadQuery,
-} from "@apollo/client/react/index.js";
+} from "@apollo/client/react";
 import { DynamicProductResult, QUERY } from "@integration-test/shared/queries";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";

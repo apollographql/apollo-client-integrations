@@ -1,4 +1,4 @@
-import type { ApolloClient, OperationVariables } from "@apollo/client/index.js";
+import type { ApolloClient, OperationVariables } from "@apollo/client";
 import React from "react";
 import { cache } from "react";
 import type { ReactNode } from "react";

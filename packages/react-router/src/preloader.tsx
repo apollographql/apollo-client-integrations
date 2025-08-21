@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import type { CreateServerLoaderArgs } from "react-router/route-module";
 import type { ApolloClient } from "./ApolloClient.js";
-import type { QueryRef } from "@apollo/client/react/index.js";
+import type { QueryRef } from "@apollo/client/react";
 import type {
   PreloadTransportedQueryOptions,
   ReadableStreamLinkEvent,

@@ -8,7 +8,7 @@ import { ApolloProvider } from "./ApolloProvider.js";
 import {
   createQueryPreloader,
   type PreloadQueryFunction,
-} from "@apollo/client/react/index.js";
+} from "@apollo/client/react";
 import { type AnyRouter } from "@tanstack/react-router";
 import React from "react";
 

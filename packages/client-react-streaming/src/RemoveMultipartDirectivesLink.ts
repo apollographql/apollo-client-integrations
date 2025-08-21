@@ -1,14 +1,7 @@
-import type {
-  Operation,
-  NextLink,
-  DocumentNode,
-} from "@apollo/client/index.js";
-import { ApolloLink } from "@apollo/client/index.js";
-import type { RemoveDirectiveConfig } from "@apollo/client/utilities/index.js";
-import {
-  Observable,
-  removeDirectivesFromDocument,
-} from "@apollo/client/utilities/index.js";
+import type { DocumentNode } from "@apollo/client";
+import { ApolloLink } from "@apollo/client";
+import type { RemoveDirectiveConfig } from "@apollo/client/v4-migration";
+import { Observable } from "@apollo/client/utilities";
 import type { DirectiveNode } from "graphql";
 
 interface RemoveMultipartDirectivesConfig {
@@ -76,7 +69,10 @@ export class RemoveMultipartDirectivesLink extends ApolloLink {
     if (config.stripDefer !== false) this.stripDirectives.push("defer");
   }
 
-  request(operation: Operation, forward?: NextLink) {
+  request(
+    operation: ApolloLink.Operation,
+    forward?: ApolloLink.ForwardFunction
+  ) {
     if (!forward) {
       throw new Error("This is not a terminal link!");
     }

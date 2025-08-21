@@ -3,7 +3,7 @@ import { it } from "node:test";
 import assert from "node:assert";
 import { runInConditions } from "@internal/test-utils/runInConditions.js";
 import { Writable } from "node:stream";
-import { ApolloLink, gql } from "@apollo/client/index.js";
+import { ApolloLink, gql } from "@apollo/client";
 
 runInConditions("react-server");
 

@@ -1,7 +1,8 @@
 "use client";
 
 import type { TypedDocumentNode } from "@apollo/client";
-import { useQuery, useSuspenseQuery, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useQuery, useSuspenseQuery } from "@apollo/client/react";
 
 const QUERY: TypedDocumentNode<{
   products: {

@@ -15,7 +15,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { gql, TypedDocumentNode } from "@apollo/client";
-import { useSuspenseQuery } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 
 const GET_PRODUCT_DETAILS: TypedDocumentNode<{
   product: {

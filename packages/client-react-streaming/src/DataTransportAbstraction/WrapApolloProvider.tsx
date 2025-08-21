@@ -2,7 +2,7 @@
 import React from "react";
 import { useRef } from "react";
 import type { ApolloClient } from "./WrappedApolloClient.js";
-import { ApolloProvider } from "@apollo/client/react/index.js";
+import { ApolloProvider } from "@apollo/client/react";
 import type { DataTransportProviderImplementation } from "./DataTransportAbstraction.js";
 import { ApolloClientSingleton } from "./symbols.js";
 import { bundle } from "../bundleInfo.js";

@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import { useFragment, useQuery, useSuspenseQuery } from "@apollo/client";
+import { useFragment, useQuery, useSuspenseQuery } from "@apollo/client/react";
 import { gql } from "@apollo/client";
 import { HtmlChangesObserver } from "@/components/HtmlChangesObserver";
 

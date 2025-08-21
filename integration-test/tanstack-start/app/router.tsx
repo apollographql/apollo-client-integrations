@@ -6,16 +6,13 @@ import {
   InMemoryCache,
 } from "@apollo/client-integration-tanstack-start";
 
-import {
-  loadErrorMessages,
-  loadDevMessages,
-} from "@apollo/client/dev/index.js";
+import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
 import { IncrementalSchemaLink } from "@integration-test/shared/IncrementalSchemaLink";
 import { schema } from "@integration-test/shared/schema";
 import { errorLink } from "@integration-test/shared/errorLink";
 import { delayLink } from "@integration-test/shared/delayLink";
-import { HttpLink, ApolloLink, setLogVerbosity } from "@apollo/client/index.js";
+import { HttpLink, ApolloLink, setLogVerbosity } from "@apollo/client";
 
 setLogVerbosity("debug");
 loadDevMessages();

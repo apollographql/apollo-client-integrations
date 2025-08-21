@@ -1,4 +1,4 @@
-import type { HookWrappers } from "@apollo/client/react/internal/index.js";
+import type { HookWrappers } from "@apollo/client/react/internal";
 import { useTransportValue } from "./useTransportValue.js";
 import { useWrapTransportedQueryRef } from "../transportedQueryRef.js";
 import { useMemo } from "react";
