@@ -94,7 +94,8 @@
   "peerDependencies": {
     "@apollo/client": "^4.0.0",
     "next": "^15.2.3",
-    "react": "^19"
+    "react": "^19",
+    "rxjs": "^7.3.0"
   },
   "dependencies": {
     "@apollo/client-integration-nextjs": "0.12.3"

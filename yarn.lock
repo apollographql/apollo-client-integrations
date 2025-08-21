@@ -226,6 +226,7 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-error-boundary: "npm:^5.0.0"
     rimraf: "npm:5.0.5"
+    rxjs: "npm:^7.8.2"
     tsup: "npm:8.0.2"
     typescript: "npm:^5.7.3"
     wait-on: "npm:8.0.2"
@@ -233,6 +234,7 @@ __metadata:
     "@apollo/client": ^4.0.0
     next: ^15.2.3
     react: ^19
+    rxjs: ^7.3.0
   languageName: unknown
   linkType: soft
 
@@ -258,6 +260,7 @@ __metadata:
     react-dom: "npm:*"
     react-router: "npm:^7.2.0-pre.3"
     rimraf: "npm:5.0.5"
+    rxjs: "npm:^7.8.2"
     tsup: "npm:8.0.2"
     typescript: "npm:5.4.5"
     wait-on: "npm:8.0.2"
@@ -265,6 +268,7 @@ __metadata:
     "@apollo/client": ^4.0.0
     react: ^19
     react-router: ^7.2.0-pre.3
+    rxjs: ^7.3.0
   languageName: unknown
   linkType: soft
 
@@ -294,6 +298,7 @@ __metadata:
     react-dom: "npm:*"
     react-error-boundary: "npm:5.0.0"
     rimraf: "npm:5.0.5"
+    rxjs: "npm:^7.8.2"
     tsup: "npm:8.0.2"
     typescript: "npm:5.4.5"
     wait-on: "npm:8.0.2"
@@ -304,6 +309,7 @@ __metadata:
     graphql: ^16 || >=17.0.0-alpha.2
     react: ^19
     react-dom: ^19
+    rxjs: ^7.3.0
   languageName: unknown
   linkType: soft
 
@@ -335,6 +341,7 @@ __metadata:
     react-error-boundary: "npm:4.0.13"
     react-server-dom-webpack: "npm:^19.0.0"
     rimraf: "npm:5.0.5"
+    rxjs: "npm:^7.8.2"
     ts-invariant: "npm:^0.10.3"
     tsup: "npm:8.0.2"
     tsx: "npm:4.7.1"
@@ -345,6 +352,7 @@ __metadata:
     graphql: ^16 || >=17.0.0-alpha.2
     react: ^19
     react-dom: ^19
+    rxjs: ^7.3.0
   languageName: unknown
   linkType: soft
 
@@ -398,6 +406,7 @@ __metadata:
     "@apollo/client": ^4.0.0
     next: ^15.2.3
     react: ^19
+    rxjs: ^7.3.0
   languageName: unknown
   linkType: soft
 
@@ -6742,6 +6751,7 @@ __metadata:
     jest-fixed-jsdom: "npm:^0.0.9"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    rxjs: "npm:^7.8.2"
   languageName: unknown
   linkType: soft
 
@@ -6765,6 +6775,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-error-boundary: "npm:^4.0.13"
+    rxjs: "npm:^7.8.2"
     ssr-only-secrets: "npm:^0.0.5"
     typescript: "npm:5.1.3"
     webpack-stats-plugin: "npm:^1.1.3"
@@ -6776,6 +6787,7 @@ __metadata:
   resolution: "@integration-test/playwright@workspace:integration-test/playwright"
   dependencies:
     "@playwright/test": "npm:^1.49.1"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:5.1.3"
   languageName: unknown
   linkType: soft
@@ -6802,6 +6814,7 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-router: "npm:^7.2.0-pre.3"
     react-router-devtools: "npm:^1.1.0"
+    rxjs: "npm:^7.8.2"
     tailwindcss: "npm:^4.0.0"
     typescript: "npm:^5.7.2"
     vite: "npm:^5.4.11"
@@ -6818,6 +6831,7 @@ __metadata:
     graphql: "npm:*"
     react: "npm:*"
     react-dom: "npm:*"
+    rxjs: "npm:^7.8.2"
   peerDependencies:
     "@apollo/client": "*"
   languageName: unknown
@@ -6839,6 +6853,7 @@ __metadata:
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
     react-error-boundary: "npm:^5.0.0"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:^5.7.2"
     vinxi: "npm:^0.5.1"
   languageName: unknown
@@ -6863,6 +6878,7 @@ __metadata:
     prettier: "npm:^3.2.5"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    rxjs: "npm:^7.8.2"
     sirv: "npm:^2.0.4"
     vite: "npm:^5.0.10"
   languageName: unknown
@@ -6884,6 +6900,7 @@ __metadata:
     graphql-tag: "npm:^2.12.6"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    rxjs: "npm:^7.8.2"
     vitest: "npm:^3.1.2"
   languageName: unknown
   linkType: soft
@@ -6898,6 +6915,7 @@ __metadata:
     global-jsdom: "npm:^26.0.0"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:^5.7.3"
   languageName: unknown
   linkType: soft
@@ -12634,6 +12652,7 @@ __metadata:
     postcss: "npm:8.4.23"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    rxjs: "npm:^7.8.2"
     tailwindcss: "npm:3.3.2"
     typescript: "npm:^5.7.3"
   languageName: unknown
@@ -12659,6 +12678,7 @@ __metadata:
     next: "npm:^15.2.4"
     react: "npm:^19.0.0"
     react-dom: "npm:^19.0.0"
+    rxjs: "npm:^7.8.2"
     server-only: "npm:^0.0.1"
     typescript: "npm:^5.7.3"
   languageName: unknown
@@ -18418,6 +18438,7 @@ __metadata:
     react-dom: "npm:^19.0.0"
     react-icons: "npm:^4.8.0"
     react-rating-stars-component: "npm:^2.2.0"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:^5.7.3"
   languageName: unknown
   linkType: soft
@@ -24838,6 +24859,15 @@ __metadata:
   dependencies:
     tslib: "npm:^2.1.0"
   checksum: 10/b10cac1a5258f885e9dd1b70d23c34daeb21b61222ee735d2ec40a8685bdca40429000703a44f0e638c27a684ac139e1c37e835d2a0dc16f6fc061a138ae3abb
+  languageName: node
+  linkType: hard
+
+"rxjs@npm:^7.8.2":
+  version: 7.8.2
+  resolution: "rxjs@npm:7.8.2"
+  dependencies:
+    tslib: "npm:^2.1.0"
+  checksum: 10/03dff09191356b2b87d94fbc1e97c4e9eb3c09d4452399dddd451b09c2f1ba8d56925a40af114282d7bc0c6fe7514a2236ca09f903cf70e4bbf156650dddb49d
   languageName: node
   linkType: hard
 

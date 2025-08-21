@@ -154,6 +154,7 @@
     "react-error-boundary": "4.0.13",
     "react-server-dom-webpack": "^19.0.0",
     "rimraf": "5.0.5",
+    "rxjs": "^7.8.2",
     "tsup": "8.0.2",
     "tsx": "4.7.1",
     "typescript": "^5.7.3",
@@ -163,7 +164,8 @@
     "@apollo/client": "^4.0.0",
     "graphql": "^16 || >=17.0.0-alpha.2",
     "react": "^19",
-    "react-dom": "^19"
+    "react-dom": "^19",
+    "rxjs": "^7.3.0"
   },
   "dependencies": {
     "@types/react-dom": "^19.0.0",
