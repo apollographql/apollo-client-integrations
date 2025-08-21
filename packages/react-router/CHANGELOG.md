@@ -9,7 +9,7 @@
 - 874abab: Update signature of PreloadTransportedQueryOptions from `<TVariables, TData>` to `<TData, TVariables>`
 - 874abab: Deprecate `PreloadQueryOptions` - please use `PreloadQuery.Options` instead.
 - 874abab: Deprecate `PreloadQueryProps` - please use `PreloadQuery.Props` instead.
-  - @apollo/client-react-streaming@0.13.1-alpha.6
+  - @apollo/client-react-streaming@0.13.0
 
 ## 0.12.3-alpha.5
 
