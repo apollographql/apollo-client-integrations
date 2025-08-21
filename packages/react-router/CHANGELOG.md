@@ -1,5 +1,16 @@
 # @apollo/client-integration-react-router
 
+## 0.13.1-alpha.6
+
+### Patch Changes
+
+- 874abab: Drop depdendency `ts-invariant`. Please use `setLogVerbosity` from `@apollo/client` instead of `setVerbosity` from `ts-invariant`.
+- 874abab: Updating Apollo Client from v3 to v4. Please follow the [Apollo Client migration guide](https://www.apollographql.com/docs/react/migrating/apollo-client-4-migration).
+- 874abab: Update signature of PreloadTransportedQueryOptions from `<TVariables, TData>` to `<TData, TVariables>`
+- 874abab: Deprecate `PreloadQueryOptions` - please use `PreloadQuery.Options` instead.
+- 874abab: Deprecate `PreloadQueryProps` - please use `PreloadQuery.Props` instead.
+  - @apollo/client-react-streaming@0.13.1-alpha.6
+
 ## 0.12.3-alpha.5
 
 ### Patch Changes
