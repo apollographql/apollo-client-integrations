@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from "@apollo/client/react/index.js";
+import { useQuery, useSuspenseQuery } from "@apollo/client/react";
 import { QUERY } from "@integration-test/shared/queries";
 import { createFileRoute } from "@tanstack/react-router";
 

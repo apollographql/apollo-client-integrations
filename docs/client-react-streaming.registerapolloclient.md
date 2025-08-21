@@ -11,7 +11,7 @@ Ensures that you can always access the same instance of ApolloClient during RSC 
 **Signature:**
 
 ```typescript
-declare function registerApolloClient<ApolloClientOrPromise extends Promise<ApolloClient$1<any>> | ApolloClient$1<any>>(makeClient: () => ApolloClientOrPromise): {
+declare function registerApolloClient<ApolloClientOrPromise extends Promise<ApolloClient$1> | ApolloClient$1>(makeClient: () => ApolloClientOrPromise): {
     getClient: () => ApolloClientOrPromise;
     query: Awaited<ApolloClientOrPromise>["query"];
     PreloadQuery: PreloadQueryComponent;

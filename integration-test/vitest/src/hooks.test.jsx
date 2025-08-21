@@ -8,7 +8,7 @@ import {
   resetApolloClientSingletons,
 } from "@apollo/client-integration-nextjs";
 import { Suspense } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 const wrapper = ({ children }) => (
   <ApolloNextAppProvider makeClient={makeClient}>
@@ -66,11 +66,11 @@ test("will set up the data transport", () => {
   expect(globalThis[Symbol.for("ApolloClientSingleton")]).toBeDefined();
 });
 
-test("resetNextSSRApolloSingletons tears down global singletons", () => {
+test("resetApolloClientSingletons tears down global singletons", () => {
   render(<></>, { wrapper });
   // wrappers are now set up, see last test
   // usually, we do this in `afterEach`
-  resetNextSSRApolloSingletons();
+  resetApolloClientSingletons();
   expect(globalThis[Symbol.for("ApolloSSRDataTransport")]).not.toBeDefined();
   expect(globalThis[Symbol.for("ApolloClientSingleton")]).not.toBeDefined();
 });

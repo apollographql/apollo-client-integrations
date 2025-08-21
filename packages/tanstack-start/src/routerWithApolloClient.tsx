@@ -6,7 +6,7 @@ import {
 import type { ApolloClient } from "@apollo/client-react-streaming";
 import { createTransportedQueryPreloader } from "@apollo/client-react-streaming";
 import { ApolloProvider } from "./ApolloProvider.js";
-import { createQueryPreloader } from "@apollo/client/react/index.js";
+import { createQueryPreloader } from "@apollo/client/react";
 import { type AnyRouter } from "@tanstack/react-router";
 import React from "react";
 

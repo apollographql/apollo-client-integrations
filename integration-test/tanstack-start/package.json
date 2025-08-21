@@ -10,7 +10,7 @@
     "test": "yarn test:tanstack"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^4.0.0",
     "@apollo/client-integration-tanstack-start": "workspace:^",
     "@integration-test/shared": "workspace:^",
     "@tanstack/router-devtools": "^1.99.0",
@@ -19,6 +19,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
+    "rxjs": "^7.8.2",
     "vinxi": "^0.5.1"
   },
   "devDependencies": {

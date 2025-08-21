@@ -1,7 +1,8 @@
 "use client";
 
 import type { TypedDocumentNode } from "@apollo/client";
-import { useSuspenseQuery, gql } from "@apollo/client";
+import { gql } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 import { Suspense } from "react";
 import { useSearchParams } from "next/navigation";

@@ -3,7 +3,7 @@ import { it } from "node:test";
 import assert from "node:assert";
 import { runInConditions } from "@internal/test-utils/runInConditions.js";
 import { Writable } from "node:stream";
-import { ApolloLink, gql } from "@apollo/client/index.js";
+import { ApolloLink, gql } from "@apollo/client";
 
 runInConditions("react-server");
 
@@ -202,13 +202,17 @@ it("warns if calling `query` outside of a React tree, e.g. in a Server Action or
     console.warn = (...args) => (warnArgs = args);
 
     const { query } = registerApolloClient(makeClient);
-    await query({
-      query: gql`
-        query {
-          hello
-        }
-      `,
-    }).catch();
+    try {
+      await query({
+        query: gql`
+          query {
+            hello
+          }
+        `,
+      });
+    } catch {
+      /** */
+    }
     assert.equal(
       warnArgs,
       `The \`query\` shortcut returned from \`registerApolloClient\` 

@@ -3,29 +3,28 @@ import {
   getSuspenseCache,
   unwrapQueryRef,
   wrapQueryRef,
-} from "@apollo/client/react/internal/index.js";
+} from "@apollo/client/react/internal";
 import {
   readFromReadableStream,
   teeToReadableStream,
 } from "./ReadableStreamLink.js";
 import { skipDataTransport } from "./DataTransportAbstraction/index.js";
 import type { ReadableStreamLinkEvent } from "./ReadableStreamLink.js";
-import type { QueryRef } from "@apollo/client/react/index.js";
-import { useApolloClient } from "@apollo/client/react/index.js";
+import type { QueryRef } from "@apollo/client/react";
+import { useApolloClient } from "@apollo/client/react";
 import type {
   DocumentNode,
   ApolloClient,
-  QueryOptions,
   OperationVariables,
   TypedDocumentNode,
-} from "@apollo/client/index.js";
+} from "@apollo/client";
 import {
   serializeOptions,
   deserializeOptions,
   type TransportedOptions,
 } from "./DataTransportAbstraction/transportedOptions.js";
 import { useEffect } from "react";
-import { canonicalStringify } from "@apollo/client/cache/index.js";
+import { canonicalStringify } from "@apollo/client/cache";
 import {
   JSONDecodeStream,
   JSONEncodeStream,
@@ -40,10 +39,10 @@ type RestrictedPreloadOptions = {
 };
 
 /** @public */
-export type PreloadTransportedQueryOptions<TVariables, TData> = Omit<
-  QueryOptions<TVariables, TData>,
-  "query"
-> &
+export type PreloadTransportedQueryOptions<
+  TData,
+  TVariables extends OperationVariables,
+> = Omit<ApolloClient.QueryOptions<TData, TVariables>, "query"> &
   RestrictedPreloadOptions;
 
 type TransportedQueryRefOptions = TransportedOptions & RestrictedPreloadOptions;
@@ -88,7 +87,7 @@ export interface TransportedQueryRef<
 export interface PreloadTransportedQueryFunction {
   <TData = unknown, TVariables extends OperationVariables = OperationVariables>(
     query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-    options?: PreloadTransportedQueryOptions<NoInfer<TVariables>, TData>
+    options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
   ): TransportedQueryRef<TData, TVariables>;
 }
 
@@ -107,7 +106,7 @@ export function getInjectableEventStream() {
 
 /** @public */
 export function createTransportedQueryPreloader(
-  client: ApolloClient<any>
+  client: ApolloClient
 ): PreloadTransportedQueryFunction {
   return (...[query, options]: Parameters<PreloadTransportedQueryFunction>) => {
     // unset options that we do not support
@@ -152,7 +151,7 @@ function createTransportedQueryRef<
   TVariables extends OperationVariables,
 >(
   query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-  options: PreloadTransportedQueryOptions<NoInfer<TVariables>, TData>,
+  options: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>,
   queryKey: string,
   stream: ReadableStream<ReadableStreamLinkEvent>
 ): TransportedQueryRef<TData, TVariables> {
@@ -173,9 +172,8 @@ const hydrationCache = new WeakMap<
 /** @public */
 export function reviveTransportedQueryRef(
   queryRef: TransportedQueryRef,
-  client: ApolloClient<any>
-): asserts queryRef is TransportedQueryRef &
-  ReturnType<typeof wrapQueryRef<any, any>> {
+  client: ApolloClient
+): asserts queryRef is TransportedQueryRef & ReturnType<typeof wrapQueryRef> {
   const {
     $__apollo_queryRef: { options, stream, queryKey },
   } = queryRef;
@@ -213,9 +211,11 @@ export function isTransportedQueryRef(
 }
 
 /** @public */
-export function useWrapTransportedQueryRef<TData, TVariables>(
-  queryRef: QueryRef<TData, TVariables> | TransportedQueryRef
-): QueryRef<TData, TVariables> {
+export function useWrapTransportedQueryRef<TData>(
+  queryRef:
+    | QueryRef<TData, any, "complete" | "streaming" | "empty" | "partial">
+    | TransportedQueryRef
+): QueryRef<TData> {
   const client = useApolloClient();
   let cacheKey: CacheKey | undefined;
   let isTransported: boolean;
@@ -223,7 +223,7 @@ export function useWrapTransportedQueryRef<TData, TVariables>(
     reviveTransportedQueryRef(queryRef, client);
     cacheKey = hydrationCache.get(queryRef)?.cacheKey;
   }
-  const unwrapped = unwrapQueryRef<any>(queryRef)!;
+  const unwrapped = unwrapQueryRef(queryRef)!;
 
   useEffect(() => {
     // We only want this to execute if the queryRef is a transported query.
@@ -243,7 +243,7 @@ export function useWrapTransportedQueryRef<TData, TVariables>(
       return unwrapped.softRetain();
     }
   }, [isTransported, unwrapped]);
-  return queryRef;
+  return queryRef satisfies QueryRef<any, any, any> as QueryRef<TData>;
 }
 
 function sanitizeForTransport<T>(value: T) {

@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 import type { CreateServerLoaderArgs } from "react-router/route-module";
 import type { ApolloClient } from "./ApolloClient.js";
-import type { QueryRef } from "@apollo/client/react/index.js";
+import type { QueryRef } from "@apollo/client/react";
 import type {
   PreloadTransportedQueryOptions,
   ReadableStreamLinkEvent,
@@ -30,7 +30,7 @@ export declare namespace createApolloLoaderHandler {
       TVariables extends OperationVariables = OperationVariables,
     >(
       query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-      options?: PreloadTransportedQueryOptions<NoInfer<TVariables>, TData>
+      options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
     ): unstable_SerializesTo<QueryRef<TData, TVariables>>;
   }
 

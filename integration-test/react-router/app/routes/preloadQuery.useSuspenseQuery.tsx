@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router";
 import type { Route } from "./+types/preloadQuery.useSuspenseQuery";
-import { type DefaultContext } from "@apollo/client/index.js";
-import { useSuspenseQuery } from "@apollo/client/react/index.js";
+import { type DefaultContext } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { apolloLoader } from "~/apollo";
 import { QUERY } from "@integration-test/shared/queries";
 import { Suspense } from "react";

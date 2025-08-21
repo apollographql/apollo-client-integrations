@@ -1,6 +1,37 @@
 # @apollo/client-react-streaming
 
+## 0.13.0
+
+### Minor Changes
+
+- a434180: Drop depdendency `ts-invariant`. Please use `setLogVerbosity` from `@apollo/client` instead of `setVerbosity` from `ts-invariant`.
+- a434180: Updating Apollo Client from v3 to v4. Please follow the [Apollo Client migration guide](https://www.apollographql.com/docs/react/migrating/apollo-client-4-migration).
+- a434180: Update signature of PreloadTransportedQueryOptions from `<TVariables, TData>` to `<TData, TVariables>`
+- a434180: Deprecate `PreloadQueryOptions` - please use `PreloadQuery.Options` instead.
+- a434180: Deprecate `PreloadQueryProps` - please use `PreloadQuery.Props` instead.
+
 ## 0.12.3-alpha.5
+
+## 0.12.3
+
+### Patch Changes
+
+- 45781d4: Adds a `dangerous_disableHookValueTransportation` option to `ManualDataTransport`.
+
+  If `true`, the `useStaticValueRef` hook will not transport values over to the client.
+  This hook is used to transport the values of hook calls during SSR to the client, to ensure that
+  the client will rehydrate with the exact same values as it rendered on the server.
+
+  This mechanism is in place to prevent hydration mismatches as described in
+  https://github.com/apollographql/apollo-client-integrations/blob/pr/RFC-2/RFC.md#challenges-of-a-client-side-cache-in-streaming-ssr
+  (first graph of the "Challenges of a client-side cache in streaming SSR" section).
+
+  Setting this value to `true` will save on data transported over the wire, but comes with the risk
+  of hydration mismatches.
+  Strongly discouraged with older React versions, as hydration mismatches there will likely crash
+  the application, setting this to `true` might be okay with React 19, which is much better at recovering
+  from hydration mismatches - but it still comes with a risk.
+  When enabling this, you should closely monitor error reporting and user feedback.
 
 ## 0.12.2
 

@@ -1,18 +1,16 @@
-import { gql } from "@apollo/client/index.js";
-import type {
-  WatchQueryOptions,
-  DocumentNode,
-  FetchPolicy,
-} from "@apollo/client/index.js";
-import { print } from "@apollo/client/utilities/index.js";
+import { gql } from "@apollo/client";
+import type { DocumentNode, FetchPolicy, ApolloClient } from "@apollo/client";
+import { print } from "@apollo/client/utilities";
 import { stripIgnoredCharacters } from "graphql";
 
 export type TransportedOptions = { query: string } & Omit<
-  WatchQueryOptions,
+  ApolloClient.WatchQueryOptions,
   "query"
 >;
 
-export function serializeOptions<T extends WatchQueryOptions<any, any>>(
+export function serializeOptions<
+  T extends ApolloClient.WatchQueryOptions<any, any>,
+>(
   options: T
 ): { query: string; nextFetchPolicy?: FetchPolicy | undefined } & Omit<
   T,
@@ -29,7 +27,7 @@ export function serializeOptions<T extends WatchQueryOptions<any, any>>(
 
 export function deserializeOptions(
   options: TransportedOptions
-): WatchQueryOptions {
+): ApolloClient.WatchQueryOptions {
   return {
     ...options,
     // `gql` memoizes results, but based on the input string.

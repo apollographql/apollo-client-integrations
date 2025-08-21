@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { act, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import App from "./App";
@@ -7,7 +7,9 @@ import { resetApolloClientSingletons } from "@apollo/client-integration-nextjs";
 afterEach(resetApolloClientSingletons);
 
 test("loads data", async () => {
-  render(<App />);
+  await act(() => {
+    render(<App />);
+  });
 
   expect(screen.getByText("Loading...")).toBeInTheDocument();
   expect(
@@ -17,7 +19,9 @@ test("loads data", async () => {
 });
 
 test("is interactive", async () => {
-  render(<App />);
+  await act(() => {
+    render(<App />);
+  });
 
   const counter = await screen.findByTestId("counter");
   expect(counter.textContent).toBe("0");

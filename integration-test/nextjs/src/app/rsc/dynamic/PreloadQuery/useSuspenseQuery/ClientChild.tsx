@@ -1,6 +1,6 @@
 "use client";
 
-import { useSuspenseQuery } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { QUERY } from "@integration-test/shared/queries";
 
 export function ClientChild() {

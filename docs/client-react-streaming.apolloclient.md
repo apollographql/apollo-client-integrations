@@ -11,7 +11,7 @@ For more documentation, please see [the Apollo Client API documentation](https:/
 **Signature:**
 
 ```typescript
-declare class ApolloClient<Ignored = NormalizedCacheObject> extends ApolloClient_base implements Partial<ApolloClientSSRImpl> 
+declare class ApolloClient extends ApolloClient_base implements Partial<ApolloClientSSRImpl> 
 ```
 **Extends:** ApolloClient\_base
 

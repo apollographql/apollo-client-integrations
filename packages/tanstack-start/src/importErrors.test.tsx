@@ -6,7 +6,7 @@ import { silenceConsoleErrors } from "@internal/test-utils/console.js";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
-  const upstreamPkg = await import("@apollo/client/index.js");
+  const upstreamPkg = await import("@apollo/client");
   assert.throws(
     () =>
       new ApolloClient({
@@ -42,8 +42,8 @@ test(
       .addChildren({});
 
     await test("@apollo/client should error", async () => {
-      const { ApolloClient, InMemoryCache } = await import(
-        "@apollo/client/index.js"
+      const { ApolloClient, InMemoryCache, HttpLink } = await import(
+        "@apollo/client"
       );
       using env = await renderStreamEnv();
       // Even with an error Boundary, React will still log to `console.error` - we avoid the noise here.
@@ -56,7 +56,7 @@ test(
         // @ts-expect-error deliberately using the wrong class here
         new ApolloClient({
           cache: new InMemoryCache(),
-          uri: "/api/graphql",
+          link: new HttpLink({ uri: "/api/graphql" }),
         })
       );
       const stream = env.createRenderStream();
@@ -75,6 +75,7 @@ test(
 
     await test("this package should work", async () => {
       const { ApolloClient, InMemoryCache } = bundled;
+      const { HttpLink } = await import("@apollo/client");
       using env = await renderStreamEnv();
       const router = routerWithApolloClient(
         tsr.createRouter({
@@ -83,7 +84,7 @@ test(
         }),
         new ApolloClient({
           cache: new InMemoryCache(),
-          uri: "/api/graphql",
+          link: new HttpLink({ uri: "/api/graphql" }),
         })
       );
       const stream = env.createRenderStream();

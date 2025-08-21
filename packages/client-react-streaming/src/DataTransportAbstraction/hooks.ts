@@ -1,4 +1,4 @@
-import type { HookWrappers } from "@apollo/client/react/internal/index.js";
+import type { HookWrappers } from "@apollo/client/react/internal";
 import { useTransportValue } from "./useTransportValue.js";
 import { useWrapTransportedQueryRef } from "../transportedQueryRef.js";
 import { useMemo } from "react";
@@ -13,7 +13,7 @@ export const hookWrappers: HookWrappers = {
         ? (query, options) =>
             orig_useQuery(query, { ...options, fetchPolicy: "cache-only" })
         : orig_useQuery,
-      ["data", "loading", "networkStatus", "called"]
+      ["data", "loading", "networkStatus"]
     );
   },
   useSuspenseQuery(orig_useSuspenseQuery) {

@@ -1,6 +1,6 @@
 import { QUERY } from "@integration-test/shared/queries";
-import { type DefaultContext } from "@apollo/client/index.js";
-import { useSuspenseQuery } from "@apollo/client/react/index.js";
+import { type DefaultContext } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import "@integration-test/shared/errorLink";
 import { createFileRoute } from "@tanstack/react-router";
 import { Suspense } from "react";

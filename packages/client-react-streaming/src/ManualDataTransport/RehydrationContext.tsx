@@ -1,7 +1,7 @@
 import React from "react";
 import type { RehydrationContextValue } from "./types.js";
 import { transportDataToJS } from "./dataTransport.js";
-import { invariant } from "ts-invariant";
+import { invariant } from "@apollo/client/utilities/invariant";
 import type { Stringify } from "./serialization.js";
 
 /**

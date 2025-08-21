@@ -368,17 +368,6 @@ Preloads data in React Server Components to be hydrated in Client Components.
 </td></tr>
 <tr><td>
 
-[PreloadQueryProps](./client-react-streaming.preloadqueryprops.md)
-
-
-</td><td>
-
-Props for `PreloadQueryComponent`
-
-
-</td></tr>
-<tr><td>
-
 [PreloadTransportedQueryFunction](./client-react-streaming.preloadtransportedqueryfunction.md)
 
 
@@ -470,6 +459,15 @@ Interface to be implemented by a custom data transport component, for usage with
 This component needs to provide a `DataTransportContext` to it's children.
 
 See for example https://github.com/apollographql/apollo-client-integrations/blob/37feeaa9aea69b90a974eb9cd0fbd636b62d841a/integration-test/experimental-react/src/WrappedApolloProvider.tsx
+
+
+</td></tr>
+<tr><td>
+
+[PreloadQueryProps](./client-react-streaming.preloadqueryprops.md)
+
+
+</td><td>
 
 
 </td></tr>

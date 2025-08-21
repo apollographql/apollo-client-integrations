@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-request(operation: Operation, forward?: NextLink): Observable<FetchResult<Record<string, any>, Record<string, any>, Record<string, any>>>;
+request(operation: ApolloLink.Operation, forward?: ApolloLink.ForwardFunction): Observable<ApolloLink.Result<Record<string, any>, Record<string, any>>>;
 ```
 
 ## Parameters
@@ -35,7 +35,7 @@ operation
 
 </td><td>
 
-Operation
+ApolloLink.Operation
 
 
 </td><td>
@@ -49,7 +49,7 @@ forward
 
 </td><td>
 
-NextLink
+ApolloLink.ForwardFunction
 
 
 </td><td>
@@ -61,5 +61,5 @@ _(Optional)_
 </tbody></table>
 **Returns:**
 
-Observable&lt;FetchResult&lt;Record&lt;string, any&gt;, Record&lt;string, any&gt;, Record&lt;string, any&gt;&gt;&gt;
+Observable&lt;ApolloLink.Result&lt;Record&lt;string, any&gt;, Record&lt;string, any&gt;&gt;&gt;
 

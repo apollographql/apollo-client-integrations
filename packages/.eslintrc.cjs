@@ -44,5 +44,11 @@ module.exports = {
         fixStyle: "separate-type-imports",
       },
     ],
+    "@typescript-eslint/no-namespace": [
+      "error",
+      {
+        allowDeclarations: true,
+      },
+    ],
   },
 };

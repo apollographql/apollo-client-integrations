@@ -8,7 +8,7 @@
 **Signature:**
 
 ```typescript
-declare function useWrapTransportedQueryRef<TData, TVariables>(queryRef: QueryRef<TData, TVariables> | TransportedQueryRef): QueryRef<TData, TVariables>;
+declare function useWrapTransportedQueryRef<TData>(queryRef: QueryRef<TData, any, "complete" | "streaming" | "empty" | "partial"> | TransportedQueryRef): QueryRef<TData>;
 ```
 
 ## Parameters
@@ -36,7 +36,7 @@ queryRef
 
 </td><td>
 
-QueryRef&lt;TData, TVariables&gt; \| [TransportedQueryRef](./client-react-streaming.transportedqueryref.md)
+QueryRef&lt;TData, any, "complete" \| "streaming" \| "empty" \| "partial"&gt; \| [TransportedQueryRef](./client-react-streaming.transportedqueryref.md)
 
 
 </td><td>
@@ -46,5 +46,5 @@ QueryRef&lt;TData, TVariables&gt; \| [TransportedQueryRef](./client-react-stream
 </tbody></table>
 **Returns:**
 
-QueryRef&lt;TData, TVariables&gt;
+QueryRef&lt;TData&gt;
 

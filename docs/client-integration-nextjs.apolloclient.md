@@ -11,7 +11,7 @@ For more documentation, please see [the Apollo Client API documentation](https:/
 **Signature:**
 
 ```typescript
-declare class ApolloClient<TCacheShape> extends ApolloClient$1<TCacheShape> 
+declare class ApolloClient extends ApolloClient$1 
 ```
-**Extends:** ApolloClient$1&lt;TCacheShape&gt;
+**Extends:** ApolloClient$1
 

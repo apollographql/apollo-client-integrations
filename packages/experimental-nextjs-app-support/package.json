@@ -1,6 +1,6 @@
 {
   "name": "@apollo/experimental-nextjs-app-support",
-  "version": "0.12.3-alpha.5",
+  "version": "0.13.0",
   "repository": {
     "url": "git+https://github.com/apollographql/apollo-client-integrations.git"
   },
@@ -80,7 +80,7 @@
     "bundle-info": "yarn test-bundle --format json | jq '.analysis.entrypoints|to_entries|map({key:.key,value:.value.resolutions|to_entries|map({key:.key,value:.value.resolution.fileName })|from_entries})|from_entries'"
   },
   "devDependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^4.0.0",
     "@arethetypeswrong/cli": "0.15.3",
     "@tsconfig/recommended": "1.0.6",
     "@types/react": "*",
@@ -89,14 +89,16 @@
     "publint": "0.2.7",
     "react": "*",
     "react-dom": "*",
+    "rxjs": "^7.8.2",
     "typescript": "^5.7.3"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.13.0",
+    "@apollo/client": "^4.0.0",
     "next": "^15.2.3",
-    "react": "^19"
+    "react": "^19",
+    "rxjs": "^7.3.0"
   },
   "dependencies": {
-    "@apollo/client-integration-nextjs": "0.12.3-alpha.5"
+    "@apollo/client-integration-nextjs": "0.13.0"
   }
 }

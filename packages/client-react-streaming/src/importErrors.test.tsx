@@ -3,10 +3,11 @@ import { test } from "node:test";
 import { outsideOf } from "@internal/test-utils/runInConditions.js";
 import { browserEnv } from "@internal/test-utils/react.js";
 import { silenceConsoleErrors } from "@internal/test-utils/console.js";
+import { ApolloLink } from "@apollo/client";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
-  const upstreamPkg = await import("@apollo/client/index.js");
+  const upstreamPkg = await import("@apollo/client");
   assert.throws(
     () =>
       new ApolloClient({
@@ -35,7 +36,7 @@ test(
     const Provider = WrapApolloProvider(FakeTransport);
 
     await test("@apollo/client should error", async () => {
-      const upstreamPkg = await import("@apollo/client/index.js");
+      const upstreamPkg = await import("@apollo/client");
       assert.throws(
         () =>
           renderToString(
@@ -62,6 +63,7 @@ test(
           makeClient={() =>
             new bundled.ApolloClient({
               cache: new bundled.InMemoryCache(),
+              link: ApolloLink.empty(),
             })
           }
         >
@@ -89,7 +91,7 @@ test(
 
     await test("@apollo/client should error", async () => {
       using env = await browserEnv();
-      const upstreamPkg = await import("@apollo/client/index.js");
+      const upstreamPkg = await import("@apollo/client");
       const promise = new Promise((_resolve, reject) => {
         env.render(
           document.body,
@@ -99,7 +101,7 @@ test(
                 // @ts-expect-error we want to test exactly this
                 new upstreamPkg.ApolloClient({
                   cache: new upstreamPkg.InMemoryCache(),
-                  connectToDevTools: false,
+                  devtools: { enabled: false },
                 })
               }
             >
@@ -128,7 +130,8 @@ test(
               makeClient={() =>
                 new bundled.ApolloClient({
                   cache: new bundled.InMemoryCache(),
-                  connectToDevTools: false,
+                  devtools: { enabled: false },
+                  link: ApolloLink.empty(),
                 })
               }
             >
