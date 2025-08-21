@@ -88,7 +88,6 @@ module.exports = checks.map(
         "prop-types",
         "response-iterator",
         "symbol-observable",
-        "ts-invariant",
         "tslib",
         "rxjs",
       ],
