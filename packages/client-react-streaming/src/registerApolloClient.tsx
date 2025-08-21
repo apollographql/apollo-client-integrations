@@ -1,10 +1,8 @@
 import type { ApolloClient, OperationVariables } from "@apollo/client";
 import React from "react";
 import { cache } from "react";
-import type { ReactNode } from "react";
 import type { PreloadQuery } from "./PreloadQuery.js";
 import { PreloadQuery as UnboundPreloadQuery } from "./PreloadQuery.js";
-import type { TransportedQueryRef } from "./transportedQueryRef.js";
 
 const seenWrappers = WeakSet
   ? new WeakSet<{ client: ApolloClient | Promise<ApolloClient> }>()
