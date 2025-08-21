@@ -22,6 +22,11 @@
     "@internal/test-utils": "0.0.0"
   },
   "changesets": [
-    "calm-snakes-mate"
+    "calm-snakes-mate",
+    "hip-crews-unite",
+    "hot-wasps-relax",
+    "swift-countries-own",
+    "thin-eagles-cross-2",
+    "thin-eagles-cross"
   ]
 }
