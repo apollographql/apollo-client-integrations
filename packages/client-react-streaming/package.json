@@ -131,7 +131,7 @@
     "lint": "eslint --ext .ts,.tsx src"
   },
   "devDependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^4.0.0",
     "@arethetypeswrong/cli": "0.15.3",
     "@internal/test-utils": "workspace:^",
     "@microsoft/api-extractor": "7.43.2",
@@ -160,7 +160,7 @@
     "zen-observable-ts": "1.1.0"
   },
   "peerDependencies": {
-    "@apollo/client": "^3.13.0",
+    "@apollo/client": "^4.0.0",
     "graphql": "^16 || >=17.0.0-alpha.2",
     "react": "^19",
     "react-dom": "^19"

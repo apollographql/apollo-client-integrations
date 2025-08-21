@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^4.0.0",
     "@apollo/client-integration-nextjs": "workspace:^",
     "@apollo/server": "^4.9.5",
     "@as-integrations/next": "^3.0.0",

@@ -207,7 +207,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apollo/client-integration-nextjs@workspace:packages/nextjs"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-react-streaming": "workspace:*"
     "@arethetypeswrong/cli": "npm:0.15.3"
     "@internal/test-utils": "workspace:^"
@@ -230,7 +230,7 @@ __metadata:
     typescript: "npm:^5.7.3"
     wait-on: "npm:8.0.2"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     next: ^15.2.3
     react: ^19
   languageName: unknown
@@ -240,7 +240,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apollo/client-integration-react-router@workspace:packages/react-router"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-react-streaming": "workspace:*"
     "@arethetypeswrong/cli": "npm:0.15.3"
     "@microsoft/api-extractor": "npm:7.43.2"
@@ -262,7 +262,7 @@ __metadata:
     typescript: "npm:5.4.5"
     wait-on: "npm:8.0.2"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     react: ^19
     react-router: ^7.2.0-pre.3
   languageName: unknown
@@ -272,7 +272,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apollo/client-integration-tanstack-start@workspace:packages/tanstack-start"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-react-streaming": "workspace:*"
     "@arethetypeswrong/cli": "npm:0.15.3"
     "@internal/test-utils": "workspace:^"
@@ -298,7 +298,7 @@ __metadata:
     typescript: "npm:5.4.5"
     wait-on: "npm:8.0.2"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     "@tanstack/react-router": ^1.99.6
     "@tanstack/start": ^1.99.4
     graphql: ^16 || >=17.0.0-alpha.2
@@ -311,7 +311,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apollo/client-react-streaming@workspace:packages/client-react-streaming"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@arethetypeswrong/cli": "npm:0.15.3"
     "@internal/test-utils": "workspace:^"
     "@microsoft/api-extractor": "npm:7.43.2"
@@ -341,35 +341,30 @@ __metadata:
     typescript: "npm:^5.7.3"
     zen-observable-ts: "npm:1.1.0"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     graphql: ^16 || >=17.0.0-alpha.2
     react: ^19
     react-dom: ^19
   languageName: unknown
   linkType: soft
 
-"@apollo/client@npm:^3.13.4":
-  version: 3.13.4
-  resolution: "@apollo/client@npm:3.13.4"
+"@apollo/client@npm:4.0.0-rc.13":
+  version: 4.0.0-rc.13
+  resolution: "@apollo/client@npm:4.0.0-rc.13"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
     "@wry/equality": "npm:^0.5.6"
     "@wry/trie": "npm:^0.5.0"
     graphql-tag: "npm:^2.12.6"
-    hoist-non-react-statics: "npm:^3.3.2"
     optimism: "npm:^0.18.0"
-    prop-types: "npm:^15.7.2"
-    rehackt: "npm:^0.1.0"
-    symbol-observable: "npm:^4.0.0"
-    ts-invariant: "npm:^0.10.3"
     tslib: "npm:^2.3.0"
-    zen-observable-ts: "npm:^1.2.5"
   peerDependencies:
-    graphql: ^15.0.0 || ^16.0.0
+    graphql: ^16.0.0
     graphql-ws: ^5.5.5 || ^6.0.3
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
-    react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    react-dom: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    rxjs: ^7.3.0
     subscriptions-transport-ws: ^0.9.0 || ^0.11.0
   peerDependenciesMeta:
     graphql-ws:
@@ -380,7 +375,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10/35ddc4bc66c5fdd5f1561e5a3c36759f1ddba10de020441f7594d63ea72300ff75813878f17677b4e06a30749ce255f7f66c25a0af718d407ff1a51abf7205fd
+  checksum: 10/b36e47dbf50aca0826edd11074236494b784c579dbddcaad92543ec0506c6bf8e91bc122401a673e0d6cf60d2f886acb833c01eb21870b6e1a5d4c320c3af225
   languageName: node
   linkType: hard
 
@@ -388,7 +383,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@apollo/experimental-nextjs-app-support@workspace:packages/experimental-nextjs-app-support"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "npm:0.12.3"
     "@arethetypeswrong/cli": "npm:0.15.3"
     "@tsconfig/recommended": "npm:1.0.6"
@@ -400,7 +395,7 @@ __metadata:
     react-dom: "npm:*"
     typescript: "npm:^5.7.3"
   peerDependencies:
-    "@apollo/client": ^3.13.0
+    "@apollo/client": ^4.0.0
     next: ^15.2.3
     react: ^19
   languageName: unknown
@@ -6727,7 +6722,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration-test/jest@workspace:integration-test/jest"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "workspace:^"
     "@apollo/client-react-streaming": "workspace:^"
     "@babel/core": "npm:^7.24.0"
@@ -6754,7 +6749,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration-test/nextjs@workspace:integration-test/nextjs"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "workspace:^"
     "@apollo/server": "npm:^4.11.2"
     "@as-integrations/next": "npm:^3.2.0"
@@ -6789,7 +6784,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration-test/react-router@workspace:integration-test/react-router"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-react-router": "workspace:^"
     "@integration-test/shared": "workspace:^"
     "@react-router/dev": "npm:^7.2.0-pre.3"
@@ -6832,7 +6827,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration-test/tanstack-start@workspace:integration-test/tanstack-start"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-tanstack-start": "workspace:^"
     "@integration-test/shared": "workspace:^"
     "@tanstack/router-devtools": "npm:^1.99.0"
@@ -6853,7 +6848,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration-test/vite-streaming@workspace:integration-test/vite-streaming"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-react-streaming": "workspace:^"
     "@playwright/test": "npm:^1.49.1"
     "@tsconfig/vite-react": "npm:^3.0.0"
@@ -6877,7 +6872,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@integration-test/vitest@workspace:integration-test/vitest"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "workspace:^"
     "@graphql-tools/schema": "npm:^10.0.3"
     "@testing-library/jest-dom": "npm:^6.4.2"
@@ -12615,7 +12610,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "apollo-next-13-demo@workspace:examples/polls-demo"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "workspace:^"
     "@apollo/server": "npm:^4.9.5"
     "@graphql-codegen/cli": "npm:3.3.1"
@@ -12648,7 +12643,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "app-dir@workspace:examples/app-dir-experiments"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "workspace:^"
     "@apollo/server": "npm:^4.9.5"
     "@as-integrations/next": "npm:^3.0.0"
@@ -18400,7 +18395,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "hack-the-supergraph-ssr@workspace:examples/hack-the-supergraph-ssr"
   dependencies:
-    "@apollo/client": "npm:^3.13.4"
+    "@apollo/client": "npm:^4.0.0"
     "@apollo/client-integration-nextjs": "workspace:^"
     "@apollo/space-kit": "npm:^9.11.0"
     "@chakra-ui/next-js": "npm:2.4.2"
@@ -18534,7 +18529,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hoist-non-react-statics@npm:^3.3.1, hoist-non-react-statics@npm:^3.3.2":
+"hoist-non-react-statics@npm:^3.3.1":
   version: 3.3.2
   resolution: "hoist-non-react-statics@npm:3.3.2"
   dependencies:
@@ -26081,13 +26076,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"symbol-observable@npm:^4.0.0":
-  version: 4.0.0
-  resolution: "symbol-observable@npm:4.0.0"
-  checksum: 10/983aef3912ad080fc834b9ad115d44bc2994074c57cea4fb008e9f7ab9bb4118b908c63d9edc861f51257bc0595025510bdf7263bb09d8953a6929f240165c24
-  languageName: node
-  linkType: hard
-
 "symbol-tree@npm:^3.2.4":
   version: 3.2.4
   resolution: "symbol-tree@npm:3.2.4"
@@ -28723,15 +28711,6 @@ __metadata:
     "@types/zen-observable": "npm:0.8.3"
     zen-observable: "npm:0.8.15"
   checksum: 10/5292441e0394cc845acf12b22eb529884b4aefc267f1fb16cdb38b78116b137f1c5e89f2aeac9b9a82a83814a47b2d5d02ca661ae79f992745407a90f2cc63b4
-  languageName: node
-  linkType: hard
-
-"zen-observable-ts@npm:^1.2.5":
-  version: 1.2.5
-  resolution: "zen-observable-ts@npm:1.2.5"
-  dependencies:
-    zen-observable: "npm:0.8.15"
-  checksum: 10/2384cf92a60e39e7b9735a0696f119684fee0f8bcc81d71474c92d656eca1bc3e87b484a04e97546e56bd539f8756bf97cf21a28a933ff7a94b35a8d217848eb
   languageName: node
   linkType: hard
 

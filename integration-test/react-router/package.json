@@ -11,7 +11,7 @@
     "test": "yarn test:react-router"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^4.0.0",
     "@apollo/client-integration-react-router": "workspace:^",
     "@integration-test/shared": "workspace:^",
     "@react-router/fs-routes": "^7.2.0-pre.3",

@@ -10,7 +10,7 @@
     "test": "yarn test:tanstack"
   },
   "dependencies": {
-    "@apollo/client": "^3.13.4",
+    "@apollo/client": "^4.0.0",
     "@apollo/client-integration-tanstack-start": "workspace:^",
     "@integration-test/shared": "workspace:^",
     "@tanstack/router-devtools": "^1.99.0",
