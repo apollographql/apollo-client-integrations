@@ -185,17 +185,6 @@ Preloads data in React Server Components to be hydrated in Client Components.
 </td></tr>
 <tr><td>
 
-[PreloadQueryProps](./client-integration-nextjs.preloadqueryprops.md)
-
-
-</td><td>
-
-Props for `PreloadQueryComponent`
-
-
-</td></tr>
-<tr><td>
-
 [TransportedQueryRef](./client-integration-nextjs.transportedqueryref.md)
 
 
@@ -255,6 +244,30 @@ To be used in testing only, like
 ```ts
 afterEach(resetApolloClientSingletons);
 ```
+
+
+</td></tr>
+</tbody></table>
+
+## Type Aliases
+
+<table><thead><tr><th>
+
+Type Alias
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[PreloadQueryProps](./client-integration-nextjs.preloadqueryprops.md)
+
+
+</td><td>
 
 
 </td></tr>

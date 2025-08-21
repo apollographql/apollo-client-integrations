@@ -8,9 +8,9 @@
 **Signature:**
 
 ```typescript
-declare class ApolloClient extends ApolloClient$1<any> 
+declare class ApolloClient extends ApolloClient$1 
 ```
-**Extends:** ApolloClient$1&lt;any&gt;
+**Extends:** ApolloClient$1
 
 ## Constructors
 

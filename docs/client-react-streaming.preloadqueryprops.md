@@ -2,55 +2,15 @@
 
 [Home](./index.md) &gt; [@apollo/client-react-streaming](./client-react-streaming.md) &gt; [PreloadQueryProps](./client-react-streaming.preloadqueryprops.md)
 
-## PreloadQueryProps interface
+## PreloadQueryProps type
 
-Props for `PreloadQueryComponent`
+> Warning: This API is now obsolete.
+> 
+> use `PreloadQuery.Props` instead
+> 
 
 **Signature:**
 
 ```typescript
-interface PreloadQueryProps<TData, TVariables extends OperationVariables> extends PreloadQueryOptions<TVariables, TData> 
+type PreloadQueryProps<TData, TVariables extends OperationVariables> = PreloadQuery.Props<TData, TVariables>;
 ```
-**Extends:** PreloadQueryOptions&lt;TVariables, TData&gt;
-
-## Properties
-
-<table><thead><tr><th>
-
-Property
-
-
-</th><th>
-
-Modifiers
-
-
-</th><th>
-
-Type
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[children](./client-react-streaming.preloadqueryprops.children.md)
-
-
-</td><td>
-
-
-</td><td>
-
-ReactNode \| ((queryRef: [TransportedQueryRef](./client-react-streaming.transportedqueryref.md)<!-- -->&lt;NoInfer&lt;TData&gt;, NoInfer&lt;TVariables&gt;&gt;) =&gt; ReactNode)
-
-
-</td><td>
-
-
-</td></tr>
-</tbody></table>

@@ -8,7 +8,7 @@
 **Signature:**
 
 ```typescript
-declare function reviveTransportedQueryRef(queryRef: TransportedQueryRef, client: ApolloClient$1<any>): asserts queryRef is TransportedQueryRef & ReturnType<typeof wrapQueryRef<any, any>>;
+declare function reviveTransportedQueryRef(queryRef: TransportedQueryRef, client: ApolloClient$1): asserts queryRef is TransportedQueryRef & ReturnType<typeof wrapQueryRef>;
 ```
 
 ## Parameters
@@ -50,7 +50,7 @@ client
 
 </td><td>
 
-ApolloClient$1&lt;any&gt;
+ApolloClient$1
 
 
 </td><td>
@@ -60,5 +60,5 @@ ApolloClient$1&lt;any&gt;
 </tbody></table>
 **Returns:**
 
-asserts queryRef is [TransportedQueryRef](./client-react-streaming.transportedqueryref.md) &amp; ReturnType&lt;typeof wrapQueryRef&lt;any, any&gt;&gt;
+asserts queryRef is [TransportedQueryRef](./client-react-streaming.transportedqueryref.md) &amp; ReturnType&lt;typeof wrapQueryRef&gt;
 

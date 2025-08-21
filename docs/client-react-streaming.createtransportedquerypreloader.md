@@ -8,7 +8,7 @@
 **Signature:**
 
 ```typescript
-declare function createTransportedQueryPreloader(client: ApolloClient$1<any>): PreloadTransportedQueryFunction;
+declare function createTransportedQueryPreloader(client: ApolloClient$1): PreloadTransportedQueryFunction;
 ```
 
 ## Parameters
@@ -36,7 +36,7 @@ client
 
 </td><td>
 
-ApolloClient$1&lt;any&gt;
+ApolloClient$1
 
 
 </td><td>
