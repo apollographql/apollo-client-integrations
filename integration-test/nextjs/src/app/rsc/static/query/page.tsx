@@ -21,10 +21,6 @@ export const dynamic = "force-static";
 export default async function Home() {
   const { data } = await query({ query: QUERY });
   return (
-    <ul>
-      {data.products.map(({ id, title }) => (
-        <li key={id}>{title}</li>
-      ))}
-    </ul>
+    <ul>{data?.products.map(({ id, title }) => <li key={id}>{title}</li>)}</ul>
   );
 }
