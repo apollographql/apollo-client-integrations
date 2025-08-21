@@ -13,4 +13,4 @@ export {
   useQuery,
   useReadQuery,
   useSuspenseQuery,
-} from "@apollo/client";
+} from "@apollo/client/react";
