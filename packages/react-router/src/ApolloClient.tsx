@@ -12,7 +12,7 @@ import { hydrateIfNecessary } from "./preloader.js";
 
 const wrappers = Symbol.for("apollo.hook.wrappers");
 function getQueryManager(
-  client: _ApolloClient<unknown>
+  client: _ApolloClient
 ): QueryManager<NormalizedCacheObject> & {
   [wrappers]: HookWrappers;
 } {

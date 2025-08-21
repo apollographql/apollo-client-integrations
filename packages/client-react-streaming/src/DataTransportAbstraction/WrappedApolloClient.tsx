@@ -29,7 +29,7 @@ import {
 import { getInjectableEventStream } from "../transportedQueryRef.js";
 
 function getQueryManager(
-  client: OrigApolloClient<unknown>
+  client: OrigApolloClient
 ): QueryManager<NormalizedCacheObject> & {
   [wrappers]: HookWrappers;
 } {

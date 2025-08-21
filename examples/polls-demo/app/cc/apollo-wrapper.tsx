@@ -7,6 +7,7 @@ import {
   InMemoryCache,
   SSRMultipartLink,
 } from "@apollo/client-integration-nextjs";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
 
@@ -35,6 +36,7 @@ function makeClient() {
             httpLink,
           ])
         : httpLink,
+    incrementalHandler: new Defer20220824Handler(),
   });
 }
 

@@ -7,6 +7,8 @@ import {
   ApolloClient,
 } from "@apollo/client-integration-nextjs";
 
+import { Defer20220824Handler } from "@apollo/client/incremental";
+
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
 import { delayLink } from "@integration-test/shared/delayLink";
@@ -50,6 +52,7 @@ export function ApolloWrapper({
             ? new IncrementalSchemaLink({ schema })
             : httpLink
         ),
+      incrementalHandler: new Defer20220824Handler(),
     });
   }
 }

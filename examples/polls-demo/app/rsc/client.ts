@@ -1,6 +1,10 @@
-import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { HttpLink } from "@apollo/client";
 import { Defer20220824Handler } from "@apollo/client/incremental";
-import { registerApolloClient } from "@apollo/client-integration-nextjs/rsc";
+import {
+  registerApolloClient,
+  ApolloClient,
+  InMemoryCache,
+} from "@apollo/client-integration-nextjs";
 
 export const { getClient } = registerApolloClient(() => {
   return new ApolloClient({

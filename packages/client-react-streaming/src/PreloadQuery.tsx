@@ -25,7 +25,7 @@ export async function PreloadQuery<
   children,
   ...options
 }: PreloadQueryOptions<TVariables, TData> & {
-  getClient: () => ApolloClient<any> | Promise<ApolloClient<any>>;
+  getClient: () => ApolloClient | Promise<ApolloClient>;
   children:
     | ReactNode
     | ((

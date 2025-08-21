@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type {
-  ExecutionPatchResult,
-  FetchResult,
-} from "@apollo/client/index.js";
-import { ApolloLink, Observable, gql } from "@apollo/client/index.js";
+import type { Defer20220824Handler } from "@apollo/client/incremental";
+import { ApolloLink, Observable, gql } from "@apollo/client";
 import { test, mock } from "node:test";
 import assert from "node:assert";
 import { fromPartial } from "@total-typescript/shoehorn";
@@ -170,12 +167,12 @@ test("`next` call will be debounced and results will be merged together", () => 
 });
 
 function trackSubscriptionStatus(
-  observable: Observable<ExecutionPatchResult> | null
+  observable: Observable<Defer20220824Handler.Chunk> | null
 ) {
   assert(observable);
 
   const subscriptionStatus = {
-    results: [] as FetchResult[],
+    results: [] as ApolloLink.Result[],
     error: undefined as Error | undefined,
     complete: false,
   };
@@ -196,7 +193,7 @@ function trackSubscriptionStatus(
 
 function getFinalLinkWithExposedObserver() {
   const returnValue = {
-    observer: undefined as SubscriptionObserver<FetchResult> | undefined,
+    observer: undefined as SubscriptionObserver<ApolloLink.Result> | undefined,
     link: new ApolloLink(() => {
       return new Observable((observer) => {
         returnValue.observer = observer;

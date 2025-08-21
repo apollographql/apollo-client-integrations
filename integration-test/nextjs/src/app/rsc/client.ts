@@ -3,6 +3,7 @@ import {
   InMemoryCache,
   registerApolloClient,
 } from "@apollo/client-integration-nextjs";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 import { setVerbosity } from "ts-invariant";
@@ -22,5 +23,6 @@ export const { getClient, PreloadQuery, query } = registerApolloClient(() => {
     link: delayLink.concat(
       errorLink.concat(new IncrementalSchemaLink({ schema }))
     ),
+    incrementalHandler: new Defer20220824Handler(),
   });
 });

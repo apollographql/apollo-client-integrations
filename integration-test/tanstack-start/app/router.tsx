@@ -5,6 +5,7 @@ import {
   ApolloClient,
   InMemoryCache,
 } from "@apollo/client-integration-tanstack-start";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
 
@@ -30,6 +31,7 @@ export function createRouter() {
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
     link,
+    incrementalHandler: new Defer20220824Handler(),
   });
   const router = createTanStackRouter({
     routeTree,

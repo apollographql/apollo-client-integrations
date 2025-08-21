@@ -1,6 +1,7 @@
 import { Suspense, useState } from "react";
 import "./App.css";
 import { ApolloClient, InMemoryCache } from "@apollo/client-react-streaming";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 import { SchemaLink } from "@apollo/client/link/schema";
 import { gql, ApolloLink, Observable, TypedDocumentNode } from "@apollo/client";
 import { useSuspenseQuery } from "@apollo/client/react";
@@ -22,11 +23,13 @@ const delayLink = new ApolloLink((operation, forward) => {
 const makeClient = () => {
   return new ApolloClient({
     cache: new InMemoryCache(),
+
     link:
       // we do not even have a graphql endpoint in the browser, so if this works, streaming works
       typeof window === "undefined"
         ? delayLink.concat(new SchemaLink({ schema }))
         : undefined,
+    incrementalHandler: new Defer20220824Handler(),
   });
 };
 

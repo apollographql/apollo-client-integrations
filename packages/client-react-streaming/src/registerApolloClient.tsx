@@ -7,10 +7,10 @@ import { PreloadQuery as UnboundPreloadQuery } from "./PreloadQuery.js";
 import type { TransportedQueryRef } from "./transportedQueryRef.js";
 
 const seenWrappers = WeakSet
-  ? new WeakSet<{ client: ApolloClient<any> | Promise<ApolloClient<any>> }>()
+  ? new WeakSet<{ client: ApolloClient | Promise<ApolloClient> }>()
   : undefined;
 const seenClients = WeakSet
-  ? new WeakSet<ApolloClient<any> | Promise<ApolloClient<any>>>()
+  ? new WeakSet<ApolloClient | Promise<ApolloClient>>()
   : undefined;
 
 const checkForStableCache = cache(() => ({}));
@@ -37,7 +37,7 @@ const checkForStableCache = cache(() => ({}));
  * @public
  */
 export function registerApolloClient<
-  ApolloClientOrPromise extends Promise<ApolloClient<any>> | ApolloClient<any>,
+  ApolloClientOrPromise extends Promise<ApolloClient> | ApolloClient,
 >(
   makeClient: () => ApolloClientOrPromise
 ): {
@@ -114,7 +114,7 @@ function and then call \`client.query\` multiple times instead.
 }
 
 function makeGetClient<
-  AC extends Promise<ApolloClient<any>> | ApolloClient<any>,
+  AC extends Promise<ApolloClient> | ApolloClient,
 >(makeClient: () => AC): () => AC {
   // React invalidates the cache on each server request, so the wrapping
   // object is needed to properly detect whether the client is a unique
@@ -222,7 +222,7 @@ export interface PreloadQueryComponent {
 }
 
 function makePreloadQuery(
-  getClient: () => Promise<ApolloClient<any>> | ApolloClient<any>
+  getClient: () => Promise<ApolloClient> | ApolloClient
 ) {
   return function PreloadQuery<TData, TVariables extends OperationVariables>(
     props: PreloadQueryProps<TData, TVariables>
