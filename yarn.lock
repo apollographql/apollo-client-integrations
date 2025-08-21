@@ -346,7 +346,6 @@ __metadata:
     tsup: "npm:8.0.2"
     tsx: "npm:4.7.1"
     typescript: "npm:^5.7.3"
-    zen-observable-ts: "npm:1.1.0"
   peerDependencies:
     "@apollo/client": ^4.0.0
     graphql: ^16 || >=17.0.0-alpha.2
@@ -10979,13 +10978,6 @@ __metadata:
   version: 1.9.2
   resolution: "@types/yoga-layout@npm:1.9.2"
   checksum: 10/3cbcab36d9e19d077cc2bc956d3182dc26f35f13f8fcf01648717bcba412be7ed3c4b6f43c4f8f201ea815160d0cb2b96e82698c4b43d4a179c5603a7725f34e
-  languageName: node
-  linkType: hard
-
-"@types/zen-observable@npm:0.8.3":
-  version: 0.8.3
-  resolution: "@types/zen-observable@npm:0.8.3"
-  checksum: 10/08c88354abcf03a2176a2ec32e07da1f25fdad94fbc2f419bea53d77deb04ad4759518b4fe3fc695e61065dd4bdf7c8bd26b5211a6cd5be2233872806bdee48d
   languageName: node
   linkType: hard
 
@@ -28732,23 +28724,6 @@ __metadata:
   bin:
     z-schema: bin/z-schema
   checksum: 10/8ac2fa445f5a00e790d1f91a48aeff0ccfc340f84626771853e03f4d97cdc2f5f798cdb2e38418f7815ffc3aac3952c45caabcf077bf4f83fedf0cdef43b885b
-  languageName: node
-  linkType: hard
-
-"zen-observable-ts@npm:1.1.0":
-  version: 1.1.0
-  resolution: "zen-observable-ts@npm:1.1.0"
-  dependencies:
-    "@types/zen-observable": "npm:0.8.3"
-    zen-observable: "npm:0.8.15"
-  checksum: 10/5292441e0394cc845acf12b22eb529884b4aefc267f1fb16cdb38b78116b137f1c5e89f2aeac9b9a82a83814a47b2d5d02ca661ae79f992745407a90f2cc63b4
-  languageName: node
-  linkType: hard
-
-"zen-observable@npm:0.8.15":
-  version: 0.8.15
-  resolution: "zen-observable@npm:0.8.15"
-  checksum: 10/30eac3f4055d33f446b4cd075d3543da347c2c8e68fbc35c3f5a19fb43be67c6ed27ee136bc8f8933efa547be7ce04957809ad00ee7f1b00a964f199ae6fb514
   languageName: node
   linkType: hard
 
