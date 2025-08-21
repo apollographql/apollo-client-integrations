@@ -1,22 +1,16 @@
-/* eslint-disable prefer-rest-params */
-import type {
-  ApolloClientOptions,
-  OperationVariables,
-  WatchQueryOptions,
-  NormalizedCacheObject,
-} from "@apollo/client/index.js";
+import type { OperationVariables } from "@apollo/client";
 
 import {
   ApolloLink,
   ApolloClient as OrigApolloClient,
   Observable,
-} from "@apollo/client/index.js";
-import type { QueryManager } from "@apollo/client/core/QueryManager.js";
-import { invariant } from "ts-invariant";
+  type InternalTypes,
+} from "@apollo/client";
+import { invariant } from "@apollo/client/utilities/invariant";
 import { createBackpressuredCallback } from "./backpressuredCallback.js";
 import type { InMemoryCache } from "./WrappedInMemoryCache.js";
 import { hookWrappers } from "./hooks.js";
-import type { HookWrappers } from "@apollo/client/react/internal/index.js";
+import type { HookWrappers } from "@apollo/client/react/internal";
 import type {
   ProgressEvent,
   QueryEvent,
@@ -35,8 +29,8 @@ import {
 import { getInjectableEventStream } from "../transportedQueryRef.js";
 
 function getQueryManager(
-  client: OrigApolloClient<unknown>
-): QueryManager<NormalizedCacheObject> & {
+  client: OrigApolloClient
+): InternalTypes.QueryManager & {
   [wrappers]: HookWrappers;
 } {
   return client["queryManager"];
@@ -44,19 +38,19 @@ function getQueryManager(
 
 type SimulatedQueryInfo = {
   controller: ReadableStreamDefaultController<ReadableStreamLinkEvent>;
-  options: WatchQueryOptions<OperationVariables, any>;
+  options: OrigApolloClient.WatchQueryOptions<any, OperationVariables>;
 };
 
 interface WrappedApolloClientOptions
   extends Omit<
-    ApolloClientOptions<NormalizedCacheObject>,
+    OrigApolloClient.Options,
     "cache" | "ssrMode" | "ssrForceFetchDelay"
   > {
   cache: InMemoryCache;
 }
 
 const wrappers = Symbol.for("apollo.hook.wrappers");
-class ApolloClientBase extends OrigApolloClient<NormalizedCacheObject> {
+class ApolloClientBase extends OrigApolloClient {
   /**
    * Information about the current package and it's export names, for use in error messages.
    *
@@ -83,7 +77,7 @@ class ApolloClientBase extends OrigApolloClient<NormalizedCacheObject> {
     super(
       process.env.REACT_ENV === "rsc" || process.env.REACT_ENV === "ssr"
         ? {
-            connectToDevTools: false,
+            devtools: { enabled: false, ...options.devtools },
             ...options,
           }
         : options
@@ -135,20 +129,17 @@ class ApolloClientClientBaseImpl extends ApolloClientBase {
     const [controller, stream] = getInjectableEventStream();
 
     const queryManager = getQueryManager(this);
-    const queryId = queryManager.generateQueryId();
-    queryManager
-      .fetchQuery(queryId, {
-        ...hydratedOptions,
-        query: queryManager.transform(hydratedOptions.query),
-        fetchPolicy: "network-only",
-        context: skipDataTransport(
-          readFromReadableStream(stream, {
-            ...hydratedOptions.context,
-            queryDeduplication: true,
-          })
-        ),
-      })
-      .finally(() => queryManager.removeQuery(queryId));
+    queryManager.fetchQuery({
+      ...hydratedOptions,
+      query: queryManager.transform(hydratedOptions.query),
+      fetchPolicy: "network-only",
+      context: skipDataTransport(
+        readFromReadableStream(stream, {
+          ...hydratedOptions.context,
+          queryDeduplication: true,
+        })
+      ),
+    });
 
     this.simulatedStreamingQueries.set(id, {
       controller,
@@ -210,20 +201,17 @@ class ApolloClientClientBaseImpl extends ApolloClientBase {
   };
   rerunSimulatedQuery = (queryInfo: SimulatedQueryInfo) => {
     const queryManager = getQueryManager(this);
-    const queryId = queryManager.generateQueryId();
-    queryManager
-      .fetchQuery(queryId, {
-        ...queryInfo.options,
-        fetchPolicy: "no-cache",
-        query: queryManager.transform(queryInfo.options.query),
-        context: skipDataTransport(
-          teeToReadableStream(() => queryInfo.controller, {
-            ...queryInfo.options.context,
-            queryDeduplication: false,
-          })
-        ),
-      })
-      .finally(() => queryManager.removeQuery(queryId));
+    queryManager.fetchQuery({
+      ...queryInfo.options,
+      fetchPolicy: "no-cache",
+      query: queryManager.transform(queryInfo.options.query),
+      context: skipDataTransport(
+        teeToReadableStream(() => queryInfo.controller, {
+          ...queryInfo.options.context,
+          queryDeduplication: false,
+        })
+      ),
+    });
   };
 }
 
@@ -251,7 +239,7 @@ class ApolloClientSSRImpl extends ApolloClientClientBaseImpl {
   }>();
 
   pushEventStream(
-    options: WatchQueryOptions<any, any>
+    options: OrigApolloClient.WatchQueryOptions<any, any>
   ): ReadableStreamDefaultController<ReadableStreamLinkEvent> {
     const id = crypto.randomUUID() as TransportIdentifier;
 
@@ -290,17 +278,23 @@ class ApolloClientSSRImpl extends ApolloClientClientBaseImpl {
   }
 
   watchQuery<
-    T = any,
+    TData = any,
     TVariables extends OperationVariables = OperationVariables,
-  >(options: WatchQueryOptions<TVariables, T>) {
+  >(options: OrigApolloClient.WatchQueryOptions<TData, TVariables>) {
     if (
       !(options.context as InternalContext | undefined)?.[skipDataTransportKey]
     ) {
       return super.watchQuery({
         ...options,
-        context: teeToReadableStream(() => this.pushEventStream(options), {
-          ...options?.context,
-        }),
+        context: teeToReadableStream(
+          () =>
+            this.pushEventStream(
+              options as OrigApolloClient.WatchQueryOptions<any, any>
+            ),
+          {
+            ...options?.context,
+          }
+        ),
       });
     }
     return super.watchQuery(options);
@@ -325,11 +319,7 @@ const ApolloClientImplementation =
  *
  * @public
  */
-export class ApolloClient<
-    // this generic is obsolete as we require a `InMemoryStore`, which fixes this generic to `NormalizedCacheObject` anyways
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    Ignored = NormalizedCacheObject,
-  >
+export class ApolloClient
   extends (ApolloClientImplementation as typeof ApolloClientBase)
   implements Partial<ApolloClientSSRImpl>
 {

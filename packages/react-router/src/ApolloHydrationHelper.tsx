@@ -1,4 +1,4 @@
-import { useApolloClient } from "@apollo/client/react/index.js";
+import { useApolloClient } from "@apollo/client/react";
 import * as React from "react";
 import { useMatches } from "react-router";
 import { hydrateIfNecessary } from "./preloader.js";

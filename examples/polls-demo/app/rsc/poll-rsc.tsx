@@ -3,7 +3,7 @@
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useState } from "react";
 import { Poll as PollInner } from "@/components/poll";
-import { useMutation } from "@apollo/client";
+import { useMutation } from "@apollo/client/react";
 import { AnswerPollDocument } from "@/components/poll/documents.generated";
 
 export const Poll = ({

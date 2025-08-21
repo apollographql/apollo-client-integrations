@@ -13,28 +13,47 @@ import type {
 } from "./transportedQueryRef.js";
 import { createTransportedQueryPreloader } from "./transportedQueryRef.js";
 
-export type PreloadQueryOptions<TVariables, TData> =
-  PreloadTransportedQueryOptions<TVariables, TData> & {
+/** @deprecated use `PreloadQuery.Options` instead */
+export type PreloadQueryOptions<
+  TVariables extends OperationVariables,
+  TData,
+> = PreloadQuery.Options<TData, TVariables>;
+export declare namespace PreloadQuery {
+  export type Options<
+    TData,
+    TVariables extends OperationVariables,
+  > = PreloadTransportedQueryOptions<TData, TVariables> & {
     query: DocumentNode | TypedDocumentNode<TData, TVariables>;
   };
+
+  export type Props<
+    TData,
+    TVariables extends OperationVariables,
+  > = PreloadQuery.Options<TData, TVariables> & {
+    children:
+      | ReactNode
+      | ((
+          queryRef: TransportedQueryRef<NoInfer<TData>, NoInfer<TVariables>>
+        ) => ReactNode);
+  };
+}
+
 export async function PreloadQuery<
   TData,
   TVariables extends OperationVariables,
 >({
   getClient,
   children,
-  ...options
-}: PreloadQueryOptions<TVariables, TData> & {
-  getClient: () => ApolloClient<any> | Promise<ApolloClient<any>>;
-  children:
-    | ReactNode
-    | ((
-        queryRef: TransportedQueryRef<NoInfer<TData>, NoInfer<TVariables>>
-      ) => ReactNode);
+  query,
+  ...transportedOptions
+}: PreloadQuery.Props<TData, TVariables> & {
+  getClient: () => ApolloClient | Promise<ApolloClient>;
 }): Promise<React.ReactElement> {
   const preloader = createTransportedQueryPreloader(await getClient());
-  const { query, ...transportedOptions } = options;
-  const queryRef = preloader(query, transportedOptions);
+  const queryRef = preloader(
+    query,
+    transportedOptions as PreloadTransportedQueryOptions<TData, TVariables>
+  );
 
   return (
     <SimulatePreloadedQuery<TData> queryRef={queryRef}>

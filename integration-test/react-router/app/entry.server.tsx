@@ -10,7 +10,7 @@ import type {
 } from "react-dom/server";
 import { renderToPipeableStream } from "react-dom/server";
 import { makeClient } from "./apollo";
-import { ApolloProvider } from "@apollo/client/react/index.js";
+import { ApolloProvider } from "@apollo/client/react";
 
 export const streamTimeout = 5_000;
 export type RenderOptions = {

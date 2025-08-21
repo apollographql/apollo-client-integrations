@@ -13,15 +13,14 @@ const config = {
     },
     "packages/test-utils": {
       entry: ["*.js"],
+      ignoreDependencies: ["rxjs"],
     },
     "packages/client-react-streaming": {
       entry: ["**/*.test.{ts,tsx}"],
       project: ["**/*.{ts,tsx}"],
       ignoreDependencies: ["tsx"],
     },
-    "packages/experimental-nextjs-app-support": {
-      ignoreDependencies: ["graphql", "react-dom"],
-    },
+    "packages/experimental-nextjs-app-support": {},
   },
   ignore: [
     "examples/**",

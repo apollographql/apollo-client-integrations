@@ -7,10 +7,10 @@ import type {
   TransportIdentifier,
 } from "./DataTransportAbstraction.js";
 
-import type { TypedDocumentNode } from "@apollo/client/index.js";
-import { MockSubscriptionLink } from "@apollo/client/testing/core/mocking/mockSubscriptionLink.js";
-import { gql, DocumentTransform } from "@apollo/client/index.js";
-import { useSuspenseQuery } from "@apollo/client/react/index.js";
+import type { TypedDocumentNode } from "@apollo/client";
+import { MockSubscriptionLink } from "@apollo/client/testing";
+import { gql, DocumentTransform, ApolloLink } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { visit, Kind, print, isDefinitionNode } from "graphql";
 import { serializeOptions } from "./transportedOptions.js";
 
@@ -178,8 +178,9 @@ describe(
         );
 
         const client = new ApolloClient({
-          connectToDevTools: false,
+          devtools: { enabled: false },
           cache: new InMemoryCache(),
+          link: ApolloLink.empty(),
         });
 
         let attemptedRenderCount = 0;
@@ -246,8 +247,9 @@ describe(
         };
 
         const client = new ApolloClient({
-          connectToDevTools: false,
+          devtools: { enabled: false },
           cache: new InMemoryCache(),
+          link: ApolloLink.empty(),
         });
         const simulateRequestStart = client.onQueryStarted!;
         const simulateRequestData = client.onQueryProgress!;
@@ -395,11 +397,9 @@ describe("document transforms are applied correctly", async () => {
   test("when making a request", async () => {
     const link = new MockSubscriptionLink();
     const client = new ApolloClient({
-      connectToDevTools: false,
+      devtools: { enabled: false },
       documentTransform: addIdTransform,
-      cache: new InMemoryCache({
-        addTypename: true,
-      }),
+      cache: new InMemoryCache({}),
       link,
     });
     const obsQuery = client.watchQuery({ query: untransformedQuery });
@@ -415,11 +415,9 @@ describe("document transforms are applied correctly", async () => {
     async () => {
       const link = new MockSubscriptionLink();
       const client = new ApolloClient({
-        connectToDevTools: false,
+        devtools: { enabled: false },
         documentTransform: addIdTransform,
-        cache: new InMemoryCache({
-          addTypename: true,
-        }),
+        cache: new InMemoryCache({}),
         link,
       });
       client.onQueryStarted!({
@@ -442,11 +440,9 @@ describe("document transforms are applied correctly", async () => {
     async () => {
       const link = new MockSubscriptionLink();
       const client = new ApolloClient({
-        connectToDevTools: false,
+        devtools: { enabled: false },
         documentTransform: addIdTransform,
-        cache: new InMemoryCache({
-          addTypename: true,
-        }),
+        cache: new InMemoryCache({}),
         link,
       });
       client.onQueryStarted!({

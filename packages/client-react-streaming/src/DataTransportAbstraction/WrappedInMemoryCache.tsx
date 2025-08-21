@@ -1,5 +1,5 @@
-import type { InMemoryCacheConfig } from "@apollo/client/index.js";
-import { InMemoryCache as OrigInMemoryCache } from "@apollo/client/index.js";
+import type { InMemoryCacheConfig } from "@apollo/client";
+import { InMemoryCache as OrigInMemoryCache } from "@apollo/client";
 import { bundle, sourceSymbol } from "../bundleInfo.js";
 /*
  * We just subclass `InMemoryCache` here so that `WrappedApolloClient`

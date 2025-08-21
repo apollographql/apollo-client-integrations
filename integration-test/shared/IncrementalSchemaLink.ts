@@ -1,9 +1,4 @@
-import {
-  ApolloLink,
-  type FetchResult,
-  Observable,
-  type Operation,
-} from "@apollo/client/index.js";
+import { ApolloLink, Observable } from "@apollo/client";
 import type { SchemaLink } from "@apollo/client/link/schema";
 import { experimentalExecuteIncrementally, validate } from "graphql";
 
@@ -21,8 +16,10 @@ export class IncrementalSchemaLink extends ApolloLink {
     this.validate = !!options.validate;
   }
 
-  public request(operation: Operation): Observable<FetchResult> {
-    return new Observable<FetchResult>((observer) => {
+  public request(
+    operation: ApolloLink.Operation
+  ): Observable<ApolloLink.Result> {
+    return new Observable<ApolloLink.Result>((observer) => {
       (async () => {
         try {
           const context = await (typeof this.context === "function"

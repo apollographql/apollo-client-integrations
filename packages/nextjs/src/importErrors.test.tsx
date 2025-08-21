@@ -6,7 +6,7 @@ import { silenceConsoleErrors } from "@internal/test-utils/console.js";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
-  const upstreamPkg = await import("@apollo/client/index.js");
+  const upstreamPkg = await import("@apollo/client");
   assert.throws(
     () =>
       new ApolloClient({
@@ -30,7 +30,7 @@ test(
     const React = await import("react");
     const { renderToString } = await import("react-dom/server");
     await test("@apollo/client should error", async () => {
-      const upstreamPkg = await import("@apollo/client/index.js");
+      const upstreamPkg = await import("@apollo/client");
       assert.throws(
         () =>
           renderToString(
@@ -107,7 +107,7 @@ test(
 
     await test("@apollo/client should error", async () => {
       using env = await browserEnv();
-      const upstreamPkg = await import("@apollo/client/index.js");
+      const upstreamPkg = await import("@apollo/client");
       const promise = new Promise((_resolve, reject) => {
         env.render(
           document.body,

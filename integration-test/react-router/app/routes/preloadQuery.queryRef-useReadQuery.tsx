@@ -4,8 +4,8 @@ import {
   useQueryRefHandlers,
   useReadQuery,
   type QueryRef,
-} from "@apollo/client/react/index.js";
-import { type DefaultContext } from "@apollo/client/index.js";
+} from "@apollo/client/react";
+import { type DefaultContext } from "@apollo/client";
 import { apolloLoader } from "~/apollo";
 import {
   QUERY,

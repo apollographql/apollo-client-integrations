@@ -8,7 +8,7 @@ import {
   resetApolloClientSingletons,
 } from "@apollo/client-integration-nextjs";
 import { Suspense } from "react";
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client/react";
 
 const wrapper = ({ children }) => (
   <ApolloNextAppProvider makeClient={makeClient}>

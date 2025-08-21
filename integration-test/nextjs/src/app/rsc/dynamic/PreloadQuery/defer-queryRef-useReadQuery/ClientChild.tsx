@@ -1,11 +1,9 @@
 "use client";
-
 import {
-  useApolloClient,
   useQueryRefHandlers,
   useReadQuery,
   useSuspenseFragment,
-} from "@apollo/client";
+} from "@apollo/client/react";
 import {
   DeferredDynamicProductResult,
   RATING_FRAGMENT,

@@ -2,8 +2,8 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ErrorBoundary, FallbackProps } from "react-error-boundary";
 
 import { QUERY } from "@integration-test/shared/queries";
-import { DefaultContext } from "@apollo/client/index.js";
-import { useSuspenseQuery } from "@apollo/client/react/index.js";
+import { DefaultContext } from "@apollo/client";
+import { useSuspenseQuery } from "@apollo/client/react";
 import { Suspense } from "react";
 
 export const Route = createFileRoute("/useSuspenseQuery")({

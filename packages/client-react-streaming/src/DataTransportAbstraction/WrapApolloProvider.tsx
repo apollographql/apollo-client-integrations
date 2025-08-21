@@ -2,7 +2,7 @@
 import React from "react";
 import { useRef } from "react";
 import type { ApolloClient } from "./WrappedApolloClient.js";
-import { ApolloProvider } from "@apollo/client/react/index.js";
+import { ApolloProvider } from "@apollo/client/react";
 import type { DataTransportProviderImplementation } from "./DataTransportAbstraction.js";
 import { ApolloClientSingleton } from "./symbols.js";
 import { bundle } from "../bundleInfo.js";
@@ -10,7 +10,7 @@ import { assertInstance } from "../assertInstance.js";
 
 declare global {
   interface Window {
-    [ApolloClientSingleton]?: ApolloClient<any>;
+    [ApolloClientSingleton]?: ApolloClient;
   }
 }
 
@@ -28,7 +28,7 @@ export interface WrappedApolloProvider<ExtraProps> {
     ...extraProps
   }: React.PropsWithChildren<
     {
-      makeClient: () => ApolloClient<any>;
+      makeClient: () => ApolloClient;
     } & ExtraProps
   >): React.JSX.Element;
   /**
@@ -57,7 +57,7 @@ export function WrapApolloProvider<ExtraProps>(
     children,
     ...extraProps
   }) => {
-    const clientRef = useRef<ApolloClient<any>>(undefined);
+    const clientRef = useRef<ApolloClient>(undefined);
     if (!clientRef.current) {
       if (process.env.REACT_ENV === "ssr") {
         clientRef.current = makeClient();

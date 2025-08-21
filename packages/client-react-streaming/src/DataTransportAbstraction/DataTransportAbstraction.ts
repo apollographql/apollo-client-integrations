@@ -1,5 +1,5 @@
 import type React from "react";
-import type { Observable } from "@apollo/client/index.js";
+import type { Observable } from "@apollo/client";
 import { createContext } from "react";
 import type { TransportedOptions } from "./transportedOptions.js";
 import type { ReadableStreamLinkEvent } from "../ReadableStreamLink.ts";

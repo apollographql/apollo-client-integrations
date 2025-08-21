@@ -1,7 +1,12 @@
 "use client";
+
 import { Suspense } from "react";
-import { useReadQuery, useBackgroundQuery, useMutation } from "@apollo/client";
-import { QueryReference } from "@apollo/client/react";
+import {
+  QueryRef,
+  useBackgroundQuery,
+  useMutation,
+  useReadQuery,
+} from "@apollo/client/react";
 import { Poll as PollInner } from "@/components/poll";
 
 import { useState, useCallback } from "react";
@@ -24,7 +29,7 @@ export const PollWrapper = () => {
   );
 };
 
-const Poll = ({ queryRef }: { queryRef: QueryReference<GetPollQuery> }) => {
+const Poll = ({ queryRef }: { queryRef: QueryRef<GetPollQuery> }) => {
   const { data } = useReadQuery(queryRef);
   const [showResults, setShowResults] = useState(false);
   const [mutate, { loading: mutationLoading }] =

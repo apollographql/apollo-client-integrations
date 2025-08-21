@@ -1,4 +1,5 @@
 import { ApolloClient, HttpLink, InMemoryCache } from "@apollo/client";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 import { registerApolloClient } from "@apollo/client-integration-nextjs/rsc";
 
 export const { getClient } = registerApolloClient(() => {
@@ -10,5 +11,6 @@ export const { getClient } = registerApolloClient(() => {
       // (this does not work if you are rendering your page with `export const dynamic = "force-static"`)
       // fetchOptions: { cache: "no-store" },
     }),
+    incrementalHandler: new Defer20220824Handler(),
   });
 });

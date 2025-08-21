@@ -386,6 +386,6 @@ This link combines the behavior of `RemoveMultipartDirectivesLink` and `Accumula
 If you want more information on what data is sent over the wire, enable logging in your `app/ApolloWrapper.ts`:
 
 ```ts
-import { setVerbosity } from "ts-invariant";
-setVerbosity("debug");
+import { setLogVerbosity } from "@apollo/client";
+setLogVerbosity("debug");
 ```

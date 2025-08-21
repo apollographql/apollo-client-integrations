@@ -1,9 +1,6 @@
 "use client";
 
-import {
-  useApolloClient,
-  useBackgroundQuery,
-} from "@apollo/client/react/index.js";
+import { useApolloClient, useBackgroundQuery } from "@apollo/client/react";
 import { useMemo, type ReactNode } from "react";
 import {
   reviveTransportedQueryRef,

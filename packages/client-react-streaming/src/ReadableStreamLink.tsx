@@ -1,11 +1,10 @@
-import { ApolloLink, Observable } from "@apollo/client/index.js";
-import type { FetchResult } from "@apollo/client/index.js";
+import { ApolloLink, Observable } from "@apollo/client";
 
 /**
  * @internal
  */
 export type ReadableStreamLinkEvent =
-  | { type: "next"; value: FetchResult }
+  | { type: "next"; value: ApolloLink.Result }
   | { type: "completed" }
   | { type: "error" };
 

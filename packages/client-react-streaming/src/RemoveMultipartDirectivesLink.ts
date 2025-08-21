@@ -1,15 +1,8 @@
-import type {
-  Operation,
-  NextLink,
-  DocumentNode,
-} from "@apollo/client/index.js";
-import { ApolloLink } from "@apollo/client/index.js";
-import type { RemoveDirectiveConfig } from "@apollo/client/utilities/index.js";
-import {
-  Observable,
-  removeDirectivesFromDocument,
-} from "@apollo/client/utilities/index.js";
+import type { DocumentNode } from "@apollo/client";
+import { ApolloLink } from "@apollo/client";
+import { removeDirectivesFromDocument } from "@apollo/client/utilities/internal";
 import type { DirectiveNode } from "graphql";
+import { of } from "rxjs";
 
 interface RemoveMultipartDirectivesConfig {
   /**
@@ -76,7 +69,10 @@ export class RemoveMultipartDirectivesLink extends ApolloLink {
     if (config.stripDefer !== false) this.stripDirectives.push("defer");
   }
 
-  request(operation: Operation, forward?: NextLink) {
+  request(
+    operation: ApolloLink.Operation,
+    forward?: ApolloLink.ForwardFunction
+  ) {
     if (!forward) {
       throw new Error("This is not a terminal link!");
     }
@@ -85,21 +81,23 @@ export class RemoveMultipartDirectivesLink extends ApolloLink {
     let modifiedQuery: DocumentNode | null = query;
     modifiedQuery = removeDirectivesFromDocument(
       this.stripDirectives
-        .map<RemoveDirectiveConfig>((directive) => ({
-          test(node) {
-            let shouldStrip =
-              node.kind === "Directive" && node.name.value === directive;
-            const label = getDirectiveArgumentValue(node, "label");
-            if (
-              label?.kind === "StringValue" &&
-              label.value.startsWith("SsrDontStrip")
-            ) {
-              shouldStrip = false;
-            }
-            return shouldStrip;
-          },
-          remove: true,
-        }))
+        .map<Parameters<typeof removeDirectivesFromDocument>[0][0]>(
+          (directive) => ({
+            test(node) {
+              let shouldStrip =
+                node.kind === "Directive" && node.name.value === directive;
+              const label = getDirectiveArgumentValue(node, "label");
+              if (
+                label?.kind === "StringValue" &&
+                label.value.startsWith("SsrDontStrip")
+              ) {
+                shouldStrip = false;
+              }
+              return shouldStrip;
+            },
+            remove: true,
+          })
+        )
         .concat({
           test(node) {
             if (node.kind !== "Directive") return false;
@@ -115,7 +113,7 @@ export class RemoveMultipartDirectivesLink extends ApolloLink {
     );
 
     if (modifiedQuery === null) {
-      return Observable.of({});
+      return of({});
     }
 
     operation.query = modifiedQuery;

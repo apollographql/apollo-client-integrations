@@ -1,4 +1,4 @@
-import { ApolloLink } from "@apollo/client/index.js";
+import { ApolloLink } from "@apollo/client";
 import { RemoveMultipartDirectivesLink } from "./RemoveMultipartDirectivesLink.js";
 import { AccumulateMultipartResponsesLink } from "./AccumulateMultipartResponsesLink.js";
 

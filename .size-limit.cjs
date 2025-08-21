@@ -73,7 +73,6 @@ module.exports = checks.map(
       },
       ignore: [
         ...(check.ignore || []),
-        "rehackt",
         "react",
         "react-dom",
         "@apollo/client",
@@ -83,14 +82,10 @@ module.exports = checks.map(
         "@wry/equality",
         "@wry/trie",
         "graphql-tag",
-        "hoist-non-react-statics",
         "optimism",
         "prop-types",
-        "response-iterator",
-        "symbol-observable",
-        "ts-invariant",
         "tslib",
-        "zen-observable-ts",
+        "rxjs",
       ],
     })
 );

@@ -1,8 +1,9 @@
-import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client/index.js";
+import { ApolloLink, HttpLink, InMemoryCache } from "@apollo/client";
 import {
   createApolloLoaderHandler,
   ApolloClient,
 } from "@apollo/client-integration-react-router";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 import { IncrementalSchemaLink } from "@integration-test/shared/IncrementalSchemaLink";
 import { schema } from "@integration-test/shared/schema";
 import { delayLink } from "@integration-test/shared/delayLink";
@@ -20,6 +21,7 @@ export const makeClient = (request?: Request) => {
   return new ApolloClient({
     cache: new InMemoryCache(),
     link,
+    incrementalHandler: new Defer20220824Handler(),
   });
 };
 export const apolloLoader = createApolloLoaderHandler(makeClient);

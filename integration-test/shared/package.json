@@ -11,5 +11,8 @@
     "graphql": "*",
     "react": "*",
     "react-dom": "*"
+  },
+  "dependencies": {
+    "rxjs": "^7.8.2"
   }
 }
