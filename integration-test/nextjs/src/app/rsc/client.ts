@@ -6,14 +6,14 @@ import {
 import { Defer20220824Handler } from "@apollo/client/incremental";
 
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-import { setVerbosity } from "ts-invariant";
+import { setLogVerbosity } from "@apollo/client";
 import { delayLink } from "@integration-test/shared/delayLink";
 import { errorLink } from "@integration-test/shared/errorLink";
 
 import { schema } from "@integration-test/shared/schema";
 import { IncrementalSchemaLink } from "@integration-test/shared/IncrementalSchemaLink";
 
-setVerbosity("debug");
+setLogVerbosity("debug");
 loadDevMessages();
 loadErrorMessages();
 

@@ -1,7 +1,7 @@
 import { ApolloSSRDataTransport } from "./ApolloRehydrateSymbols.js";
 import type { RehydrationCache } from "./types.js";
 import { registerLateInitializingQueue } from "./lateInitializingQueue.js";
-import { invariant } from "ts-invariant";
+import { invariant } from "@apollo/client/utilities/invariant";
 import { htmlEscapeJsonString } from "./htmlescape.js";
 import type { QueryEvent } from "@apollo/client-react-streaming";
 import type { Revive, Stringify } from "./serialization.js";

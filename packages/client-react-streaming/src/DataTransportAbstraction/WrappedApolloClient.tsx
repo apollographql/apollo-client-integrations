@@ -6,7 +6,7 @@ import {
   Observable,
   type InternalTypes,
 } from "@apollo/client";
-import { invariant } from "ts-invariant";
+import { invariant } from "@apollo/client/utilities/invariant";
 import { createBackpressuredCallback } from "./backpressuredCallback.js";
 import type { InMemoryCache } from "./WrappedInMemoryCache.js";
 import { hookWrappers } from "./hooks.js";

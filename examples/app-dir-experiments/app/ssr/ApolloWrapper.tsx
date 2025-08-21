@@ -1,5 +1,5 @@
 "use client";
-import { ApolloLink, HttpLink } from "@apollo/client";
+import { ApolloLink, HttpLink, setLogVerbosity } from "@apollo/client";
 import {
   ApolloNextAppProvider,
   InMemoryCache,
@@ -7,9 +7,8 @@ import {
   SSRMultipartLink,
 } from "@apollo/client-integration-nextjs";
 import { Defer20220824Handler } from "@apollo/client/incremental";
-import { setVerbosity } from "ts-invariant";
 
-setVerbosity("debug");
+setLogVerbosity("debug");
 
 function makeClient() {
   const httpLink = new HttpLink({

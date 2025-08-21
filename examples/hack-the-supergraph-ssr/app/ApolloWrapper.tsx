@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { ApolloLink, HttpLink } from "@apollo/client";
+import { ApolloLink, HttpLink, setLogVerbosity } from "@apollo/client";
 import clientCookies from "js-cookie";
 import {
   ApolloNextAppProvider,
@@ -11,10 +11,9 @@ import {
 import { Defer20220824Handler } from "@apollo/client/incremental";
 
 import { loadErrorMessages, loadDevMessages } from "@apollo/client/dev";
-import { setVerbosity } from "ts-invariant";
 
 if (process.env.NODE_ENV === "development") {
-  setVerbosity("debug");
+  setLogVerbosity("debug");
   loadDevMessages();
   loadErrorMessages();
 }

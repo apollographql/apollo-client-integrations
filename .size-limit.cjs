@@ -90,7 +90,7 @@ module.exports = checks.map(
         "symbol-observable",
         "ts-invariant",
         "tslib",
-        "zen-observable-ts",
+        "rxjs",
       ],
     })
 );
