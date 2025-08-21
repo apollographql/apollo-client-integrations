@@ -354,9 +354,9 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@apollo/client@npm:4.0.0-rc.13":
-  version: 4.0.0-rc.13
-  resolution: "@apollo/client@npm:4.0.0-rc.13"
+"@apollo/client@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@apollo/client@npm:4.0.0"
   dependencies:
     "@graphql-typed-document-node/core": "npm:^3.1.1"
     "@wry/caches": "npm:^1.0.0"
@@ -381,7 +381,7 @@ __metadata:
       optional: true
     subscriptions-transport-ws:
       optional: true
-  checksum: 10/b36e47dbf50aca0826edd11074236494b784c579dbddcaad92543ec0506c6bf8e91bc122401a673e0d6cf60d2f886acb833c01eb21870b6e1a5d4c320c3af225
+  checksum: 10/c90a2e37229257644abf8f78b92dda712ecf2606139a81631b79ec63523d8db7bc834920b558dd88fa3a59119a0adc240dfe657e1877ef5e28bcb00421a6b7df
   languageName: node
   linkType: hard
 

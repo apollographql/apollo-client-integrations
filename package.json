@@ -35,8 +35,7 @@
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "@apollo/client@^4.0.0": "4.0.0-rc.13"
+    "react-dom": "19.0.0"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "7.24.3",
