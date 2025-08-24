@@ -27,7 +27,7 @@
     "changeset-version": "changeset version && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
   },
   "resolutions": {
-    "@microsoft/api-documenter": "7.24.1",
+    "@microsoft/api-documenter": "7.26.32",
     "graphql": "17.0.0-alpha.2",
     "@tanstack/start": "1.99.6",
     "@tanstack/react-router": "1.99.6",
