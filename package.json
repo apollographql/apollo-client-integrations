@@ -28,7 +28,7 @@
   },
   "resolutions": {
     "@microsoft/api-documenter": "7.24.1",
-    "graphql": "17.0.0-alpha.2",
+    "graphql": "17.0.0-alpha.9",
     "@tanstack/start": "1.99.6",
     "@tanstack/react-router": "1.99.6",
     "@tanstack/start-router-manifest": "1.99.0",
