@@ -18,3 +18,4 @@ test-results/
 webpack-stats.json
 .output
 .vinxi
+.tanstack

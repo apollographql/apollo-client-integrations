@@ -2,30 +2,34 @@
   "name": "@integration-test/tanstack-start",
   "version": "0.0.0",
   "private": true,
+  "sideEffects": false,
   "type": "module",
   "scripts": {
-    "dev": "rm -rvf node_modules/.vinxi node_modules/.cache node_modules/.tanstack-start .output .vinxi && vinxi dev",
-    "build": "rm -rvf node_modules/.vinxi node_modules/.cache node_modules/.tanstack-start .output .vinxi && vinxi build",
-    "start": "vinxi start",
+    "dev": "vite dev",
+    "build": "vite build && tsc --noEmit",
+    "start": "node .output/server/index.mjs",
     "test": "yarn test:tanstack"
   },
   "dependencies": {
     "@apollo/client": "^4.0.0",
     "@apollo/client-integration-tanstack-start": "workspace:^",
     "@integration-test/shared": "workspace:^",
-    "@tanstack/router-devtools": "^1.99.0",
-    "@tanstack/start": "^1.99.3",
+    "@tanstack/react-router": "^1.132.0-alpha.8",
+    "@tanstack/react-router-devtools": "^1.132.0-alpha.8",
+    "@tanstack/react-start": "^1.132.0-alpha.9",
     "graphql": "^16.10.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
-    "rxjs": "^7.8.2",
-    "vinxi": "^0.5.1"
+    "rxjs": "^7.8.2"
   },
   "devDependencies": {
+    "@types/node": "^22.5.4",
     "@types/react": "^19.0.2",
     "@types/react-dom": "^19.0.2",
-    "@vitejs/plugin-react": "^4.3.4",
-    "typescript": "^5.7.2"
+    "@vitejs/plugin-react": "^4.6.0",
+    "typescript": "^5.7.2",
+    "vite": "^7.1.1",
+    "vite-tsconfig-paths": "^5.1.4"
   }
 }

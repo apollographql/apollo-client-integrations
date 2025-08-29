@@ -8,163 +8,81 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { createServerRootRoute } from '@tanstack/react-start/server'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as UseSuspenseQueryDeferImport } from './routes/useSuspenseQuery-defer'
-import { Route as UseSuspenseQueryImport } from './routes/useSuspenseQuery'
-import { Route as UseQueryWithCacheImport } from './routes/useQueryWithCache'
-import { Route as UseQueryImport } from './routes/useQuery'
-import { Route as UseBackgroundQueryWithoutSsrReadQueryImport } from './routes/useBackgroundQueryWithoutSsrReadQuery'
-import { Route as UseBackgroundQueryImport } from './routes/useBackgroundQuery'
-import { Route as LoaderDeferImport } from './routes/loader-defer'
-import { Route as IndexImport } from './routes/index'
-import { Route as PreloadQueryUseSuspenseQueryImport } from './routes/preloadQuery/useSuspenseQuery'
-import { Route as PreloadQueryQueryRefUseReadQueryImport } from './routes/preloadQuery/queryRef-useReadQuery'
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as UseSuspenseQueryDeferRouteImport } from './routes/useSuspenseQuery-defer'
+import { Route as UseSuspenseQueryRouteImport } from './routes/useSuspenseQuery'
+import { Route as UseQueryWithCacheRouteImport } from './routes/useQueryWithCache'
+import { Route as UseQueryRouteImport } from './routes/useQuery'
+import { Route as UseBackgroundQueryWithoutSsrReadQueryRouteImport } from './routes/useBackgroundQueryWithoutSsrReadQuery'
+import { Route as UseBackgroundQueryRouteImport } from './routes/useBackgroundQuery'
+import { Route as LoaderDeferRouteImport } from './routes/loader-defer'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as PreloadQueryUseSuspenseQueryRouteImport } from './routes/preloadQuery/useSuspenseQuery'
+import { Route as PreloadQueryQueryRefUseReadQueryRouteImport } from './routes/preloadQuery/queryRef-useReadQuery'
+import { ServerRoute as ApiGraphqlServerRouteImport } from './routes/api.graphql'
 
-// Create/Update Routes
+const rootServerRouteImport = createServerRootRoute()
 
-const UseSuspenseQueryDeferRoute = UseSuspenseQueryDeferImport.update({
+const UseSuspenseQueryDeferRoute = UseSuspenseQueryDeferRouteImport.update({
   id: '/useSuspenseQuery-defer',
   path: '/useSuspenseQuery-defer',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const UseSuspenseQueryRoute = UseSuspenseQueryImport.update({
+const UseSuspenseQueryRoute = UseSuspenseQueryRouteImport.update({
   id: '/useSuspenseQuery',
   path: '/useSuspenseQuery',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const UseQueryWithCacheRoute = UseQueryWithCacheImport.update({
+const UseQueryWithCacheRoute = UseQueryWithCacheRouteImport.update({
   id: '/useQueryWithCache',
   path: '/useQueryWithCache',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const UseQueryRoute = UseQueryImport.update({
+const UseQueryRoute = UseQueryRouteImport.update({
   id: '/useQuery',
   path: '/useQuery',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
 const UseBackgroundQueryWithoutSsrReadQueryRoute =
-  UseBackgroundQueryWithoutSsrReadQueryImport.update({
+  UseBackgroundQueryWithoutSsrReadQueryRouteImport.update({
     id: '/useBackgroundQueryWithoutSsrReadQuery',
     path: '/useBackgroundQueryWithoutSsrReadQuery',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
-const UseBackgroundQueryRoute = UseBackgroundQueryImport.update({
+const UseBackgroundQueryRoute = UseBackgroundQueryRouteImport.update({
   id: '/useBackgroundQuery',
   path: '/useBackgroundQuery',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const LoaderDeferRoute = LoaderDeferImport.update({
+const LoaderDeferRoute = LoaderDeferRouteImport.update({
   id: '/loader-defer',
   path: '/loader-defer',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
 const PreloadQueryUseSuspenseQueryRoute =
-  PreloadQueryUseSuspenseQueryImport.update({
+  PreloadQueryUseSuspenseQueryRouteImport.update({
     id: '/preloadQuery/useSuspenseQuery',
     path: '/preloadQuery/useSuspenseQuery',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
 const PreloadQueryQueryRefUseReadQueryRoute =
-  PreloadQueryQueryRefUseReadQueryImport.update({
+  PreloadQueryQueryRefUseReadQueryRouteImport.update({
     id: '/preloadQuery/queryRef-useReadQuery',
     path: '/preloadQuery/queryRef-useReadQuery',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/loader-defer': {
-      id: '/loader-defer'
-      path: '/loader-defer'
-      fullPath: '/loader-defer'
-      preLoaderRoute: typeof LoaderDeferImport
-      parentRoute: typeof rootRoute
-    }
-    '/useBackgroundQuery': {
-      id: '/useBackgroundQuery'
-      path: '/useBackgroundQuery'
-      fullPath: '/useBackgroundQuery'
-      preLoaderRoute: typeof UseBackgroundQueryImport
-      parentRoute: typeof rootRoute
-    }
-    '/useBackgroundQueryWithoutSsrReadQuery': {
-      id: '/useBackgroundQueryWithoutSsrReadQuery'
-      path: '/useBackgroundQueryWithoutSsrReadQuery'
-      fullPath: '/useBackgroundQueryWithoutSsrReadQuery'
-      preLoaderRoute: typeof UseBackgroundQueryWithoutSsrReadQueryImport
-      parentRoute: typeof rootRoute
-    }
-    '/useQuery': {
-      id: '/useQuery'
-      path: '/useQuery'
-      fullPath: '/useQuery'
-      preLoaderRoute: typeof UseQueryImport
-      parentRoute: typeof rootRoute
-    }
-    '/useQueryWithCache': {
-      id: '/useQueryWithCache'
-      path: '/useQueryWithCache'
-      fullPath: '/useQueryWithCache'
-      preLoaderRoute: typeof UseQueryWithCacheImport
-      parentRoute: typeof rootRoute
-    }
-    '/useSuspenseQuery': {
-      id: '/useSuspenseQuery'
-      path: '/useSuspenseQuery'
-      fullPath: '/useSuspenseQuery'
-      preLoaderRoute: typeof UseSuspenseQueryImport
-      parentRoute: typeof rootRoute
-    }
-    '/useSuspenseQuery-defer': {
-      id: '/useSuspenseQuery-defer'
-      path: '/useSuspenseQuery-defer'
-      fullPath: '/useSuspenseQuery-defer'
-      preLoaderRoute: typeof UseSuspenseQueryDeferImport
-      parentRoute: typeof rootRoute
-    }
-    '/preloadQuery/queryRef-useReadQuery': {
-      id: '/preloadQuery/queryRef-useReadQuery'
-      path: '/preloadQuery/queryRef-useReadQuery'
-      fullPath: '/preloadQuery/queryRef-useReadQuery'
-      preLoaderRoute: typeof PreloadQueryQueryRefUseReadQueryImport
-      parentRoute: typeof rootRoute
-    }
-    '/preloadQuery/useSuspenseQuery': {
-      id: '/preloadQuery/useSuspenseQuery'
-      path: '/preloadQuery/useSuspenseQuery'
-      fullPath: '/preloadQuery/useSuspenseQuery'
-      preLoaderRoute: typeof PreloadQueryUseSuspenseQueryImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
+const ApiGraphqlServerRoute = ApiGraphqlServerRouteImport.update({
+  id: '/api/graphql',
+  path: '/api/graphql',
+  getParentRoute: () => rootServerRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -178,7 +96,6 @@ export interface FileRoutesByFullPath {
   '/preloadQuery/queryRef-useReadQuery': typeof PreloadQueryQueryRefUseReadQueryRoute
   '/preloadQuery/useSuspenseQuery': typeof PreloadQueryUseSuspenseQueryRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/loader-defer': typeof LoaderDeferRoute
@@ -191,9 +108,8 @@ export interface FileRoutesByTo {
   '/preloadQuery/queryRef-useReadQuery': typeof PreloadQueryQueryRefUseReadQueryRoute
   '/preloadQuery/useSuspenseQuery': typeof PreloadQueryUseSuspenseQueryRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/loader-defer': typeof LoaderDeferRoute
   '/useBackgroundQuery': typeof UseBackgroundQueryRoute
@@ -205,7 +121,6 @@ export interface FileRoutesById {
   '/preloadQuery/queryRef-useReadQuery': typeof PreloadQueryQueryRefUseReadQueryRoute
   '/preloadQuery/useSuspenseQuery': typeof PreloadQueryUseSuspenseQueryRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -245,7 +160,6 @@ export interface FileRouteTypes {
     | '/preloadQuery/useSuspenseQuery'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   LoaderDeferRoute: typeof LoaderDeferRoute
@@ -257,6 +171,113 @@ export interface RootRouteChildren {
   UseSuspenseQueryDeferRoute: typeof UseSuspenseQueryDeferRoute
   PreloadQueryQueryRefUseReadQueryRoute: typeof PreloadQueryQueryRefUseReadQueryRoute
   PreloadQueryUseSuspenseQueryRoute: typeof PreloadQueryUseSuspenseQueryRoute
+}
+export interface FileServerRoutesByFullPath {
+  '/api/graphql': typeof ApiGraphqlServerRoute
+}
+export interface FileServerRoutesByTo {
+  '/api/graphql': typeof ApiGraphqlServerRoute
+}
+export interface FileServerRoutesById {
+  __root__: typeof rootServerRouteImport
+  '/api/graphql': typeof ApiGraphqlServerRoute
+}
+export interface FileServerRouteTypes {
+  fileServerRoutesByFullPath: FileServerRoutesByFullPath
+  fullPaths: '/api/graphql'
+  fileServerRoutesByTo: FileServerRoutesByTo
+  to: '/api/graphql'
+  id: '__root__' | '/api/graphql'
+  fileServerRoutesById: FileServerRoutesById
+}
+export interface RootServerRouteChildren {
+  ApiGraphqlServerRoute: typeof ApiGraphqlServerRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/useSuspenseQuery-defer': {
+      id: '/useSuspenseQuery-defer'
+      path: '/useSuspenseQuery-defer'
+      fullPath: '/useSuspenseQuery-defer'
+      preLoaderRoute: typeof UseSuspenseQueryDeferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/useSuspenseQuery': {
+      id: '/useSuspenseQuery'
+      path: '/useSuspenseQuery'
+      fullPath: '/useSuspenseQuery'
+      preLoaderRoute: typeof UseSuspenseQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/useQueryWithCache': {
+      id: '/useQueryWithCache'
+      path: '/useQueryWithCache'
+      fullPath: '/useQueryWithCache'
+      preLoaderRoute: typeof UseQueryWithCacheRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/useQuery': {
+      id: '/useQuery'
+      path: '/useQuery'
+      fullPath: '/useQuery'
+      preLoaderRoute: typeof UseQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/useBackgroundQueryWithoutSsrReadQuery': {
+      id: '/useBackgroundQueryWithoutSsrReadQuery'
+      path: '/useBackgroundQueryWithoutSsrReadQuery'
+      fullPath: '/useBackgroundQueryWithoutSsrReadQuery'
+      preLoaderRoute: typeof UseBackgroundQueryWithoutSsrReadQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/useBackgroundQuery': {
+      id: '/useBackgroundQuery'
+      path: '/useBackgroundQuery'
+      fullPath: '/useBackgroundQuery'
+      preLoaderRoute: typeof UseBackgroundQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/loader-defer': {
+      id: '/loader-defer'
+      path: '/loader-defer'
+      fullPath: '/loader-defer'
+      preLoaderRoute: typeof LoaderDeferRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preloadQuery/useSuspenseQuery': {
+      id: '/preloadQuery/useSuspenseQuery'
+      path: '/preloadQuery/useSuspenseQuery'
+      fullPath: '/preloadQuery/useSuspenseQuery'
+      preLoaderRoute: typeof PreloadQueryUseSuspenseQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/preloadQuery/queryRef-useReadQuery': {
+      id: '/preloadQuery/queryRef-useReadQuery'
+      path: '/preloadQuery/queryRef-useReadQuery'
+      fullPath: '/preloadQuery/queryRef-useReadQuery'
+      preLoaderRoute: typeof PreloadQueryQueryRefUseReadQueryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
+}
+declare module '@tanstack/react-start/server' {
+  interface ServerFileRoutesByPath {
+    '/api/graphql': {
+      id: '/api/graphql'
+      path: '/api/graphql'
+      fullPath: '/api/graphql'
+      preLoaderRoute: typeof ApiGraphqlServerRouteImport
+      parentRoute: typeof rootServerRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -272,59 +293,12 @@ const rootRouteChildren: RootRouteChildren = {
   PreloadQueryQueryRefUseReadQueryRoute: PreloadQueryQueryRefUseReadQueryRoute,
   PreloadQueryUseSuspenseQueryRoute: PreloadQueryUseSuspenseQueryRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/loader-defer",
-        "/useBackgroundQuery",
-        "/useBackgroundQueryWithoutSsrReadQuery",
-        "/useQuery",
-        "/useQueryWithCache",
-        "/useSuspenseQuery",
-        "/useSuspenseQuery-defer",
-        "/preloadQuery/queryRef-useReadQuery",
-        "/preloadQuery/useSuspenseQuery"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/loader-defer": {
-      "filePath": "loader-defer.tsx"
-    },
-    "/useBackgroundQuery": {
-      "filePath": "useBackgroundQuery.tsx"
-    },
-    "/useBackgroundQueryWithoutSsrReadQuery": {
-      "filePath": "useBackgroundQueryWithoutSsrReadQuery.tsx"
-    },
-    "/useQuery": {
-      "filePath": "useQuery.tsx"
-    },
-    "/useQueryWithCache": {
-      "filePath": "useQueryWithCache.tsx"
-    },
-    "/useSuspenseQuery": {
-      "filePath": "useSuspenseQuery.tsx"
-    },
-    "/useSuspenseQuery-defer": {
-      "filePath": "useSuspenseQuery-defer.tsx"
-    },
-    "/preloadQuery/queryRef-useReadQuery": {
-      "filePath": "preloadQuery/queryRef-useReadQuery.tsx"
-    },
-    "/preloadQuery/useSuspenseQuery": {
-      "filePath": "preloadQuery/useSuspenseQuery.tsx"
-    }
-  }
+const rootServerRouteChildren: RootServerRouteChildren = {
+  ApiGraphqlServerRoute: ApiGraphqlServerRoute,
 }
-ROUTE_MANIFEST_END */
+export const serverRouteTree = rootServerRouteImport
+  ._addFileChildren(rootServerRouteChildren)
+  ._addFileTypes<FileServerRouteTypes>()
