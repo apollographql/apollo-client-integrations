@@ -29,13 +29,13 @@
   "resolutions": {
     "@microsoft/api-documenter": "7.24.1",
     "graphql": "17.0.0-alpha.2",
-    "@tanstack/start": "1.99.6",
-    "@tanstack/react-router": "1.99.6",
-    "@tanstack/start-router-manifest": "1.99.0",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "@tanstack/start-plugin-core@npm:1.132.0-alpha.9": "patch:@tanstack/start-plugin-core@npm%3A1.132.0-alpha.9#~/.yarn/patches/@tanstack-start-plugin-core-npm-1.132.0-alpha.9-72956d0934.patch",
+    "seroval-plugins@npm:~1.3.0": "patch:seroval-plugins@npm%3A1.3.2#~/.yarn/patches/seroval-plugins-npm-1.3.2-7e1f76a801.patch",
+    "seroval-plugins@npm:^1.3.2": "patch:seroval-plugins@npm%3A1.3.2#~/.yarn/patches/seroval-plugins-npm-1.3.2-7e1f76a801.patch"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "7.24.3",

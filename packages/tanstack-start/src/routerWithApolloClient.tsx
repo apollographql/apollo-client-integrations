@@ -1,18 +1,18 @@
-import {
-  isTransportedQueryRef,
-  reviveTransportedQueryRef,
-  type PreloadTransportedQueryFunction,
-} from "@apollo/client-react-streaming";
+import { type PreloadTransportedQueryFunction } from "@apollo/client-react-streaming";
 import type { ApolloClient } from "@apollo/client-react-streaming";
 import { createTransportedQueryPreloader } from "@apollo/client-react-streaming";
 import { ApolloProvider } from "./ApolloProvider.js";
 import { createQueryPreloader } from "@apollo/client/react";
 import { type AnyRouter } from "@tanstack/react-router";
 import React from "react";
+import { getQueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
+import type { ClientTransport } from "./Transport.js";
+import { ServerTransport, transportSerializationAdapter } from "./Transport.js";
 
 /** @alpha */
 export interface ApolloClientRouterContext {
   apolloClient: ApolloClient;
+  apolloClientTransport: ServerTransport | ClientTransport;
   preloadQuery: PreloadTransportedQueryFunction;
 }
 
@@ -27,29 +27,39 @@ export function routerWithApolloClient<TRouter extends AnyRouter>(
 
   context.apolloClient = apolloClient;
   context.preloadQuery = router.isServer
-    ? createTransportedQueryPreloader(apolloClient)
+    ? createTransportedQueryPreloader(apolloClient, { prepareForReuse: true })
     : (createQueryPreloader(
         apolloClient
       ) as unknown as PreloadTransportedQueryFunction);
 
-  const originalHydrate = router.options.hydrate;
-  router.options.hydrate = (...args) => {
-    originalHydrate?.(...args);
+  const ogHydrate = router.options.hydrate;
+  const ogDehydrate = router.options.dehydrate;
 
-    for (const match of router.state.matches) {
-      // using JSON.stringify to recurse the object
-      JSON.stringify(match.loaderData, (_, value) => {
-        if (isTransportedQueryRef(value)) {
-          reviveTransportedQueryRef(
-            value,
-            (router.options.context as { apolloClient: ApolloClient })
-              .apolloClient
-          );
-        }
-        return value;
-      });
-    }
-  };
+  if (router.isServer) {
+    const apolloClientTransport = new ServerTransport();
+    context.apolloClientTransport = apolloClientTransport;
+    router.options.dehydrate = async () => {
+      router.serverSsr!.onRenderFinished(() =>
+        apolloClientTransport.closeOnceFinished()
+      );
+      return {
+        ...(await ogDehydrate?.()),
+        apolloClientTransport,
+      };
+    };
+  } else {
+    router.options.hydrate = (dehydratedState) => {
+      context.apolloClientTransport = dehydratedState.apolloClientTransport;
+      return ogHydrate?.(dehydratedState);
+    };
+  }
+
+  router.options.serializationAdapters = [
+    ...(router.options.serializationAdapters ?? []),
+    getQueryRefSerializationAdapter(apolloClient),
+    transportSerializationAdapter,
+  ];
+
   const PreviousInnerWrap = router.options.InnerWrap || React.Fragment;
   // eslint-disable-next-line react/display-name
   router.options.InnerWrap = ({ children }) => (

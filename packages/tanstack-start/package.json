@@ -27,14 +27,8 @@
   },
   "exports": {
     ".": {
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      },
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      }
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
     },
     "./package.json": "./package.json"
   },
@@ -54,7 +48,7 @@
     "test:ssr": "NODE_OPTIONS=\"${NODE_OPTIONS:-} --conditions=node\" yarn run test:base",
     "test:browser": "NODE_OPTIONS=\"${NODE_OPTIONS:-} --conditions=browser\" yarn run test:base",
     "prepack": "yarn build",
-    "prepublishOnly": "wait-on ../client-react-streaming/.built --delay 3000 --timeout 60000 && yarn pack -o attw.tgz && attw attw.tgz && rm attw.tgz && yarn run test",
+    "__prepublishOnly": "wait-on ../client-react-streaming/.built --delay 3000 --timeout 60000 && yarn pack -o attw.tgz && attw attw.tgz && rm attw.tgz && yarn run test",
     "test-bundle": "yarn test-bundle:attw && yarn test-bundle:package && yarn test-bundle:publint && yarn test-bundle:shape",
     "test-bundle:attw": "attw --pack .",
     "test-bundle:package": "yarn workspace monorepo verify-package-json $PWD/package.json",
@@ -69,8 +63,8 @@
     "@arethetypeswrong/cli": "0.15.3",
     "@internal/test-utils": "workspace:^",
     "@microsoft/api-extractor": "7.43.2",
-    "@tanstack/react-router": "^1.99.0",
-    "@tanstack/start": "^1.99.3",
+    "@tanstack/react-router": "^1.132.0-alpha.8",
+    "@tanstack/react-start": "^1.132.0-alpha.9",
     "@tsconfig/recommended": "1.0.6",
     "@types/jsesc": "^3",
     "@types/node": "20.12.11",
@@ -92,8 +86,8 @@
   },
   "peerDependencies": {
     "@apollo/client": "^4.0.0",
-    "@tanstack/react-router": "^1.99.6",
-    "@tanstack/start": "^1.99.4",
+    "@tanstack/react-router": "^1.132.0-alpha.8",
+    "@tanstack/react-start": "^1.132.0-alpha.9",
     "graphql": "^16 || >=17.0.0-alpha.2",
     "react": "^19",
     "react-dom": "^19",

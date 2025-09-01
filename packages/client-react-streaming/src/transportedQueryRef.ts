@@ -106,7 +106,14 @@ export function getInjectableEventStream() {
 
 /** @public */
 export function createTransportedQueryPreloader(
-  client: ApolloClient
+  client: ApolloClient,
+  {
+    /**
+     * Set this to `true` to indicate that this `queryRef` will be reused within the same process with the same Apollo Client instance without being dehydrated and hydrated.
+     * In that case, it will already be written to the suspense cache so it doesn't need to be hydrated by re-running the query with a fake network request.
+     */
+    prepareForReuse = false,
+  } = {}
 ): PreloadTransportedQueryFunction {
   return (...[query, options]: Parameters<PreloadTransportedQueryFunction>) => {
     // unset options that we do not support
@@ -116,33 +123,50 @@ export function createTransportedQueryPreloader(
     delete options.pollInterval;
 
     const [controller, stream] = getInjectableEventStream();
-
-    // Instead of creating the queryRef, we kick off a query that will feed the network response
-    // into our custom event stream.
-    client
-      .query({
-        query,
-        ...options,
-        // ensure that this query makes it to the network
-        fetchPolicy: "no-cache",
-        context: skipDataTransport(
-          teeToReadableStream(() => controller, {
-            ...options?.context,
-            // we want to do this even if the query is already running for another reason
-            queryDeduplication: false,
-          })
-        ),
-      })
-      .catch(() => {
-        /* we want to avoid any floating promise rejections */
-      });
-
-    return createTransportedQueryRef<any, any>(
+    const transportedQueryRef = createTransportedQueryRef<any, any>(
       query,
       options,
       crypto.randomUUID(),
       stream
     );
+
+    const watchQueryOptions: ApolloClient.QueryOptions<any, any> = {
+      query,
+      ...options,
+      // ensure that this query makes it to the network
+      fetchPolicy: "no-cache",
+      context: skipDataTransport(
+        teeToReadableStream(() => controller, {
+          ...options?.context,
+          // we want to do this even if the query is already running for another reason
+          queryDeduplication: false,
+        })
+      ),
+    };
+
+    if (!prepareForReuse) {
+      // Instead of creating the queryRef, we just kick off the query.
+      client.query(watchQueryOptions).catch(() => {
+        /* we want to avoid any floating promise rejections */
+      });
+    } else {
+      const cacheKey: CacheKey = [
+        query,
+        canonicalStringify(options.variables),
+        transportedQueryRef.$__apollo_queryRef.queryKey,
+      ];
+      const suspenseCache = getSuspenseCache(client);
+      // this will kick of the query and write it to the suspense cache
+      suspenseCache.getQueryRef(cacheKey, () =>
+        client.watchQuery(watchQueryOptions)
+      );
+      hydrationCache.set(transportedQueryRef, {
+        cacheKey,
+        hydratedOptions: { query, ...options },
+      });
+    }
+
+    return transportedQueryRef;
   };
 }
 
@@ -166,7 +190,7 @@ function createTransportedQueryRef<
 
 const hydrationCache = new WeakMap<
   TransportedQueryRef,
-  { cacheKey: CacheKey }
+  { cacheKey: CacheKey; hydratedOptions: ApolloClient.WatchQueryOptions }
 >();
 
 /** @public */
@@ -179,12 +203,17 @@ export function reviveTransportedQueryRef(
   } = queryRef;
   if (!hydrationCache.has(queryRef)) {
     const hydratedOptions = deserializeOptions(options);
-    const cacheKey: CacheKey = [
-      hydratedOptions.query,
-      canonicalStringify(hydratedOptions.variables),
-      queryKey,
-    ];
-    hydrationCache.set(queryRef, { cacheKey });
+    hydrationCache.set(queryRef, {
+      hydratedOptions,
+      cacheKey: [
+        hydratedOptions.query,
+        canonicalStringify(hydratedOptions.variables),
+        queryKey,
+      ],
+    });
+  }
+  const { cacheKey, hydratedOptions } = hydrationCache.get(queryRef)!;
+  if (!unwrapQueryRef(queryRef)) {
     const internalQueryRef = getSuspenseCache(client).getQueryRef(
       cacheKey,
       () =>

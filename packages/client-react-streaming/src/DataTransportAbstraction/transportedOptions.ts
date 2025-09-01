@@ -1,11 +1,15 @@
 import { gql } from "@apollo/client";
 import type { DocumentNode, FetchPolicy, ApolloClient } from "@apollo/client";
 import { print } from "@apollo/client/utilities";
+import { invariant } from "@apollo/client/utilities/invariant";
 import { stripIgnoredCharacters } from "graphql";
 
-export type TransportedOptions = { query: string } & Omit<
+export type TransportedOptions = {
+  query: string;
+  nextFetchPolicy?: FetchPolicy | undefined;
+} & Omit<
   ApolloClient.WatchQueryOptions,
-  "query"
+  "query" | "skipPollAttempt" | "nextFetchPolicy"
 >;
 
 export function serializeOptions<
@@ -16,6 +20,14 @@ export function serializeOptions<
   T,
   "query"
 > {
+  invariant(
+    typeof options.fetchPolicy !== "function",
+    "`nextFetchPolicy` cannot be a function in server-client streaming"
+  );
+  invariant(
+    typeof options.skipPollAttempt !== "function",
+    "`skipPollAttempt` cannot be used with server-client streaming"
+  );
   return {
     ...(options as typeof options & {
       // little bit of a hack around the method signature, but the method signature would cause React to error anyways
