@@ -24448,21 +24448,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"seroval-plugins@npm:1.3.2":
+"seroval-plugins@npm:^1.3.2, seroval-plugins@npm:~1.3.0":
   version: 1.3.2
   resolution: "seroval-plugins@npm:1.3.2"
   peerDependencies:
     seroval: ^1.0
   checksum: 10/39f17c3edaf9f15db15dbdd8fb0bb76528db56639799e0dc10821bb8f0151e188ffa9730512120bf155a099b4152bc9f9fc33e4caeb6ce4ea98104e382c5066f
-  languageName: node
-  linkType: hard
-
-"seroval-plugins@patch:seroval-plugins@npm%3A1.3.2#~/.yarn/patches/seroval-plugins-npm-1.3.2-7e1f76a801.patch":
-  version: 1.3.2
-  resolution: "seroval-plugins@patch:seroval-plugins@npm%3A1.3.2#~/.yarn/patches/seroval-plugins-npm-1.3.2-7e1f76a801.patch::version=1.3.2&hash=d718e7"
-  peerDependencies:
-    seroval: ^1.0
-  checksum: 10/a66e6f44956a8b25c528f6491d0d587ed796446051e662b2332dc68e1fb06d45a2cefbb2611553bb9e5490c27d0b0d5fc164a25408c99a1063502376122972e0
   languageName: node
   linkType: hard
 
