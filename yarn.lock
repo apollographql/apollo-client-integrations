@@ -24413,11 +24413,11 @@ __metadata:
   linkType: hard
 
 "seroval-plugins@npm:^1.3.2, seroval-plugins@npm:~1.3.0":
-  version: 1.3.2
-  resolution: "seroval-plugins@npm:1.3.2"
+  version: 1.3.3
+  resolution: "seroval-plugins@npm:1.3.3"
   peerDependencies:
     seroval: ^1.0
-  checksum: 10/39f17c3edaf9f15db15dbdd8fb0bb76528db56639799e0dc10821bb8f0151e188ffa9730512120bf155a099b4152bc9f9fc33e4caeb6ce4ea98104e382c5066f
+  checksum: 10/2d30ec90313b3cf3d85c81b5ee8fb535c71489dc8e70073be767eba08ef8b1e18826cede1586a34ec87ad0ae8000a013506b02c99f4f5e3b995b16760e2abf18
   languageName: node
   linkType: hard
 
