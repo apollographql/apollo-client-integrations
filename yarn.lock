@@ -283,8 +283,8 @@ __metadata:
     "@microsoft/api-extractor": "npm:7.43.2"
     "@tanstack/react-router": "npm:^1.132.0-alpha.13"
     "@tanstack/react-start": "npm:^1.132.0-alpha.14"
+    "@tanstack/router-core": "npm:^1.132.0-alpha.12"
     "@tsconfig/recommended": "npm:1.0.6"
-    "@types/jsesc": "npm:^3"
     "@types/node": "npm:20.12.11"
     "@types/react": "npm:^19.0.0"
     "@types/react-dom": "npm:*"
@@ -292,7 +292,6 @@ __metadata:
     esbuild: "npm:0.24.2"
     eslint: "npm:8.57.0"
     graphql: "npm:^16.10.0"
-    jsesc: "npm:^3.1.0"
     publint: "npm:0.2.7"
     react: "npm:^19.0.0"
     react-dom: "npm:*"
@@ -306,6 +305,7 @@ __metadata:
     "@apollo/client": ^4.0.0
     "@tanstack/react-router": ^1.132.0-alpha.13
     "@tanstack/react-start": ^1.132.0-alpha.14
+    "@tanstack/router-core": ^1.132.0-alpha.12
     graphql: ^16 || >=17.0.0-alpha.2
     react: ^19
     react-dom: ^19
@@ -10076,7 +10076,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/router-core@npm:1.132.0-alpha.12":
+"@tanstack/router-core@npm:1.132.0-alpha.12, @tanstack/router-core@npm:^1.132.0-alpha.12":
   version: 1.132.0-alpha.12
   resolution: "@tanstack/router-core@npm:1.132.0-alpha.12"
   dependencies:
@@ -10674,13 +10674,6 @@ __metadata:
     "@types/tough-cookie": "npm:*"
     parse5: "npm:^7.0.0"
   checksum: 10/15fbb9a0bfb4a5845cf6e795f2fd12400aacfca53b8c7e5bca4a3e5e8fa8629f676327964d64258aefb127d2d8a2be86dad46359efbfca0e8c9c2b790e7f8a88
-  languageName: node
-  linkType: hard
-
-"@types/jsesc@npm:^3":
-  version: 3.0.3
-  resolution: "@types/jsesc@npm:3.0.3"
-  checksum: 10/8e97013e91fdbffc7ce23f5be7f0b8a1208e9794ccae887f1a9fd606633d8b570424ab2de81ada47ff9a062812191a7aa764a42a293a37b86fd76f13329a0c0f
   languageName: node
   linkType: hard
 
@@ -19988,7 +19981,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsesc@npm:^3.0.2, jsesc@npm:^3.1.0":
+"jsesc@npm:^3.0.2":
   version: 3.1.0
   resolution: "jsesc@npm:3.1.0"
   bin:
