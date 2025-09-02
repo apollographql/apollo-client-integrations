@@ -1,0 +1,11 @@
+diff --git a/dist/runtime/internal/vite/dispatcher.mjs b/dist/runtime/internal/vite/dispatcher.mjs
+index 9165da2e06bbf11d356c2101f6031a58cccad052..0281384756e79721a47d7776127c2dc7d31cddbe 100644
+--- a/dist/runtime/internal/vite/dispatcher.mjs
++++ b/dist/runtime/internal/vite/dispatcher.mjs
+@@ -20,5 +20,6 @@ export default defineHandler(async (event) => {
+     referrerPolicy: event.req.referrerPolicy,
+     integrity: event.req.integrity,
+     mode: event.req.mode,
++    duplex: event.req.duplex,
+   });
+ });
