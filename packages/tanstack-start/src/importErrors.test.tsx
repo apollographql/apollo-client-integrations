@@ -3,6 +3,7 @@ import { test } from "node:test";
 import { outsideOf } from "@internal/test-utils/runInConditions.js";
 import { renderStreamEnv } from "@internal/test-utils/react.js";
 import { silenceConsoleErrors } from "@internal/test-utils/console.js";
+import { ServerTransport } from "./Transport.js";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
@@ -28,7 +29,7 @@ test(
     globalThis.window = {} as any;
     const { routerWithApolloClient, ...bundled } = await import("#bundled");
     const tsr = await import("@tanstack/react-router");
-    const tss = await import("@tanstack/start/server");
+    const tss = await import("@tanstack/react-start/server");
     const React = await import("react");
 
     const { ErrorBoundary } = await import("react-error-boundary");
@@ -51,7 +52,9 @@ test(
       const router = routerWithApolloClient(
         tsr.createRouter({
           routeTree,
-          context: {} as any,
+          context: {
+            apolloClientTransport: new ServerTransport(),
+          } as any,
         }),
         // @ts-expect-error deliberately using the wrong class here
         new ApolloClient({
@@ -80,7 +83,9 @@ test(
       const router = routerWithApolloClient(
         tsr.createRouter({
           routeTree,
-          context: {} as any,
+          context: {
+            apolloClientTransport: new ServerTransport(),
+          } as any,
         }),
         new ApolloClient({
           cache: new InMemoryCache(),

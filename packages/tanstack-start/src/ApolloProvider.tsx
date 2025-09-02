@@ -40,6 +40,7 @@ const WrappedApolloProvider = WrapApolloProvider<{
   const context: ApolloClientRouterContext = router.options.context;
 
   const transport = context.apolloClientTransport;
+  invariant(transport, "No apolloClientTransport defined on router context");
   if ("dispatchRequestStarted" in transport) {
     invariant(
       props.registerDispatchRequestStarted,
