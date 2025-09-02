@@ -32,8 +32,7 @@
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
     "react": "19.0.0",
-    "react-dom": "19.0.0",
-    "@tanstack/start-plugin-core@npm:1.132.0-alpha.9": "patch:@tanstack/start-plugin-core@npm%3A1.132.0-alpha.9#~/.yarn/patches/@tanstack-start-plugin-core-npm-1.132.0-alpha.9-72956d0934.patch"
+    "react-dom": "19.0.0"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "7.24.3",
