@@ -6,7 +6,10 @@ import { createQueryPreloader } from "@apollo/client/react";
 import { type AnyRouter } from "@tanstack/react-router";
 import React from "react";
 import { getQueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
-import type { ClientTransport } from "./Transport.js";
+import type {
+  ClientTransport,
+  TransportSerializationAdapter,
+} from "./Transport.js";
 import { ServerTransport, transportSerializationAdapter } from "./Transport.js";
 
 /** @alpha */
@@ -14,6 +17,14 @@ export interface ApolloClientRouterContext {
   apolloClient: ApolloClient;
   apolloClientTransport: ServerTransport | ClientTransport;
   preloadQuery: PreloadTransportedQueryFunction;
+}
+
+import type { QueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
+export declare namespace routerWithApolloClient {
+  export type SerializationAdapters = [
+    QueryRefSerializationAdapter,
+    TransportSerializationAdapter,
+  ];
 }
 
 /** @alpha */

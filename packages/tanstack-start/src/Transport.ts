@@ -20,6 +20,8 @@ type DataTransportAbstraction =
     ? NonNullable<T>
     : never;
 
+export type TransportSerializationAdapter =
+  typeof transportSerializationAdapter;
 export const transportSerializationAdapter = createSerializationAdapter<
   ServerTransport | ClientTransport,
   Transported

@@ -1,4 +1,5 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
+import type { RouterConfig } from "@tanstack/router-core";
 import { routeTree } from "./routeTree.gen";
 import {
   routerWithApolloClient,
@@ -44,5 +45,9 @@ export function createRouter() {
 declare module "@tanstack/react-router" {
   interface Register {
     router: ReturnType<typeof createRouter>;
+    config: RouterConfig<
+      [...routerWithApolloClient.SerializationAdapters],
+      boolean | "data-only"
+    >;
   }
 }

@@ -6,6 +6,9 @@ import {
 } from "@apollo/client-react-streaming";
 import { createSerializationAdapter } from "@tanstack/router-core";
 
+export type QueryRefSerializationAdapter = ReturnType<
+  typeof getQueryRefSerializationAdapter
+>;
 export const getQueryRefSerializationAdapter = (apolloClient: ApolloClient) =>
   createSerializationAdapter<
     TransportedQueryRef,
