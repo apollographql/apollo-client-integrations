@@ -11,7 +11,11 @@ export const hookWrappers: HookWrappers = {
     return wrap<typeof orig_useQuery>(
       process.env.REACT_ENV === "ssr"
         ? (query, options) =>
-            orig_useQuery(query, { ...options, fetchPolicy: "cache-only" })
+            orig_useQuery(query, {
+              // this `as any` call should not be necessary, but for some reason our CI builds are failing without it (even when CI deployments and local builds are fine)
+              ...(options as any),
+              fetchPolicy: "cache-only",
+            })
         : orig_useQuery,
       ["data", "loading", "networkStatus", "dataState"]
     );
