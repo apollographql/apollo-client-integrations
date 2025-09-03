@@ -24,12 +24,14 @@ import {
   type TransportedOptions,
 } from "./DataTransportAbstraction/transportedOptions.js";
 import { useEffect } from "react";
-import { canonicalStringify } from "@apollo/client/cache";
 import {
   JSONDecodeStream,
   JSONEncodeStream,
   type JsonString,
 } from "@apollo/client-react-streaming/stream-utils";
+import { InternalQueryReference } from "@apollo/client/react/internal";
+import { invariant } from "@apollo/client/utilities/invariant";
+import { __DEV__ } from "@apollo/client/utilities/environment";
 
 type RestrictedPreloadOptions = {
   fetchPolicy?: "network-only" | "cache-and-network" | "cache-first";
@@ -113,6 +115,10 @@ export function createTransportedQueryPreloader(
      * In that case, it will already be written to the suspense cache so it doesn't need to be hydrated by re-running the query with a fake network request.
      */
     prepareForReuse = false,
+    ssrSideOptionOverrides = {},
+  }: {
+    prepareForReuse?: boolean;
+    ssrSideOptionOverrides?: Partial<ApolloClient.WatchQueryOptions<any, any>>;
   } = {}
 ): PreloadTransportedQueryFunction {
   return (...[query, options]: Parameters<PreloadTransportedQueryFunction>) => {
@@ -130,11 +136,10 @@ export function createTransportedQueryPreloader(
       stream
     );
 
-    const watchQueryOptions: ApolloClient.QueryOptions<any, any> = {
+    const watchQueryOptions: ApolloClient.WatchQueryOptions<any, any> = {
       query,
       ...options,
-      // ensure that this query makes it to the network
-      fetchPolicy: "no-cache",
+      notifyOnNetworkStatusChange: false,
       context: skipDataTransport(
         teeToReadableStream(() => controller, {
           ...options?.context,
@@ -142,28 +147,34 @@ export function createTransportedQueryPreloader(
           queryDeduplication: false,
         })
       ),
+      ...ssrSideOptionOverrides,
     };
+    if (
+      !(
+        watchQueryOptions.fetchPolicy == "no-cache" ||
+        watchQueryOptions.fetchPolicy == "network-only" ||
+        (prepareForReuse &&
+          watchQueryOptions.fetchPolicy == "cache-and-network")
+      )
+    ) {
+      // ensure that this query makes it to the network
+      watchQueryOptions.fetchPolicy = "network-only";
+    }
 
     if (!prepareForReuse) {
-      // Instead of creating the queryRef, we just kick off the query.
-      client.query(watchQueryOptions).catch(() => {
-        /* we want to avoid any floating promise rejections */
+      const subscription = client.watchQuery(watchQueryOptions).subscribe({
+        next() {
+          subscription.unsubscribe();
+        },
       });
     } else {
-      const cacheKey: CacheKey = [
-        query,
-        canonicalStringify(options.variables),
-        transportedQueryRef.$__apollo_queryRef.queryKey,
-      ];
-      const suspenseCache = getSuspenseCache(client);
-      // this will kick of the query and write it to the suspense cache
-      suspenseCache.getQueryRef(cacheKey, () =>
-        client.watchQuery(watchQueryOptions)
+      const internalQueryRef = getInternalQueryRef(
+        client,
+        { query, ...options },
+        watchQueryOptions
       );
-      hydrationCache.set(transportedQueryRef, {
-        cacheKey,
-        hydratedOptions: { query, ...options },
-      });
+
+      return Object.assign(transportedQueryRef, wrapQueryRef(internalQueryRef));
     }
 
     return transportedQueryRef;
@@ -188,48 +199,69 @@ function createTransportedQueryRef<
   };
 }
 
-const hydrationCache = new WeakMap<
-  TransportedQueryRef,
-  { cacheKey: CacheKey; hydratedOptions: ApolloClient.WatchQueryOptions }
->();
-
 /** @public */
 export function reviveTransportedQueryRef(
   queryRef: TransportedQueryRef,
   client: ApolloClient
 ): asserts queryRef is TransportedQueryRef & ReturnType<typeof wrapQueryRef> {
+  if (unwrapQueryRef(queryRef)) return;
   const {
-    $__apollo_queryRef: { options, stream, queryKey },
+    $__apollo_queryRef: { options, stream },
   } = queryRef;
-  if (!hydrationCache.has(queryRef)) {
-    const hydratedOptions = deserializeOptions(options);
-    hydrationCache.set(queryRef, {
-      hydratedOptions,
-      cacheKey: [
-        hydratedOptions.query,
-        canonicalStringify(hydratedOptions.variables),
-        queryKey,
-      ],
-    });
-  }
-  const { cacheKey, hydratedOptions } = hydrationCache.get(queryRef)!;
-  if (!unwrapQueryRef(queryRef)) {
-    const internalQueryRef = getSuspenseCache(client).getQueryRef(
-      cacheKey,
-      () =>
-        client.watchQuery({
-          ...hydratedOptions,
-          fetchPolicy: "network-only",
-          context: skipDataTransport(
-            readFromReadableStream(stream.pipeThrough(new JSONDecodeStream()), {
-              ...hydratedOptions.context,
-              queryDeduplication: true,
-            })
-          ),
-        })
+  const hydratedOptions = deserializeOptions(options);
+  const internalQueryRef = getInternalQueryRef(client, hydratedOptions, {
+    ...hydratedOptions,
+    fetchPolicy: "network-only",
+    context: skipDataTransport(
+      readFromReadableStream(stream.pipeThrough(new JSONDecodeStream()), {
+        ...hydratedOptions.context,
+        queryDeduplication: true,
+      })
+    ),
+  });
+  Object.assign(queryRef, wrapQueryRef(internalQueryRef));
+}
+
+function getInternalQueryRef(
+  client: ApolloClient,
+  userOptions: ApolloClient.WatchQueryOptions,
+  initialFetchOptions: ApolloClient.WatchQueryOptions
+) {
+  if (__DEV__) {
+    // this would be a bug in our code, `initialFetchOptions` should always be derived
+    // from `userOptions` and never change `nextFetchPolicy` or we would need additional
+    // logic to handle that case
+    invariant(
+      userOptions.nextFetchPolicy === initialFetchOptions.nextFetchPolicy
     );
-    Object.assign(queryRef, wrapQueryRef(internalQueryRef));
   }
+  // create with `userOptions` so internals like `initialFetchPolicy` are set correctly
+  const observable = client.watchQuery(userOptions);
+  // this might have filled in some defaults, so we need to capture them
+  const optionsAfterCreation = {
+    // context might still be `undefined`, so we need to make sure the property is at least present
+    // `undefined` won't merge in as `applyOptions` uses `compact`, so we use an empty object instead
+    context: {},
+    ...observable.options,
+  };
+  // apply `initialFetchOptions` for the first fetch
+  observable.applyOptions(initialFetchOptions);
+  // `new InternalQueryReference` calls `observable.subscribe` immediately, so the `initialFetchOptions` are applied to that call
+  const internalQueryRef = new InternalQueryReference(observable, {
+    autoDisposeTimeoutMs:
+      client.defaultOptions.react?.suspense?.autoDisposeTimeoutMs,
+  });
+  // set the options for any future `reobserve` calls back to `userOptions` directly after that
+  observable.applyOptions({
+    ...optionsAfterCreation,
+    fetchPolicy:
+      observable.options.fetchPolicy !== initialFetchOptions.fetchPolicy
+        ? // if `fetchPolicy` was changed from `initialFetchOptions`, `nextFetchPolicy` has been applied and we're not going to touch it
+          observable.options.fetchPolicy
+        : // otherwise we restore the `userOptions.fetchPolicy` for future fetches
+          optionsAfterCreation.fetchPolicy,
+  });
+  return internalQueryRef;
 }
 
 /** @public */
@@ -240,32 +272,23 @@ export function isTransportedQueryRef(
 }
 
 /** @public */
+/*
+This hook is injected into `useReadQuery` and `useQueryRefHandlers` to ensure that
+`TransportedQueryRef`s are properly revived into `WrappedQueryRef`s before usage,
+should they not be hydrated properly for some reason.
+*/
 export function useWrapTransportedQueryRef<TData>(
   queryRef:
     | QueryRef<TData, any, "complete" | "streaming" | "empty" | "partial">
     | TransportedQueryRef
 ): QueryRef<TData> {
   const client = useApolloClient();
-  let cacheKey: CacheKey | undefined;
-  let isTransported: boolean;
-  if ((isTransported = isTransportedQueryRef(queryRef))) {
+  const isTransported = isTransportedQueryRef(queryRef);
+  if (isTransported) {
     reviveTransportedQueryRef(queryRef, client);
-    cacheKey = hydrationCache.get(queryRef)?.cacheKey;
   }
   const unwrapped = unwrapQueryRef(queryRef)!;
 
-  useEffect(() => {
-    // We only want this to execute if the queryRef is a transported query.
-    if (!isTransported) return;
-    // We want to always keep this queryRef in the suspense cache in case another component has another instance of this transported queryRef.
-    if (cacheKey) {
-      if (unwrapped.disposed) {
-        getSuspenseCache(client).add(cacheKey, unwrapped);
-      }
-    }
-    // Omitting the deps is intentional. This avoids stale closures and the
-    // conditional ensures we aren't running the logic on each render.
-  });
   // Soft-retaining because useQueryRefHandlers doesn't do it for us.
   useEffect(() => {
     if (isTransported) {

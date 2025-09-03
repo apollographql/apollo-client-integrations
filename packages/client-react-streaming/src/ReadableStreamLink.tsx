@@ -80,26 +80,32 @@ export class TeeToReadableStreamLink extends ApolloLink {
           }
         };
         return new Observable((observer) => {
+          let subscribed = true;
           const subscription = forward(operation).subscribe({
             next(result) {
               controller.enqueue({ type: "next", value: result });
-              observer.next(result);
+              if (subscribed) {
+                observer.next(result);
+              }
             },
             error(error) {
               controller.enqueue({ type: "error" });
               tryClose();
-              observer.error(error);
+              if (subscribed) {
+                observer.error(error);
+              }
             },
             complete() {
               controller.enqueue({ type: "completed" });
               tryClose();
-              observer.complete();
+              if (subscribed) {
+                observer.complete();
+              }
             },
           });
 
           return () => {
-            tryClose();
-            subscription.unsubscribe();
+            subscribed = false;
           };
         });
       }
@@ -142,8 +148,11 @@ export class ReadFromReadableStreamLink extends ApolloLink {
             const subscription = forward(operation).subscribe(observer);
             return () => subscription.unsubscribe();
           }
-          consume(reader);
-
+          consume(reader).finally(() => {
+            // in case the stream ends without a `completed` event we still need to close the observer
+            // to avoid an the observable never being removed from `inFlightLinkObservables`
+            if (!observer.closed) observer.complete();
+          });
           let onAbort = () => {
             aborted = true;
             reader.cancel();
