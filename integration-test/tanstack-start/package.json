@@ -18,7 +18,7 @@
     "@tanstack/react-router-devtools": "^1.132.0-alpha.13",
     "@tanstack/react-start": "^1.132.0-alpha.14",
     "graphql": "^16.10.0",
-    "nitro": "patch:nitro-nightly@npm%3A3.0.0-20250902-103829-4daac97b#~/.yarn/patches/nitro-nightly-npm-3.0.0-20250902-103829-4daac97b-0540bc9c8e.patch",
+    "nitro": "npm:nitro-nightly@3.0.0-20250902-180946-7e25f691",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
