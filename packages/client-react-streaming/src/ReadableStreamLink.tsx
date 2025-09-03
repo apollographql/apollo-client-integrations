@@ -148,10 +148,13 @@ export class ReadFromReadableStreamLink extends ApolloLink {
             const subscription = forward(operation).subscribe(observer);
             return () => subscription.unsubscribe();
           }
+          let forwarded = false;
           consume(reader).finally(() => {
             // in case the stream ends without a `completed` event we still need to close the observer
             // to avoid an the observable never being removed from `inFlightLinkObservables`
-            if (!observer.closed) observer.complete();
+            if (!observer.closed && !forwarded) {
+              observer.complete();
+            }
           });
           let onAbort = () => {
             aborted = true;
@@ -189,6 +192,7 @@ export class ReadFromReadableStreamLink extends ApolloLink {
                     } else {
                       // we want to retry the operation on the receiving side
                       onAbort();
+                      forwarded = true;
                       const subscription =
                         forward(operation).subscribe(observer);
                       onAbort = () => subscription.unsubscribe();

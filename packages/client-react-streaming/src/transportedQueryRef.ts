@@ -1,9 +1,4 @@
-import type { CacheKey } from "@apollo/client/react/internal";
-import {
-  getSuspenseCache,
-  unwrapQueryRef,
-  wrapQueryRef,
-} from "@apollo/client/react/internal";
+import { unwrapQueryRef, wrapQueryRef } from "@apollo/client/react/internal";
 import {
   readFromReadableStream,
   teeToReadableStream,
