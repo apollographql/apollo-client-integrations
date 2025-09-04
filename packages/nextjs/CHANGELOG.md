@@ -1,5 +1,13 @@
 # @apollo/client-integration-nextjs
 
+## 0.13.1
+
+### Patch Changes
+
+- af90924: Export modified `Options` type for `ApolloClient`.
+- Updated dependencies [af90924]
+  - @apollo/client-react-streaming@0.13.1
+
 ## 0.13.0
 
 ### Minor Changes
