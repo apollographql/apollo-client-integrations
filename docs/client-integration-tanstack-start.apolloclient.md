@@ -2,16 +2,36 @@
 
 [Home](./index.md) &gt; [@apollo/client-integration-tanstack-start](./client-integration-tanstack-start.md) &gt; [ApolloClient](./client-integration-tanstack-start.apolloclient.md)
 
-## ApolloClient class
+## ApolloClient namespace
 
-A version of `ApolloClient` to be used with TanStack Start.
-
-For more documentation, please see [the Apollo Client API documentation](https://www.apollographql.com/docs/react/api/core/ApolloClient)<!-- -->.
 
 **Signature:**
 
 ```typescript
-declare class ApolloClient extends ApolloClient$1 
+declare namespace ApolloClient 
 ```
-**Extends:** ApolloClient$1
 
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Options](./client-integration-tanstack-start.apolloclient.options.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>

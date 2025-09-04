@@ -404,6 +404,31 @@ A version of `ApolloProvider` particularly suited for React's streaming SSR.
 </td></tr>
 </tbody></table>
 
+## Namespaces
+
+<table><thead><tr><th>
+
+Namespace
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ApolloClient](./client-react-streaming.apolloclient.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
+
 ## Variables
 
 <table><thead><tr><th>

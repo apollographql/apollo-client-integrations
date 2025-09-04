@@ -2,26 +2,20 @@
 
 [Home](./index.md) &gt; [@apollo/client-integration-react-router](./client-integration-react-router.md) &gt; [ApolloClient](./client-integration-react-router.apolloclient.md)
 
-## ApolloClient class
+## ApolloClient namespace
 
 
 **Signature:**
 
 ```typescript
-declare class ApolloClient extends ApolloClient$1 
+declare namespace ApolloClient 
 ```
-**Extends:** ApolloClient$1
 
-## Constructors
+## Interfaces
 
 <table><thead><tr><th>
 
-Constructor
-
-
-</th><th>
-
-Modifiers
+Interface
 
 
 </th><th>
@@ -32,47 +26,11 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-[(constructor)(options)](./client-integration-react-router.apolloclient._constructor_.md)
+[Options](./client-integration-react-router.apolloclient.options.md)
 
 
 </td><td>
 
-
-</td><td>
-
-Constructs a new instance of the `ApolloClient` class
-
-
-</td></tr>
-</tbody></table>
-
-## Methods
-
-<table><thead><tr><th>
-
-Method
-
-
-</th><th>
-
-Modifiers
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[setLink(newLink)](./client-integration-react-router.apolloclient.setlink.md)
-
-
-</td><td>
-
-
-</td><td>
 
 
 </td></tr>
