@@ -198,6 +198,31 @@ A child client component reading the `TransportedQueryRef` via useReadQuery will
 </td></tr>
 </tbody></table>
 
+## Namespaces
+
+<table><thead><tr><th>
+
+Namespace
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[ApolloClient](./client-integration-nextjs.apolloclient.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>
+
 ## Variables
 
 <table><thead><tr><th>
