@@ -40,13 +40,43 @@ type SimulatedQueryInfo = {
   controller: ReadableStreamDefaultController<ReadableStreamLinkEvent>;
   options: OrigApolloClient.WatchQueryOptions<any, OperationVariables>;
 };
+/** @public */
+export declare namespace ApolloClient {
+  /** @public */
+  export interface Options
+    extends Omit<
+      OrigApolloClient.Options,
+      "cache" | "ssrMode" | "ssrForceFetchDelay"
+    > {
+    cache: InMemoryCache;
+  }
+  /*
+  We can currently not re-export these types from the upstream ApolloClient implementation because the build 
+  tooling doesn't support that:
+    > DTS Build error
+    > Error: namespace child (hoisting) not supported yet
 
-interface WrappedApolloClientOptions
-  extends Omit<
-    OrigApolloClient.Options,
-    "cache" | "ssrMode" | "ssrForceFetchDelay"
-  > {
-  cache: InMemoryCache;
+    We could re-export them by defining them as new types that reference the originals, but that would require us
+    to keep generics in sync and would either erase the docblocks or require us to duplicate them 
+    (and they would go out of sync).
+    If you need any of the other types, please use the `ApolloClient` namespace exported from `@apollo/client` directly.
+  */
+  // export import DefaultOptions = OrigApolloClient.DefaultOptions;
+  // export import DevtoolsOptions = OrigApolloClient.DevtoolsOptions;
+  // export import MutateOptions = OrigApolloClient.MutateOptions;
+  // export import MutateResult = OrigApolloClient.MutateResult;
+  // export import QueryOptions = OrigApolloClient.QueryOptions;
+  // export import QueryResult = OrigApolloClient.QueryResult;
+  // export import RefetchQueriesOptions = OrigApolloClient.RefetchQueriesOptions;
+  // export import RefetchQueriesResult = OrigApolloClient.RefetchQueriesResult;
+  // export import SubscribeOptions = OrigApolloClient.SubscribeOptions;
+  // export import SubscribeResult = OrigApolloClient.SubscribeResult;
+  // export import WatchFragmentOptions = OrigApolloClient.WatchFragmentOptions;
+  // export import WatchFragmentResult = OrigApolloClient.WatchFragmentResult;
+  // export import WatchQueryOptions = OrigApolloClient.WatchQueryOptions;
+  // export import ReadQueryOptions = OrigApolloClient.ReadQueryOptions;
+  // export import WriteQueryOptions = OrigApolloClient.WriteQueryOptions;
+  // export import WriteFragmentOptions = OrigApolloClient.WriteFragmentOptions;
 }
 
 const wrappers = Symbol.for("apollo.hook.wrappers");
@@ -60,7 +90,7 @@ class ApolloClientBase extends OrigApolloClient {
 
   [sourceSymbol]: string;
 
-  constructor(options: WrappedApolloClientOptions) {
+  constructor(options: ApolloClient.Options) {
     const warnings: string[] = [];
     if ("ssrMode" in options) {
       delete options.ssrMode;
@@ -111,7 +141,7 @@ class ApolloClientBase extends OrigApolloClient {
 }
 
 class ApolloClientClientBaseImpl extends ApolloClientBase {
-  constructor(options: WrappedApolloClientOptions) {
+  constructor(options: ApolloClient.Options) {
     super(options);
     this.onQueryStarted = this.onQueryStarted.bind(this);
 
