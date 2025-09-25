@@ -35,7 +35,11 @@ for (const pkg of packages) {
       continue;
     }
     if (parsed.prerelease?.[0] !== tag) {
+      const { major, minor, patch } = parsed;
       parsed.inc("prerelease", tag);
+      parsed.major = major;
+      parsed.minor = minor;
+      parsed.patch = patch;
       const info = await packument(name);
       while (parsed.format() in info.versions) {
         parsed.inc("prerelease", tag);
