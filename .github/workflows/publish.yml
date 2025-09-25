@@ -42,19 +42,19 @@ jobs:
           cache: "yarn"
       - run: yarn install --immutable --mode=skip-build
 
-      - name: Alpha branch - Enter prerelease mode (alpha by default)
-        # If .changeset/pre.json does not exist and we did not recently exit
-        # prerelease mode, enter prerelease mode with tag alpha
-        if: (github.ref_name == 'next' || github.ref_name == 'alpha') && !contains(github.event.head_commit.message, 'Exit prerelease')
-        run: |
-          if ! test -f ".changeset/pre.json"; then
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git config user.name "github-actions[bot]"
-            npx changeset pre enter alpha
-            git add -A
-            git commit -m 'Enter prerelease mode'
-            git push
-          fi
+      # - name: Alpha branch - Enter prerelease mode (alpha by default)
+      #   # If .changeset/pre.json does not exist and we did not recently exit
+      #   # prerelease mode, enter prerelease mode with tag alpha
+      #   if: (github.ref_name == 'next' || github.ref_name == 'alpha') && !contains(github.event.head_commit.message, 'Exit prerelease')
+      #   run: |
+      #     if ! test -f ".changeset/pre.json"; then
+      #       git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #       git config user.name "github-actions[bot]"
+      #       npx changeset pre enter alpha
+      #       git add -A
+      #       git commit -m 'Enter prerelease mode'
+      #       git push
+      #     fi
 
       - name: Append NPM token to .npmrc
         run: |
