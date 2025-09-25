@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 export const hookWrappers: HookWrappers = {
   useFragment(orig_useFragment) {
-    return wrap(orig_useFragment, ["data", "complete", "missing"]);
+    return wrap(orig_useFragment, ["data", "complete", "missing", "dataState"]);
   },
   useQuery(orig_useQuery) {
     return wrap<typeof orig_useQuery>(
@@ -13,11 +13,11 @@ export const hookWrappers: HookWrappers = {
         ? (query, options) =>
             orig_useQuery(query, { ...options, fetchPolicy: "cache-only" })
         : orig_useQuery,
-      ["data", "loading", "networkStatus"]
+      ["data", "loading", "networkStatus", "dataState"]
     );
   },
   useSuspenseQuery(orig_useSuspenseQuery) {
-    return wrap(orig_useSuspenseQuery, ["data", "networkStatus"]);
+    return wrap(orig_useSuspenseQuery, ["data", "networkStatus", "dataState"]);
   },
   useReadQuery(orig_useReadQuery) {
     return wrap(
@@ -25,7 +25,7 @@ export const hookWrappers: HookWrappers = {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         return orig_useReadQuery(useWrapTransportedQueryRef(queryRef));
       },
-      ["data", "networkStatus"]
+      ["data", "networkStatus", "dataState"]
     );
   },
   useQueryRefHandlers(orig_useQueryRefHandlers) {
