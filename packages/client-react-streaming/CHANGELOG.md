@@ -1,5 +1,11 @@
 # @apollo/client-react-streaming
 
+## 0.13.1
+
+### Patch Changes
+
+- af90924: Export modified `Options` type for `ApolloClient`.
+
 ## 0.13.0
 
 ### Minor Changes

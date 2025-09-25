@@ -2,18 +2,36 @@
 
 [Home](./index.md) &gt; [@apollo/client-react-streaming](./client-react-streaming.md) &gt; [ApolloClient](./client-react-streaming.apolloclient.md)
 
-## ApolloClient class
+## ApolloClient namespace
 
-A version of `ApolloClient` to be used with streaming SSR or in React Server Components.
-
-For more documentation, please see [the Apollo Client API documentation](https://www.apollographql.com/docs/react/api/core/ApolloClient)<!-- -->.
 
 **Signature:**
 
 ```typescript
-declare class ApolloClient extends ApolloClient_base implements Partial<ApolloClientSSRImpl> 
+declare namespace ApolloClient 
 ```
-**Extends:** ApolloClient\_base
 
-**Implements:** Partial&lt;ApolloClientSSRImpl&gt;
+## Interfaces
 
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Options](./client-react-streaming.apolloclient.options.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>

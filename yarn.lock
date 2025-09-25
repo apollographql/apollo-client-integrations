@@ -203,7 +203,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client-integration-nextjs@npm:0.13.0, @apollo/client-integration-nextjs@workspace:^, @apollo/client-integration-nextjs@workspace:packages/nextjs":
+"@apollo/client-integration-nextjs@npm:0.13.1, @apollo/client-integration-nextjs@workspace:^, @apollo/client-integration-nextjs@workspace:packages/nextjs":
   version: 0.0.0-use.local
   resolution: "@apollo/client-integration-nextjs@workspace:packages/nextjs"
   dependencies:
@@ -390,7 +390,7 @@ __metadata:
   resolution: "@apollo/experimental-nextjs-app-support@workspace:packages/experimental-nextjs-app-support"
   dependencies:
     "@apollo/client": "npm:^4.0.0"
-    "@apollo/client-integration-nextjs": "npm:0.13.0"
+    "@apollo/client-integration-nextjs": "npm:0.13.1"
     "@arethetypeswrong/cli": "npm:0.15.3"
     "@tsconfig/recommended": "npm:1.0.6"
     "@types/react": "npm:*"

@@ -81,6 +81,16 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
+[ApolloClient](./client-integration-react-router.apolloclient.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
 [createApolloLoaderHandler](./client-integration-react-router.createapolloloaderhandler.md)
 
 
