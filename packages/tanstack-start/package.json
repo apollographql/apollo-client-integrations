@@ -1,6 +1,6 @@
 {
   "name": "@apollo/client-integration-tanstack-start",
-  "version": "0.12.0-alpha.4",
+  "version": "0.12.3-alpha.5",
   "repository": {
     "url": "git+https://github.com/apollographql/apollo-client-integrations"
   },

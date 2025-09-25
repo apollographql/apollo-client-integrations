@@ -13,8 +13,6 @@
     "apollo-next-13-demo",
     "packages-shared",
     "@integration-test/**",
-    "@apollo/client-integration-react-router",
-    "@apollo/client-integration-tanstack-start",
     "@integration-test/react-router",
     "@integration-test/tanstack-start"
   ]

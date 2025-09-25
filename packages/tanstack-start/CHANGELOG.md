@@ -1,5 +1,12 @@
 # @apollo/client-integration-tanstack-start
 
+## 0.12.3-alpha.5
+
+### Patch Changes
+
+- da41bd8: change `preloadQuery` type to `PreloadTransportedQueryFunction` (thank you @DogPawHat)
+  - @apollo/client-react-streaming@0.12.3-alpha.5
+
 ## 0.12.0-alpha.4
 
 ### Patch Changes

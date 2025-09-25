@@ -1,6 +1,6 @@
 {
   "name": "@apollo/client-integration-react-router",
-  "version": "0.12.0-alpha.4",
+  "version": "0.13.0-alpha.1",
   "repository": {
     "url": "git+https://github.com/apollographql/apollo-client-integrations"
   },

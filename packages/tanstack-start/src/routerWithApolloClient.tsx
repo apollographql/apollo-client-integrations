@@ -1,21 +1,19 @@
 import {
   isTransportedQueryRef,
   reviveTransportedQueryRef,
+  type PreloadTransportedQueryFunction,
 } from "@apollo/client-react-streaming";
 import type { ApolloClient } from "@apollo/client-react-streaming";
 import { createTransportedQueryPreloader } from "@apollo/client-react-streaming";
 import { ApolloProvider } from "./ApolloProvider.js";
-import {
-  createQueryPreloader,
-  type PreloadQueryFunction,
-} from "@apollo/client/react";
+import { createQueryPreloader } from "@apollo/client/react";
 import { type AnyRouter } from "@tanstack/react-router";
 import React from "react";
 
 /** @alpha */
 export interface ApolloClientRouterContext {
   apolloClient: ApolloClient;
-  preloadQuery: PreloadQueryFunction;
+  preloadQuery: PreloadTransportedQueryFunction;
 }
 
 /** @alpha */
@@ -29,10 +27,10 @@ export function routerWithApolloClient<TRouter extends AnyRouter>(
 
   context.apolloClient = apolloClient;
   context.preloadQuery = router.isServer
-    ? (createTransportedQueryPreloader(
+    ? createTransportedQueryPreloader(apolloClient)
+    : (createQueryPreloader(
         apolloClient
-      ) as unknown as PreloadQueryFunction)
-    : createQueryPreloader(apolloClient);
+      ) as unknown as PreloadTransportedQueryFunction);
 
   const originalHydrate = router.options.hydrate;
   router.options.hydrate = (...args) => {

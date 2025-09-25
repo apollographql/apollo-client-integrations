@@ -24,7 +24,7 @@
     "build:libs": "yarn workspaces foreach --all -t --include \"@apollo/*\" run build",
     "build:docmodel": "yarn workspaces foreach --all --include \"@apollo/*\" --exclude @apollo/experimental-nextjs-app-support exec api-extractor run",
     "changeset-publish": "yarn build:libs && changeset publish",
-    "changeset-version": "changeset version && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
+    "changeset-version": "changeset version && node scripts/post-version.mts && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
   },
   "resolutions": {
     "@microsoft/api-documenter": "7.24.1",
@@ -43,11 +43,13 @@
     "@size-limit/webpack": "11.1.2",
     "@size-limit/webpack-why": "11.1.2",
     "@types/node": "^22.10.9",
+    "@types/pacote": "^11.1.8",
     "@yarnpkg/cli": "^4.9.1",
     "@yarnpkg/core": "^4.2.0",
     "knip": "^5.43.1",
+    "pacote": "^21.0.3",
     "size-limit": "11.1.2",
     "typescript": "^5.7.3",
-    "zx": "^8.2.4"
+    "zx": "^8.8.3"
   }
 }

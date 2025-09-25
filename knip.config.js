@@ -5,7 +5,8 @@ const config = {
   workspaces: {
     ".": {
       ignoreBinaries: ["jq", "playwright"],
-      ignoreDependencies: [/@size-limit\/.*/, "prettier", "zx"],
+      entry: ["knip.config.js", "scripts/*.js", "scripts/*.ts"],
+      ignoreDependencies: [/@size-limit\/.*/, "prettier"],
     },
     "packages/*": {
       entry: ["**/*.test.{ts,tsx}"],
