@@ -1,5 +1,11 @@
 # @apollo/client-react-streaming
 
+## 0.13.2
+
+### Patch Changes
+
+- f6ada64: Ensure that `dataState` hook return value is transported to prevent hydration mismatches.
+
 ## 0.13.1
 
 ### Patch Changes
