@@ -10,5 +10,5 @@
 **Signature:**
 
 ```typescript
-preloadQuery: PreloadQueryFunction;
+preloadQuery: PreloadTransportedQueryFunction;
 ```

@@ -66,7 +66,7 @@ ApolloClient$1
 
 </td><td>
 
-PreloadQueryFunction
+PreloadTransportedQueryFunction
 
 
 </td><td>
