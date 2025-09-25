@@ -100,7 +100,7 @@
     "rxjs": "^7.3.0"
   },
   "dependencies": {
-    "@apollo/client-react-streaming": "0.13.1",
+    "@apollo/client-react-streaming": "0.13.2",
     "jsesc": "^3.1.0"
   }
 }
