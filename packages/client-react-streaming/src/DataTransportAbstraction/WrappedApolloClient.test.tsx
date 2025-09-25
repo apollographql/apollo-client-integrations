@@ -62,6 +62,7 @@ describe(
     };
     const FIRST_HOOK_RESULT = {
       data: FIRST_RESULT,
+      dataState: "complete",
       networkStatus: 7,
     };
 
