@@ -2,16 +2,36 @@
 
 [Home](./index.md) &gt; [@apollo/client-integration-nextjs](./client-integration-nextjs.md) &gt; [ApolloClient](./client-integration-nextjs.apolloclient.md)
 
-## ApolloClient class
+## ApolloClient namespace
 
-A version of `ApolloClient` to be used with streaming SSR or in React Server Components.
-
-For more documentation, please see [the Apollo Client API documentation](https://www.apollographql.com/docs/react/api/core/ApolloClient)<!-- -->.
 
 **Signature:**
 
 ```typescript
-declare class ApolloClient extends ApolloClient$1 
+declare namespace ApolloClient 
 ```
-**Extends:** ApolloClient$1
 
+## Interfaces
+
+<table><thead><tr><th>
+
+Interface
+
+
+</th><th>
+
+Description
+
+
+</th></tr></thead>
+<tbody><tr><td>
+
+[Options](./client-integration-nextjs.apolloclient.options.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+</tbody></table>

@@ -1,5 +1,17 @@
 # @apollo/client-react-streaming
 
+## 0.13.2
+
+### Patch Changes
+
+- f6ada64: Ensure that `dataState` hook return value is transported to prevent hydration mismatches.
+
+## 0.13.1
+
+### Patch Changes
+
+- af90924: Export modified `Options` type for `ApolloClient`.
+
 ## 0.13.0
 
 ### Minor Changes
@@ -9,8 +21,6 @@
 - a434180: Update signature of PreloadTransportedQueryOptions from `<TVariables, TData>` to `<TData, TVariables>`
 - a434180: Deprecate `PreloadQueryOptions` - please use `PreloadQuery.Options` instead.
 - a434180: Deprecate `PreloadQueryProps` - please use `PreloadQuery.Props` instead.
-
-## 0.12.3-alpha.5
 
 ## 0.12.3
 
