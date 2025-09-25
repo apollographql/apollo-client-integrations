@@ -24,7 +24,7 @@
     "build:libs": "yarn workspaces foreach --all -t --include \"@apollo/*\" run build",
     "build:docmodel": "yarn workspaces foreach --all --include \"@apollo/*\" --exclude @apollo/experimental-nextjs-app-support exec api-extractor run",
     "changeset-publish": "yarn build:libs && changeset publish",
-    "changeset-version": "changeset version && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
+    "changeset-version": "changeset version && node scripts/post-version.mts && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
   },
   "resolutions": {
     "@microsoft/api-documenter": "7.24.1",
