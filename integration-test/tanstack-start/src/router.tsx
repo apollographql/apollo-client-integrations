@@ -28,7 +28,7 @@ const link = ApolloLink.from([
     : new HttpLink({ uri: "/api/graphql" }),
 ]);
 
-export function createRouter() {
+export function getRouter() {
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
     link,
@@ -36,18 +36,10 @@ export function createRouter() {
   });
   const router = createTanStackRouter({
     routeTree,
-    context: {} as any,
+    context: {
+      ...routerWithApolloClient.defaultContext,
+    },
   });
 
   return routerWithApolloClient(router, apolloClient);
-}
-
-declare module "@tanstack/react-router" {
-  interface Register {
-    router: ReturnType<typeof createRouter>;
-    config: RouterConfig<
-      [...routerWithApolloClient.SerializationAdapters],
-      boolean | "data-only"
-    >;
-  }
 }

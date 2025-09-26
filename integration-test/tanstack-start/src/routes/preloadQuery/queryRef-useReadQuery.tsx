@@ -55,7 +55,7 @@ function Child({ queryRef }: { queryRef: QueryRef<DynamicProductResult> }) {
   );
 }
 
-export function ErrorComponent({ error, reset }: ErrorComponentProps) {
+function ErrorComponent({ error, reset }: ErrorComponentProps) {
   return (
     <>
       <h2>Encountered an error:</h2>

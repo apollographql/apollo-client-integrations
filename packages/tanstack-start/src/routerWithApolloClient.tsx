@@ -5,26 +5,14 @@ import { ApolloProvider } from "./ApolloProvider.js";
 import { createQueryPreloader } from "@apollo/client/react";
 import { type AnyRouter } from "@tanstack/react-router";
 import React from "react";
-import { getQueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
-import type {
-  ClientTransport,
-  TransportSerializationAdapter,
-} from "./Transport.js";
-import { ServerTransport, transportSerializationAdapter } from "./Transport.js";
+import type { ClientTransport } from "./Transport.js";
+import { ServerTransport } from "./Transport.js";
 
 /** @alpha */
 export interface ApolloClientRouterContext {
   apolloClient: ApolloClient;
   apolloClientTransport: ServerTransport | ClientTransport;
   preloadQuery: PreloadTransportedQueryFunction;
-}
-
-import type { QueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
-export declare namespace routerWithApolloClient {
-  export type SerializationAdapters = [
-    QueryRefSerializationAdapter,
-    TransportSerializationAdapter,
-  ];
 }
 
 /** @alpha */
@@ -65,11 +53,12 @@ export function routerWithApolloClient<TRouter extends AnyRouter>(
     };
   }
 
-  router.options.serializationAdapters = [
-    ...(router.options.serializationAdapters ?? []),
-    getQueryRefSerializationAdapter(apolloClient),
-    transportSerializationAdapter,
-  ];
+  // right now this has no effect, waiting for upstream changes
+  // router.options.serializationAdapters = [
+  //   ...(router.options.serializationAdapters ?? []),
+  //   getQueryRefSerializationAdapter(apolloClient),
+  //   transportSerializationAdapter,
+  // ];
 
   const PreviousInnerWrap = router.options.InnerWrap || React.Fragment;
   // eslint-disable-next-line react/display-name
@@ -80,4 +69,20 @@ export function routerWithApolloClient<TRouter extends AnyRouter>(
   );
 
   return router;
+}
+
+routerWithApolloClient.defaultContext = {
+  apolloClient: new Proxy({} as any, { get: contextAccess }),
+  apolloClientTransport: new Proxy({} as any, { get: contextAccess }),
+  preloadQuery: new Proxy(contextAccess as any, { get: contextAccess }),
+} as ApolloClientRouterContext;
+
+function contextAccess(): never {
+  throw new Error(
+    `
+Could not find Apollo Client in router context. 
+Did you forget to wrap your router in a \`routerWithApolloClient\` call before returning it from \`getRouter\`?
+
+`
+  );
 }

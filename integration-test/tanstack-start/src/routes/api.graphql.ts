@@ -1,7 +1,7 @@
-import { createServerFileRoute } from "@tanstack/react-start/server";
+import { createFileRoute } from "@tanstack/react-router";
 import { schema } from "@integration-test/shared/schema";
 import { apiRouteHandler } from "@integration-test/shared/apiRoute";
 
-export const ServerRoute = createServerFileRoute("/api/graphql").methods({
-  POST: apiRouteHandler({ schema }),
+export const Route = createFileRoute("/api/graphql")({
+  server: { handlers: { POST: apiRouteHandler({ schema }) } },
 });

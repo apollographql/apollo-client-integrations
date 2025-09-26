@@ -32,19 +32,19 @@ import {
   InMemoryCache,
 } from "@apollo/client-integration-tanstack-start";
 import { HttpLink } from "@apollo/client";
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
-export function createRouter() {
+export function getRouter() {
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
     link: new HttpLink({ uri: "https://your.graphl.api" }),
   });
   const router = createTanStackRouter({
     routeTree,
-    // the context properties `apolloClient` and `preloadQuery`
-    // will be filled in by calling `routerWithApolloClient` later
-    // you should omit them here, which means you have to
-    // `as any` this context object
-    context: {} as any,
+    context: {
+      ...routerWithApolloClient.defaultContext,
+    },
   });
 
   return routerWithApolloClient(router, apolloClient);
@@ -53,6 +53,20 @@ export function createRouter() {
 
 > [!IMPORTANT]  
 > `ApolloClient` and `InMemoryCache` need to be imported from `@apollo/client-integration-tanstack-start`, not from `@apollo/client`.
+
+Add `ApolloSerializationAdapter` to the `serializationAdapters` when creating your `startInstance`.
+If you don't have one yet, create a `start.ts` file with the following contents:
+
+```ts
+import { createStart } from "@tanstack/react-start";
+import { ApolloSerializationAdapter } from "@apollo/client-integration-tanstack-start";
+
+export const startInstance = createStart(() => {
+  return {
+    serializationAdapters: [ApolloSerializationAdapter],
+  };
+});
+```
 
 ## Usage
 

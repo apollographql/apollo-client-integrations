@@ -8,8 +8,6 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createServerRootRoute } from '@tanstack/react-start/server'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UseSuspenseQueryDeferRouteImport } from './routes/useSuspenseQuery-defer'
 import { Route as UseSuspenseQueryRouteImport } from './routes/useSuspenseQuery'
@@ -21,9 +19,7 @@ import { Route as LoaderDeferRouteImport } from './routes/loader-defer'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PreloadQueryUseSuspenseQueryRouteImport } from './routes/preloadQuery/useSuspenseQuery'
 import { Route as PreloadQueryQueryRefUseReadQueryRouteImport } from './routes/preloadQuery/queryRef-useReadQuery'
-import { ServerRoute as ApiGraphqlServerRouteImport } from './routes/api.graphql'
-
-const rootServerRouteImport = createServerRootRoute()
+import { Route as ApiGraphqlRouteImport } from './routes/api.graphql'
 
 const UseSuspenseQueryDeferRoute = UseSuspenseQueryDeferRouteImport.update({
   id: '/useSuspenseQuery-defer',
@@ -78,10 +74,10 @@ const PreloadQueryQueryRefUseReadQueryRoute =
     path: '/preloadQuery/queryRef-useReadQuery',
     getParentRoute: () => rootRouteImport,
   } as any)
-const ApiGraphqlServerRoute = ApiGraphqlServerRouteImport.update({
+const ApiGraphqlRoute = ApiGraphqlRouteImport.update({
   id: '/api/graphql',
   path: '/api/graphql',
-  getParentRoute: () => rootServerRouteImport,
+  getParentRoute: () => rootRouteImport,
 } as any)
 
 export interface FileRoutesByFullPath {
@@ -93,6 +89,7 @@ export interface FileRoutesByFullPath {
   '/useQueryWithCache': typeof UseQueryWithCacheRoute
   '/useSuspenseQuery': typeof UseSuspenseQueryRoute
   '/useSuspenseQuery-defer': typeof UseSuspenseQueryDeferRoute
+  '/api/graphql': typeof ApiGraphqlRoute
   '/preloadQuery/queryRef-useReadQuery': typeof PreloadQueryQueryRefUseReadQueryRoute
   '/preloadQuery/useSuspenseQuery': typeof PreloadQueryUseSuspenseQueryRoute
 }
@@ -105,6 +102,7 @@ export interface FileRoutesByTo {
   '/useQueryWithCache': typeof UseQueryWithCacheRoute
   '/useSuspenseQuery': typeof UseSuspenseQueryRoute
   '/useSuspenseQuery-defer': typeof UseSuspenseQueryDeferRoute
+  '/api/graphql': typeof ApiGraphqlRoute
   '/preloadQuery/queryRef-useReadQuery': typeof PreloadQueryQueryRefUseReadQueryRoute
   '/preloadQuery/useSuspenseQuery': typeof PreloadQueryUseSuspenseQueryRoute
 }
@@ -118,6 +116,7 @@ export interface FileRoutesById {
   '/useQueryWithCache': typeof UseQueryWithCacheRoute
   '/useSuspenseQuery': typeof UseSuspenseQueryRoute
   '/useSuspenseQuery-defer': typeof UseSuspenseQueryDeferRoute
+  '/api/graphql': typeof ApiGraphqlRoute
   '/preloadQuery/queryRef-useReadQuery': typeof PreloadQueryQueryRefUseReadQueryRoute
   '/preloadQuery/useSuspenseQuery': typeof PreloadQueryUseSuspenseQueryRoute
 }
@@ -132,6 +131,7 @@ export interface FileRouteTypes {
     | '/useQueryWithCache'
     | '/useSuspenseQuery'
     | '/useSuspenseQuery-defer'
+    | '/api/graphql'
     | '/preloadQuery/queryRef-useReadQuery'
     | '/preloadQuery/useSuspenseQuery'
   fileRoutesByTo: FileRoutesByTo
@@ -144,6 +144,7 @@ export interface FileRouteTypes {
     | '/useQueryWithCache'
     | '/useSuspenseQuery'
     | '/useSuspenseQuery-defer'
+    | '/api/graphql'
     | '/preloadQuery/queryRef-useReadQuery'
     | '/preloadQuery/useSuspenseQuery'
   id:
@@ -156,6 +157,7 @@ export interface FileRouteTypes {
     | '/useQueryWithCache'
     | '/useSuspenseQuery'
     | '/useSuspenseQuery-defer'
+    | '/api/graphql'
     | '/preloadQuery/queryRef-useReadQuery'
     | '/preloadQuery/useSuspenseQuery'
   fileRoutesById: FileRoutesById
@@ -169,29 +171,9 @@ export interface RootRouteChildren {
   UseQueryWithCacheRoute: typeof UseQueryWithCacheRoute
   UseSuspenseQueryRoute: typeof UseSuspenseQueryRoute
   UseSuspenseQueryDeferRoute: typeof UseSuspenseQueryDeferRoute
+  ApiGraphqlRoute: typeof ApiGraphqlRoute
   PreloadQueryQueryRefUseReadQueryRoute: typeof PreloadQueryQueryRefUseReadQueryRoute
   PreloadQueryUseSuspenseQueryRoute: typeof PreloadQueryUseSuspenseQueryRoute
-}
-export interface FileServerRoutesByFullPath {
-  '/api/graphql': typeof ApiGraphqlServerRoute
-}
-export interface FileServerRoutesByTo {
-  '/api/graphql': typeof ApiGraphqlServerRoute
-}
-export interface FileServerRoutesById {
-  __root__: typeof rootServerRouteImport
-  '/api/graphql': typeof ApiGraphqlServerRoute
-}
-export interface FileServerRouteTypes {
-  fileServerRoutesByFullPath: FileServerRoutesByFullPath
-  fullPaths: '/api/graphql'
-  fileServerRoutesByTo: FileServerRoutesByTo
-  to: '/api/graphql'
-  id: '__root__' | '/api/graphql'
-  fileServerRoutesById: FileServerRoutesById
-}
-export interface RootServerRouteChildren {
-  ApiGraphqlServerRoute: typeof ApiGraphqlServerRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -266,16 +248,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PreloadQueryQueryRefUseReadQueryRouteImport
       parentRoute: typeof rootRouteImport
     }
-  }
-}
-declare module '@tanstack/react-start/server' {
-  interface ServerFileRoutesByPath {
     '/api/graphql': {
       id: '/api/graphql'
       path: '/api/graphql'
       fullPath: '/api/graphql'
-      preLoaderRoute: typeof ApiGraphqlServerRouteImport
-      parentRoute: typeof rootServerRouteImport
+      preLoaderRoute: typeof ApiGraphqlRouteImport
+      parentRoute: typeof rootRouteImport
     }
   }
 }
@@ -290,15 +268,19 @@ const rootRouteChildren: RootRouteChildren = {
   UseQueryWithCacheRoute: UseQueryWithCacheRoute,
   UseSuspenseQueryRoute: UseSuspenseQueryRoute,
   UseSuspenseQueryDeferRoute: UseSuspenseQueryDeferRoute,
+  ApiGraphqlRoute: ApiGraphqlRoute,
   PreloadQueryQueryRefUseReadQueryRoute: PreloadQueryQueryRefUseReadQueryRoute,
   PreloadQueryUseSuspenseQueryRoute: PreloadQueryUseSuspenseQueryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-const rootServerRouteChildren: RootServerRouteChildren = {
-  ApiGraphqlServerRoute: ApiGraphqlServerRoute,
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
 }
-export const serverRouteTree = rootServerRouteImport
-  ._addFileChildren(rootServerRouteChildren)
-  ._addFileTypes<FileServerRouteTypes>()
