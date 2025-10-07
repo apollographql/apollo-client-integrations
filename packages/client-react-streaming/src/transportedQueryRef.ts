@@ -230,7 +230,8 @@ function getInternalQueryRef(
     // from `userOptions` and never change `nextFetchPolicy` or we would need additional
     // logic to handle that case
     invariant(
-      userOptions.nextFetchPolicy === initialFetchOptions.nextFetchPolicy
+      userOptions.nextFetchPolicy === initialFetchOptions.nextFetchPolicy,
+      "Encountered an unexpected bug in @apollo/client-react-streaming. Please file an issue."
     );
   }
   // create with `userOptions` so internals like `initialFetchPolicy` are set correctly
