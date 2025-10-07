@@ -1,9 +1,8 @@
 import * as assert from "node:assert";
 import { test } from "node:test";
 import { outsideOf } from "@internal/test-utils/runInConditions.js";
-import { renderStreamEnv } from "@internal/test-utils/react.js";
 import { silenceConsoleErrors } from "@internal/test-utils/console.js";
-import { ServerTransport } from "./Transport.js";
+import type { AnyRouter } from "@tanstack/router-core";
 
 test("Error message when `WrappedApolloClient` is instantiated with wrong `InMemoryCache`", async () => {
   const { ApolloClient } = await import("#bundled");
@@ -29,10 +28,7 @@ test(
     globalThis.window = {} as any;
     const { routerWithApolloClient, ...bundled } = await import("#bundled");
     const tsr = await import("@tanstack/react-router");
-    const tss = await import("@tanstack/react-start/server");
     const React = await import("react");
-
-    const { ErrorBoundary } = await import("react-error-boundary");
 
     const routeTree = tsr
       .createRootRouteWithContext<
@@ -46,7 +42,7 @@ test(
       const { ApolloClient, InMemoryCache, HttpLink } = await import(
         "@apollo/client"
       );
-      using env = await renderStreamEnv();
+      const { renderToString } = await import("react-dom/server");
       // Even with an error Boundary, React will still log to `console.error` - we avoid the noise here.
       using _restoreConsole = silenceConsoleErrors();
       const router = routerWithApolloClient(
@@ -61,15 +57,9 @@ test(
           link: new HttpLink({ uri: "/api/graphql" }),
         })
       );
-      const stream = env.createRenderStream();
-      const promise = new Promise((_, reject) => {
-        stream.render(
-          <ErrorBoundary onError={reject} fallback={<></>}>
-            <tss.StartServer router={router} />
-          </ErrorBoundary>
-        );
-      });
-      await assert.rejects(promise, {
+
+      const InnerWrap = router.options.InnerWrap!;
+      assert.throws(() => renderToString(<InnerWrap>{""}</InnerWrap>), {
         message:
           'When using `ApolloClient` in streaming SSR, you must use the `ApolloClient` export provided by `"@apollo/client-integration-tanstack-start"`.',
       });
@@ -78,21 +68,47 @@ test(
     await test("this package should work", async () => {
       const { ApolloClient, InMemoryCache } = bundled;
       const { HttpLink } = await import("@apollo/client");
-      using env = await renderStreamEnv();
-      const router = routerWithApolloClient(
-        tsr.createRouter({
-          routeTree,
-          isServer: true,
-          context: { ...routerWithApolloClient.defaultContext },
-        }),
-        new ApolloClient({
-          cache: new InMemoryCache(),
-          link: new HttpLink({ uri: "/api/graphql" }),
-        })
+      await renderStartToString(
+        routerWithApolloClient(
+          tsr.createRouter({
+            routeTree,
+            isServer: true,
+            context: { ...routerWithApolloClient.defaultContext },
+          }),
+          new ApolloClient({
+            cache: new InMemoryCache(),
+            link: new HttpLink({ uri: "/api/graphql" }),
+          })
+        )
       );
-      const stream = env.createRenderStream();
-      await stream.render(<tss.StartServer router={router} />);
-      await stream.takeRender();
     });
   }
 );
+
+async function renderStartToString(
+  router: AnyRouter,
+  Wrapper: React.FC<{ children: React.ReactNode }> = ({ children }) => children
+) {
+  const React = await import("react");
+  const tss = await import("@tanstack/react-start/server");
+  const { createRequestHandler, renderRouterToString } = await import(
+    "@tanstack/react-router/ssr/server"
+  );
+  const createRouter = () => router;
+  const request = new Request("http://localhost/");
+  const handler = createRequestHandler({
+    createRouter,
+    request,
+  });
+  return handler(({ responseHeaders, router }) =>
+    renderRouterToString({
+      responseHeaders,
+      router,
+      children: (
+        <Wrapper>
+          <tss.StartServer router={router} />
+        </Wrapper>
+      ),
+    })
+  );
+}
