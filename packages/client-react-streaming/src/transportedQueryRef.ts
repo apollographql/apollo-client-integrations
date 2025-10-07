@@ -150,24 +150,16 @@ export function createTransportedQueryPreloader(
       ...notTransportedOptionOverrides,
     };
     if (
-      !(
-        watchQueryOptions.fetchPolicy == "no-cache" ||
-        watchQueryOptions.fetchPolicy == "network-only" ||
-        (prepareForReuse &&
-          watchQueryOptions.fetchPolicy == "cache-and-network")
-      )
+      watchQueryOptions.fetchPolicy !== "no-cache" &&
+      watchQueryOptions.fetchPolicy !== "network-only" &&
+      (!prepareForReuse ||
+        watchQueryOptions.fetchPolicy !== "cache-and-network")
     ) {
       // ensure that this query makes it to the network
       watchQueryOptions.fetchPolicy = "network-only";
     }
 
-    if (!prepareForReuse) {
-      const subscription = client.watchQuery(watchQueryOptions).subscribe({
-        next() {
-          subscription.unsubscribe();
-        },
-      });
-    } else {
+    if (prepareForReuse) {
       const internalQueryRef = getInternalQueryRef(
         client,
         { query, ...options },
@@ -175,6 +167,12 @@ export function createTransportedQueryPreloader(
       );
 
       return Object.assign(transportedQueryRef, wrapQueryRef(internalQueryRef));
+    } else {
+      const subscription = client.watchQuery(watchQueryOptions).subscribe({
+        next() {
+          subscription.unsubscribe();
+        },
+      });
     }
 
     return transportedQueryRef;
