@@ -12,7 +12,7 @@ import pacote from "pacote";
 const { packument } = pacote;
 
 const fixedTags: Record<string, "alpha" | "beta" | "rc" | "skip"> = {
-  "@apollo/client-integration-tanstack-start": `skip`,
+  "@apollo/client-integration-tanstack-start": `rc`,
   "@apollo/client-integration-react-router": `alpha`,
 } as const;
 
