@@ -271,11 +271,9 @@ export function isTransportedQueryRef(
 }
 
 /** @public */
-/*
-This hook is injected into `useReadQuery` and `useQueryRefHandlers` to ensure that
-`TransportedQueryRef`s are properly revived into `WrappedQueryRef`s before usage,
-should they not be hydrated properly for some reason.
-*/
+// This hook is injected into `useReadQuery` and `useQueryRefHandlers` to ensure that
+// `TransportedQueryRef`s are properly revived into `WrappedQueryRef`s before usage,
+// should they not be hydrated properly for some reason.
 export function useWrapTransportedQueryRef<TData>(
   queryRef:
     | QueryRef<TData, any, "complete" | "streaming" | "empty" | "partial">
