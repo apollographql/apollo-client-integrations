@@ -51,10 +51,13 @@ export class ServerTransport implements DataTransportAbstraction {
   }
 
   private shouldClose = false;
-  private closed = false;
   closeOnceFinished() {
     this.shouldClose = true;
-    if (this.ongoingStreams.size === 0 && !this.closed) {
+    this.closeIfFinished();
+  }
+  private closed = false;
+  private closeIfFinished() {
+    if (this.shouldClose && this.ongoingStreams.size === 0 && !this.closed) {
       this.controller.close();
       this.closed = true;
     }
@@ -71,10 +74,7 @@ export class ServerTransport implements DataTransportAbstraction {
     this.ongoingStreams.add(event);
     const finalize = () => {
       this.ongoingStreams.delete(event);
-      if (this.shouldClose && this.ongoingStreams.size === 0 && !this.closed) {
-        this.controller.close();
-        this.closed = true;
-      }
+      this.closeIfFinished();
     };
     observable.subscribe({
       next: (event) => {
