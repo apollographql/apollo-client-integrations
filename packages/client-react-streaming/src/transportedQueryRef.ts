@@ -105,15 +105,20 @@ export function getInjectableEventStream() {
 export function createTransportedQueryPreloader(
   client: ApolloClient,
   {
+    prepareForReuse = false,
+    notTransportedOptionOverrides = {},
+  }: {
     /**
      * Set this to `true` to indicate that this `queryRef` will be reused within the same process with the same Apollo Client instance without being dehydrated and hydrated.
      * In that case, it will already be written to the suspense cache so it doesn't need to be hydrated by re-running the query with a fake network request.
      */
-    prepareForReuse = false,
-    ssrSideOptionOverrides = {},
-  }: {
     prepareForReuse?: boolean;
-    ssrSideOptionOverrides?: Partial<ApolloClient.WatchQueryOptions<any, any>>;
+    /**
+     * Overrides to the options that should happen only in the `preloader` call, but should not be transported/hydrated on the client.
+     */
+    notTransportedOptionOverrides?: Partial<
+      ApolloClient.WatchQueryOptions<any, any>
+    >;
   } = {}
 ): PreloadTransportedQueryFunction {
   return (...[query, options]: Parameters<PreloadTransportedQueryFunction>) => {
@@ -142,7 +147,7 @@ export function createTransportedQueryPreloader(
           queryDeduplication: false,
         })
       ),
-      ...ssrSideOptionOverrides,
+      ...notTransportedOptionOverrides,
     };
     if (
       !(

@@ -50,7 +50,7 @@ export async function PreloadQuery<
   getClient: () => ApolloClient | Promise<ApolloClient>;
 }): Promise<React.ReactElement> {
   const preloader = createTransportedQueryPreloader(await getClient(), {
-    ssrSideOptionOverrides: { fetchPolicy: "no-cache" },
+    notTransportedOptionOverrides: { fetchPolicy: "no-cache" },
   });
   const queryRef = preloader(
     query,
