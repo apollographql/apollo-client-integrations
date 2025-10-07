@@ -52,9 +52,8 @@ test(
       const router = routerWithApolloClient(
         tsr.createRouter({
           routeTree,
-          context: {
-            apolloClientTransport: new ServerTransport(),
-          } as any,
+          isServer: true,
+          context: { ...routerWithApolloClient.defaultContext },
         }),
         // @ts-expect-error deliberately using the wrong class here
         new ApolloClient({
@@ -66,7 +65,7 @@ test(
       const promise = new Promise((_, reject) => {
         stream.render(
           <ErrorBoundary onError={reject} fallback={<></>}>
-            <tss.StartServer router={router as any} />
+            <tss.StartServer router={router} />
           </ErrorBoundary>
         );
       });
@@ -83,9 +82,8 @@ test(
       const router = routerWithApolloClient(
         tsr.createRouter({
           routeTree,
-          context: {
-            apolloClientTransport: new ServerTransport(),
-          } as any,
+          isServer: true,
+          context: { ...routerWithApolloClient.defaultContext },
         }),
         new ApolloClient({
           cache: new InMemoryCache(),
@@ -93,7 +91,7 @@ test(
         })
       );
       const stream = env.createRenderStream();
-      await stream.render(<tss.StartServer router={router as any} />);
+      await stream.render(<tss.StartServer router={router} />);
       await stream.takeRender();
     });
   }
