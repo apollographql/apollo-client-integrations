@@ -1,13 +1,13 @@
+import type { QueryEvent } from "@apollo/client-react-streaming";
 import {
   DataTransportContext,
   WrapApolloProvider,
 } from "@apollo/client-react-streaming";
-import type { AnyRouterWithContext } from "@tanstack/react-router";
-import React from "react";
-import type { QueryEvent } from "@apollo/client-react-streaming";
-import { bundle } from "./bundleInfo.js";
-import type { ApolloClientRouterContext } from "./routerWithApolloClient.js";
 import { invariant } from "@apollo/client/utilities/invariant";
+import React from "react";
+import { bundle } from "./bundleInfo.js";
+import type { ClientTransport, ServerTransport } from "./Transport.js";
+import type { ApolloClient } from "./ApolloClient.js";
 
 declare global {
   interface Window {
@@ -15,32 +15,32 @@ declare global {
   }
 }
 
+export declare namespace ApolloProvider {
+  export interface Context {
+    transport: ServerTransport | ClientTransport;
+  }
+}
+
 export const ApolloProvider = ({
-  router,
+  client,
+  context,
   children,
 }: React.PropsWithChildren<{
-  router: AnyRouterWithContext<ApolloClientRouterContext>;
+  client: ApolloClient;
+  context: ApolloProvider.Context;
 }>) => {
   return (
-    <WrappedApolloProvider
-      router={router}
-      makeClient={() =>
-        (router.options.context as ApolloClientRouterContext).apolloClient
-      }
-    >
+    <WrappedApolloProvider makeClient={() => client} context={context}>
       {children}
     </WrappedApolloProvider>
   );
 };
 
 const WrappedApolloProvider = WrapApolloProvider<{
-  router: AnyRouterWithContext<ApolloClientRouterContext>;
+  context: ApolloProvider.Context;
 }>((props) => {
-  const router = props.router;
-  const context: ApolloClientRouterContext = router.options.context;
-
-  const transport = context.apolloClientTransport;
-  invariant(transport, "No apolloClientTransport defined on router context");
+  const transport = props.context.transport;
+  invariant(transport, "No apolloClientTransport defined");
   if ("dispatchRequestStarted" in transport) {
     invariant(
       props.registerDispatchRequestStarted,

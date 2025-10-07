@@ -36,7 +36,7 @@ test(
 
     const routeTree = tsr
       .createRootRouteWithContext<
-        import("@apollo/client-integration-tanstack-start").ApolloClientRouterContext
+        import("@apollo/client-integration-tanstack-start").ApolloClientIntegration.RouterContext
       >()({
         component: () => <></>,
       })

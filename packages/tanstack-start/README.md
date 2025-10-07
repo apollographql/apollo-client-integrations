@@ -13,14 +13,14 @@ npm i @apollo/client-integration-tanstack-start @apollo/client graphql
 In your `routes/__root.tsx`, change from `createRootRoute` to `createRootRouteWithContext` to provide the right context type to your application.
 
 ```diff
-+import { type ApolloClientRouterContext } from "@apollo/client-integration-tanstack-start";
++import type { ApolloClientIntegration } from "@apollo/client-integration-tanstack-start";
 import {
 -   createRootRoute
 +   createRootRouteWithContext
 } from "@tanstack/react-router";
 
 -export const Route = createRootRoute({
-+export const Route = createRootRouteWithContext<ApolloClientRouterContext>()({
++export const Route = createRootRouteWithContext<ApolloClientIntegration.RouterContext>()({
 ```
 
 In your `router.tsx`, set up your Apollo Client instance and run `routerWithApolloClient`
@@ -38,7 +38,7 @@ import { routeTree } from "./routeTree.gen";
 export function getRouter() {
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
-    link: new HttpLink({ uri: "https://your.graphl.api" }),
+    link: new HttpLink({ uri: "https://your.graphql.api" }),
   });
   const router = createTanStackRouter({
     routeTree,
@@ -53,20 +53,6 @@ export function getRouter() {
 
 > [!IMPORTANT]  
 > `ApolloClient` and `InMemoryCache` need to be imported from `@apollo/client-integration-tanstack-start`, not from `@apollo/client`.
-
-Add `ApolloSerializationAdapter` to the `serializationAdapters` when creating your `startInstance`.
-If you don't have one yet, create a `start.ts` file with the following contents:
-
-```ts
-import { createStart } from "@tanstack/react-start";
-import { ApolloSerializationAdapter } from "@apollo/client-integration-tanstack-start";
-
-export const startInstance = createStart(() => {
-  return {
-    serializationAdapters: [ApolloSerializationAdapter],
-  };
-});
-```
 
 ## Usage
 

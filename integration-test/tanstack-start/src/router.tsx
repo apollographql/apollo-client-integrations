@@ -1,5 +1,4 @@
 import { createRouter as createTanStackRouter } from "@tanstack/react-router";
-import type { RouterConfig } from "@tanstack/router-core";
 import { routeTree } from "./routeTree.gen";
 import {
   routerWithApolloClient,

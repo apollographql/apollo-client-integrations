@@ -10,25 +10,26 @@ import {
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useState, type ReactNode } from "react";
 
-import { type ApolloClientRouterContext } from "@apollo/client-integration-tanstack-start";
+import type { ApolloClientIntegration } from "@apollo/client-integration-tanstack-start";
 
-export const Route = createRootRouteWithContext<ApolloClientRouterContext>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "TanStack Start Starter",
-      },
-    ],
-  }),
-  component: RootComponent,
-});
+export const Route =
+  createRootRouteWithContext<ApolloClientIntegration.RouterContext>()({
+    head: () => ({
+      meta: [
+        {
+          charSet: "utf-8",
+        },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1",
+        },
+        {
+          title: "TanStack Start Starter",
+        },
+      ],
+    }),
+    component: RootComponent,
+  });
 
 function RootComponent() {
   return (
