@@ -256,7 +256,7 @@ function getInternalQueryRef(
     fetchPolicy:
       observable.options.fetchPolicy === initialFetchOptions.fetchPolicy
         ? // restore `userOptions.fetchPolicy` for future fetches
-          optionsAfterCreation.fetchPolicy,
+          optionsAfterCreation.fetchPolicy
         : // otherwise `fetchPolicy` was changed from `initialFetchOptions`, `nextFetchPolicy` has been applied and we're not going to touch it
           observable.options.fetchPolicy,
   });
