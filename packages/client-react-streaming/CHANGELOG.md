@@ -1,5 +1,11 @@
 # @apollo/client-react-streaming
 
+## 0.14.0
+
+### Minor Changes
+
+- 5c5c0e4: Rework approach for rehydrating transported QueryRefs to preserve user-defined options better.
+
 ## 0.13.2
 
 ### Patch Changes
