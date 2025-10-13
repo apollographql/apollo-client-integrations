@@ -6,7 +6,7 @@ export declare namespace ApolloClient {
   /** @public */
   export interface Options extends UpstreamApolloClient.Options {}
   /*
-  We can currently not re-export these types from the upstream ApolloClient implementation because the build 
+  We can't currently re-export these types from the upstream ApolloClient implementation because the build 
   tooling doesn't support that:
     > DTS Build error
     > Error: namespace child (hoisting) not supported yet
