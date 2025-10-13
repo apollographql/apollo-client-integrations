@@ -9,5 +9,12 @@
   "compiler": {
     "tsconfigFilePath": "./tsconfig.json",
     "skipLibCheck": true
+  },
+  "messages": {
+    "extractorMessageReporting": {
+      "ae-missing-release-tag": {
+        "logLevel": "none"
+      }
+    }
   }
 }
