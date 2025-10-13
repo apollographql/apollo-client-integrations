@@ -1,14 +1,14 @@
 import type * as ACCore from "@apollo/client";
 import type * as Streaming from "@apollo/client-react-streaming";
 import type { TsrSerializable } from "@tanstack/router-core";
-
+/** @public */
 export declare namespace ApolloClientIntegration {
-  /** @alpha */
+  /** @public */
   export interface RouterContext {
     apolloClient: Streaming.ApolloClient;
     preloadQuery: PreloadTransportedQueryFunction;
   }
-
+  /** @public */
   export interface PreloadTransportedQueryFunction {
     <
       TData = unknown,
@@ -22,6 +22,7 @@ export declare namespace ApolloClientIntegration {
     ): TransportedQueryRef<TData, TVariables>;
   }
 
+  /** @public */
   export interface TransportedQueryRef<
     TData = unknown,
     TVariables extends ACCore.OperationVariables = ACCore.OperationVariables,

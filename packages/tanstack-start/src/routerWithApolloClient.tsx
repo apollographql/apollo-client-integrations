@@ -8,7 +8,7 @@ import type { ApolloClient } from "./index.js";
 import { getQueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
 import { ServerTransport, transportSerializationAdapter } from "./Transport.js";
 
-/** @alpha */
+/** @public */
 export function routerWithApolloClient<TRouter extends AnyRouter>(
   router: TRouter["options"]["context"] extends ApolloClientIntegration.RouterContext
     ? TRouter
