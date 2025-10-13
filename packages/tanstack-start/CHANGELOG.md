@@ -1,10 +1,11 @@
 # @apollo/client-integration-tanstack-start
 
-## 0.14.0
+## 0.14.0-rc.0
 
 ### Minor Changes
 
 - 5c5c0e4: Reworked core for compatibilty with TanStack Start RC.
+- 5c5c0e4: Compatibility with Apollo Client 4.
 
 ### Patch Changes
 
