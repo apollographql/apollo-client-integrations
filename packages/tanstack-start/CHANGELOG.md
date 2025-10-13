@@ -1,5 +1,16 @@
 # @apollo/client-integration-tanstack-start
 
+## 0.14.0
+
+### Minor Changes
+
+- 5c5c0e4: Reworked core for compatibilty with TanStack Start RC.
+
+### Patch Changes
+
+- Updated dependencies [5c5c0e4]
+  - @apollo/client-react-streaming@0.14.0
+
 ## 0.12.3-alpha.5
 
 ### Patch Changes

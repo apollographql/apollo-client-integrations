@@ -1,6 +1,6 @@
 {
   "name": "@apollo/client-integration-react-router",
-  "version": "0.13.2-alpha.0",
+  "version": "0.14.0-alpha.0",
   "repository": {
     "url": "git+https://github.com/apollographql/apollo-client-integrations"
   },
@@ -93,7 +93,7 @@
     "rxjs": "^7.3.0"
   },
   "dependencies": {
-    "@apollo/client-react-streaming": "0.13.2",
+    "@apollo/client-react-streaming": "0.14.0",
     "@types/react-dom": "^19.0.0",
     "promiscade": "^0.0.2"
   }
