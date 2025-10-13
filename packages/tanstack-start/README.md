@@ -13,14 +13,14 @@ npm i @apollo/client-integration-tanstack-start @apollo/client graphql
 In your `routes/__root.tsx`, change from `createRootRoute` to `createRootRouteWithContext` to provide the right context type to your application.
 
 ```diff
-+import { type ApolloClientRouterContext } from "@apollo/client-integration-tanstack-start";
++import type { ApolloClientIntegration } from "@apollo/client-integration-tanstack-start";
 import {
 -   createRootRoute
 +   createRootRouteWithContext
 } from "@tanstack/react-router";
 
 -export const Route = createRootRoute({
-+export const Route = createRootRouteWithContext<ApolloClientRouterContext>()({
++export const Route = createRootRouteWithContext<ApolloClientIntegration.RouterContext>()({
 ```
 
 In your `router.tsx`, set up your Apollo Client instance and run `routerWithApolloClient`
@@ -32,19 +32,19 @@ import {
   InMemoryCache,
 } from "@apollo/client-integration-tanstack-start";
 import { HttpLink } from "@apollo/client";
+import { createRouter } from "@tanstack/react-router";
+import { routeTree } from "./routeTree.gen";
 
-export function createRouter() {
+export function getRouter() {
   const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
-    link: new HttpLink({ uri: "https://your.graphl.api" }),
+    link: new HttpLink({ uri: "https://your.graphql.api" }),
   });
   const router = createTanStackRouter({
     routeTree,
-    // the context properties `apolloClient` and `preloadQuery`
-    // will be filled in by calling `routerWithApolloClient` later
-    // you should omit them here, which means you have to
-    // `as any` this context object
-    context: {} as any,
+    context: {
+      ...routerWithApolloClient.defaultContext,
+    },
   });
 
   return routerWithApolloClient(router, apolloClient);

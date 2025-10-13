@@ -1,62 +1,81 @@
-import {
-  isTransportedQueryRef,
-  reviveTransportedQueryRef,
-  type PreloadTransportedQueryFunction,
-} from "@apollo/client-react-streaming";
-import type { ApolloClient } from "@apollo/client-react-streaming";
 import { createTransportedQueryPreloader } from "@apollo/client-react-streaming";
-import { ApolloProvider } from "./ApolloProvider.js";
 import { createQueryPreloader } from "@apollo/client/react";
-import { type AnyRouter } from "@tanstack/react-router";
+import type { AnyRouter } from "@tanstack/router-core";
 import React from "react";
-
-/** @alpha */
-export interface ApolloClientRouterContext {
-  apolloClient: ApolloClient;
-  preloadQuery: PreloadTransportedQueryFunction;
-}
+import type { ApolloClientIntegration } from "./ApolloClientIntegration.js";
+import { ApolloProvider } from "./ApolloProvider.js";
+import type { ApolloClient } from "./index.js";
+import { getQueryRefSerializationAdapter } from "./QueryRefSerializationAdapter.js";
+import { ServerTransport, transportSerializationAdapter } from "./Transport.js";
 
 /** @alpha */
 export function routerWithApolloClient<TRouter extends AnyRouter>(
-  router: TRouter["options"]["context"] extends ApolloClientRouterContext
+  router: TRouter["options"]["context"] extends ApolloClientIntegration.RouterContext
     ? TRouter
     : never,
   apolloClient: ApolloClient
 ): TRouter {
-  const context = router.options.context as ApolloClientRouterContext;
-
-  context.apolloClient = apolloClient;
-  context.preloadQuery = router.isServer
-    ? createTransportedQueryPreloader(apolloClient)
-    : (createQueryPreloader(
+  router.options.context ??= {};
+  router.options.context.apolloClient = apolloClient;
+  router.options.context.preloadQuery = (router.isServer
+    ? createTransportedQueryPreloader(apolloClient, { prepareForReuse: true })
+    : createQueryPreloader(
         apolloClient
-      ) as unknown as PreloadTransportedQueryFunction);
+      )) as unknown as ApolloClientIntegration.PreloadTransportedQueryFunction;
 
-  const originalHydrate = router.options.hydrate;
-  router.options.hydrate = (...args) => {
-    originalHydrate?.(...args);
+  const providerContext = {} as ApolloProvider.Context;
 
-    for (const match of router.state.matches) {
-      // using JSON.stringify to recurse the object
-      JSON.stringify(match.loaderData, (_, value) => {
-        if (isTransportedQueryRef(value)) {
-          reviveTransportedQueryRef(
-            value,
-            (router.options.context as { apolloClient: ApolloClient })
-              .apolloClient
-          );
-        }
-        return value;
-      });
-    }
-  };
+  const ogHydrate = router.options.hydrate;
+  const ogDehydrate = router.options.dehydrate;
+
+  if (router.isServer) {
+    const apolloClientTransport = new ServerTransport();
+    providerContext.transport = apolloClientTransport;
+    router.options.dehydrate = async () => {
+      router.serverSsr!.onRenderFinished(() =>
+        apolloClientTransport.closeOnceFinished()
+      );
+      return {
+        ...(await ogDehydrate?.()),
+        apolloClientTransport,
+      };
+    };
+  } else {
+    router.options.hydrate = (dehydratedState) => {
+      providerContext.transport = dehydratedState.apolloClientTransport;
+      return ogHydrate?.(dehydratedState);
+    };
+  }
+
+  router.options.serializationAdapters = [
+    ...(router.options.serializationAdapters ?? []),
+    getQueryRefSerializationAdapter(apolloClient),
+    transportSerializationAdapter,
+  ];
+
+  // necessary to have `RouterOptionsExtensions` applied to `router.options` - otherwise the build fails
+  type _ForceRouterTypes = typeof import("@tanstack/react-router");
   const PreviousInnerWrap = router.options.InnerWrap || React.Fragment;
   // eslint-disable-next-line react/display-name
   router.options.InnerWrap = ({ children }) => (
-    <ApolloProvider router={router}>
+    <ApolloProvider client={apolloClient} context={providerContext}>
       <PreviousInnerWrap>{children}</PreviousInnerWrap>
     </ApolloProvider>
   );
 
   return router;
+}
+
+routerWithApolloClient.defaultContext = {
+  apolloClient: new Proxy({} as any, { get: contextAccess }),
+  preloadQuery: new Proxy(contextAccess as any, { get: contextAccess }),
+} satisfies ApolloClientIntegration.RouterContext as ApolloClientIntegration.RouterContext;
+
+function contextAccess(): never {
+  throw new Error(
+    `
+Could not find Apollo Client in router context. 
+Did you forget to wrap your router in a \`routerWithApolloClient\` call before returning it from \`getRouter\`?
+`.trim()
+  );
 }

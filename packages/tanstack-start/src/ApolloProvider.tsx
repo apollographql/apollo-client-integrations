@@ -1,15 +1,13 @@
+import type { QueryEvent } from "@apollo/client-react-streaming";
 import {
   DataTransportContext,
   WrapApolloProvider,
 } from "@apollo/client-react-streaming";
-import { registerLateInitializingQueue } from "@apollo/client-react-streaming/manual-transport";
-import type { AnyRouter } from "@tanstack/react-router";
-import React, { useId, useMemo, useRef } from "react";
-import type { ApolloClient, QueryEvent } from "@apollo/client-react-streaming";
+import { invariant } from "@apollo/client/utilities/invariant";
+import React from "react";
 import { bundle } from "./bundleInfo.js";
-import jsesc from "jsesc";
-
-const APOLLO_HOOK_PREFIX = "@@apollo.hook/";
+import type { ClientTransport, ServerTransport } from "./Transport.js";
+import type { ApolloClient } from "./ApolloClient.js";
 
 declare global {
   interface Window {
@@ -17,109 +15,51 @@ declare global {
   }
 }
 
+export declare namespace ApolloProvider {
+  export interface Context {
+    transport: ServerTransport | ClientTransport;
+  }
+}
+
 export const ApolloProvider = ({
-  router,
+  client,
+  context,
   children,
-}: React.PropsWithChildren<{ router: AnyRouter }>) => {
+}: React.PropsWithChildren<{
+  client: ApolloClient;
+  context: ApolloProvider.Context;
+}>) => {
   return (
-    <WrappedApolloProvider
-      router={router}
-      makeClient={() =>
-        (router.options.context as { apolloClient: ApolloClient }).apolloClient
-      }
-    >
+    <WrappedApolloProvider makeClient={() => client} context={context}>
       {children}
     </WrappedApolloProvider>
   );
 };
 
-const WrappedApolloProvider = WrapApolloProvider<{ router: AnyRouter }>(
-  (props) => {
-    const router = props.router;
-
-    const { onQueryEvent } = props;
-
-    if (router.serverSsr) {
-      const ssr = router.serverSsr;
-      props.registerDispatchRequestStarted!(({ event, observable }) => {
-        // based on TanStack Router's `injectObservable` implementation:
-        // https://github.com/TanStack/router/blob/1ecab1e78d58db208f3bbffe8708867603c179a5/packages/start-server/src/ssr-server.ts#L234-L280
-        // Inject a promise that resolves when the stream is done
-        // We do this to keep the stream open until we're done
-        ssr.injectHtml(
-          () =>
-            new Promise<string>((resolve) => {
-              ensureInitialized(router);
-              function transportEvent(event: QueryEvent) {
-                const script = `__APOLLO_EVENTS__.push(${jsesc(event, {
-                  isScriptContext: true,
-                  wrap: true,
-                  json: true,
-                })})`;
-                ssr.injectScript(() => script);
-              }
-
-              // transport initial event
-              transportEvent(event);
-              observable.subscribe({
-                next(event) {
-                  // transport subsequent events
-                  transportEvent(event);
-                },
-                complete() {
-                  resolve("");
-                },
-                error() {
-                  resolve("");
-                },
-              });
-            })
-        );
-      });
-    } else {
-      if (onQueryEvent) {
-        registerLateInitializingQueue("__APOLLO_EVENTS__", onQueryEvent);
-      }
-    }
-
-    const dataTransport = useMemo(
-      () => ({
-        useStaticValueRef<T>(value: T) {
-          const key = APOLLO_HOOK_PREFIX + useId();
-          const streamedValue = router.clientSsr?.getStreamedValue(key) as
-            | T
-            | undefined;
-          const dataValue =
-            router.clientSsr && streamedValue !== undefined
-              ? streamedValue
-              : value;
-          const dataRef = useRef(dataValue);
-
-          if (router.serverSsr) {
-            if (!router.serverSsr.streamedKeys.has(key)) {
-              router.serverSsr.streamValue(key, value);
-            }
-          }
-          return dataRef;
-        },
-      }),
-      [router]
+const WrappedApolloProvider = WrapApolloProvider<{
+  context: ApolloProvider.Context;
+}>((props) => {
+  const transport = props.context.transport;
+  invariant(transport, "No apolloClientTransport defined");
+  if ("dispatchRequestStarted" in transport) {
+    invariant(
+      props.registerDispatchRequestStarted,
+      "Browser bundle loaded in SSR"
     );
-
-    return (
-      <DataTransportContext.Provider value={dataTransport}>
-        {props.children}
-      </DataTransportContext.Provider>
+    props.registerDispatchRequestStarted(transport.dispatchRequestStarted);
+  } else {
+    invariant(
+      props.onQueryEvent && props.rerunSimulatedQueries,
+      "SSR bundle loaded in Browser"
     );
+    transport.onQueryEvent = props.onQueryEvent;
+    transport.rerunSimulatedQueries = props.rerunSimulatedQueries;
   }
-);
+
+  return (
+    <DataTransportContext.Provider value={transport}>
+      {props.children}
+    </DataTransportContext.Provider>
+  );
+});
 WrappedApolloProvider.info = bundle;
-
-const streamedInit = new WeakSet<AnyRouter>();
-function ensureInitialized(router: AnyRouter) {
-  const ssr = router.serverSsr;
-  if (ssr && !streamedInit.has(router)) {
-    streamedInit.add(router);
-    ssr.injectScript(() => `window.__APOLLO_EVENTS__||=[]`);
-  }
-}

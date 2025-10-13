@@ -69,10 +69,10 @@
     "@arethetypeswrong/cli": "0.15.3",
     "@internal/test-utils": "workspace:^",
     "@microsoft/api-extractor": "7.43.2",
-    "@tanstack/react-router": "^1.99.0",
-    "@tanstack/start": "^1.99.3",
+    "@tanstack/react-router": "^1.132.47",
+    "@tanstack/react-start": "^1.132.48",
+    "@tanstack/router-core": "^1.132.47",
     "@tsconfig/recommended": "1.0.6",
-    "@types/jsesc": "^3",
     "@types/node": "20.12.11",
     "@types/react": "^19.0.0",
     "@types/react-dom": "*",
@@ -83,7 +83,6 @@
     "publint": "0.2.7",
     "react": "^19.0.0",
     "react-dom": "*",
-    "react-error-boundary": "5.0.0",
     "rimraf": "5.0.5",
     "rxjs": "^7.8.2",
     "tsup": "8.0.2",
@@ -92,15 +91,15 @@
   },
   "peerDependencies": {
     "@apollo/client": "^4.0.0",
-    "@tanstack/react-router": "^1.99.6",
-    "@tanstack/start": "^1.99.4",
+    "@tanstack/react-router": "^1.132.47",
+    "@tanstack/react-start": "^1.132.48",
+    "@tanstack/router-core": "^1.132.47",
     "graphql": "^16 || >=17.0.0-alpha.2",
     "react": "^19",
     "react-dom": "^19",
     "rxjs": "^7.3.0"
   },
   "dependencies": {
-    "@apollo/client-react-streaming": "0.13.2",
-    "jsesc": "^3.1.0"
+    "@apollo/client-react-streaming": "0.13.2"
   }
 }

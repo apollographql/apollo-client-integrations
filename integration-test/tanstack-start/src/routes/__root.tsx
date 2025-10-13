@@ -1,28 +1,35 @@
-import { TanStackRouterDevtools } from "@tanstack/router-devtools";
-import { Link, Outlet } from "@tanstack/react-router";
-import { Meta, Scripts } from "@tanstack/start";
+/// <reference types="vite/client" />
+import {
+  HeadContent,
+  Link,
+  Scripts,
+  createRootRouteWithContext,
+  Outlet,
+} from "@tanstack/react-router";
+
+import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import { useState, type ReactNode } from "react";
 
-import { type ApolloClientRouterContext } from "@apollo/client-integration-tanstack-start";
-import { createRootRouteWithContext } from "@tanstack/react-router";
+import type { ApolloClientIntegration } from "@apollo/client-integration-tanstack-start";
 
-export const Route = createRootRouteWithContext<ApolloClientRouterContext>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: "utf-8",
-      },
-      {
-        name: "viewport",
-        content: "width=device-width, initial-scale=1",
-      },
-      {
-        title: "TanStack Start Starter",
-      },
-    ],
-  }),
-  component: RootComponent,
-});
+export const Route =
+  createRootRouteWithContext<ApolloClientIntegration.RouterContext>()({
+    head: () => ({
+      meta: [
+        {
+          charSet: "utf-8",
+        },
+        {
+          name: "viewport",
+          content: "width=device-width, initial-scale=1",
+        },
+        {
+          title: "TanStack Start Starter",
+        },
+      ],
+    }),
+    component: RootComponent,
+  });
 
 function RootComponent() {
   return (
@@ -37,7 +44,7 @@ function RootDocument({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <html>
       <head>
-        <Meta />
+        <HeadContent />
       </head>
       <body>
         <div className="p-2 flex gap-2 text-lg">

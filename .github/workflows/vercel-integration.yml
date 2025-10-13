@@ -47,18 +47,24 @@ jobs:
 
       - name: "Run Playwright tests against Vercel deployment - Next.js"
         if: github.event.deployment_status.environment == 'Preview – apollo__experimental-nextjs-app-support'
-        run: yarn workspace @integration-test/nextjs run test | tee $GITHUB_STEP_SUMMARY; exit ${PIPESTATUS[0]}
+        run: yarn workspace @integration-test/nextjs run test --output /tmp/playwright-output | tee $GITHUB_STEP_SUMMARY; exit ${PIPESTATUS[0]}
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
 
       - name: "Run Playwright tests against Vercel deployment - TanStack Start"
         if: github.event.deployment_status.environment == 'Preview – apollo__client-integration-tanstack-start'
-        run: yarn workspace @integration-test/tanstack-start run test | tee $GITHUB_STEP_SUMMARY; exit ${PIPESTATUS[0]}
+        run: yarn workspace @integration-test/tanstack-start run test --output /tmp/playwright-output | tee $GITHUB_STEP_SUMMARY; exit ${PIPESTATUS[0]}
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
 
       - name: "Run Playwright tests against Vercel deployment - React Router"
         if: github.event.deployment_status.environment == 'Preview – apollo__client-integration-react-router'
-        run: yarn workspace @integration-test/react-router run test | tee $GITHUB_STEP_SUMMARY; exit ${PIPESTATUS[0]}
+        run: yarn workspace @integration-test/react-router run test --output /tmp/playwright-output | tee $GITHUB_STEP_SUMMARY; exit ${PIPESTATUS[0]}
         env:
           BASE_URL: ${{ github.event.deployment_status.environment_url }}
+
+      - name: "Upload Playwright Artifacts"
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-output
+          path: /tmp/playwright-output

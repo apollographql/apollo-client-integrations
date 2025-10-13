@@ -51,7 +51,9 @@ export function createApolloLoaderHandler(
 ): createApolloLoaderHandler.ApolloLoader {
   return () => (loader) => (args) => {
     const client = makeClient(args.request);
-    const preloader = createTransportedQueryPreloader(client);
+    const preloader = createTransportedQueryPreloader(client, {
+      notTransportedOptionOverrides: { fetchPolicy: "no-cache" },
+    });
     const preloadQuery: createApolloLoaderHandler.PreloadQueryFn = (...args) =>
       replaceStreamWithPromiscade(preloader(...args));
     return loader({

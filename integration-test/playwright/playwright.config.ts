@@ -43,6 +43,8 @@ export default defineConfig({
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
     baseURL: process.env.BASE_URL || "http://localhost:3000",
+    trace: "on-first-retry",
   },
   testDir: "src/",
+  retries: 1,
 });
