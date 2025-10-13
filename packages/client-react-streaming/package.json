@@ -117,7 +117,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rimraf dist .built; tsup && tsc --emitDeclarationOnly --declaration && touch .built ",
+    "build": "rimraf dist .built; tsup && tsc --emitDeclarationOnly --declaration",
     "test": "concurrently -c auto \"yarn:test:*(!base) $@\"",
     "test:base": "TSX_TSCONFIG_PATH=./tsconfig.tests.json node --import tsx/esm --no-warnings --test \"$@\" src/**/*.test.(ts|tsx)",
     "test:ssr": "NODE_OPTIONS=\"${NODE_OPTIONS:-} --conditions=node\" yarn run test:base",

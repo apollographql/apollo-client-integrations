@@ -67,7 +67,7 @@
     "test:browser": "NODE_OPTIONS=\"${NODE_OPTIONS:-} --conditions=browser\" yarn run test:base",
     "test:rsc": "NODE_OPTIONS=\"${NODE_OPTIONS:-} --conditions=react-server\" yarn run test:base",
     "prepack": "yarn build",
-    "prepublishOnly": "wait-on ../client-react-streaming/.built --delay 3000 --timeout 60000 && yarn pack -o attw.tgz && attw attw.tgz && rm attw.tgz && yarn run test",
+    "prepublishOnly": "yarn pack -o attw.tgz && attw attw.tgz && rm attw.tgz && yarn run test",
     "test-bundle": "yarn test-bundle:attw && yarn test-bundle:package && yarn test-bundle:publint && yarn test-bundle:shape",
     "test-bundle:attw": "attw --pack .",
     "test-bundle:package": "yarn workspace monorepo verify-package-json $PWD/package.json",
@@ -98,8 +98,7 @@
     "rimraf": "5.0.5",
     "rxjs": "^7.8.2",
     "tsup": "8.0.2",
-    "typescript": "^5.7.3",
-    "wait-on": "8.0.2"
+    "typescript": "^5.7.3"
   },
   "peerDependencies": {
     "@apollo/client": "^4.0.0",
