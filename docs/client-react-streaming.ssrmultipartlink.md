@@ -9,7 +9,7 @@ A convenient combination of `RemoveMultipartDirectivesLink` and `AccumulateMulti
 **Signature:**
 
 ```typescript
-declare class SSRMultipartLink extends ApolloLink 
+export declare class SSRMultipartLink extends ApolloLink 
 ```
 **Extends:** ApolloLink
 

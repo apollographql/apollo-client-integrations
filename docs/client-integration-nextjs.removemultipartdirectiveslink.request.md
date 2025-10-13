@@ -7,7 +7,7 @@
 **Signature:**
 
 ```typescript
-request(operation: ApolloLink.Operation, forward?: ApolloLink.ForwardFunction): rxjs.Observable<{}>;
+request(operation: ApolloLink.Operation, forward?: ApolloLink.ForwardFunction): import("rxjs").Observable<{}>;
 ```
 
 ## Parameters
@@ -61,5 +61,5 @@ _(Optional)_
 </tbody></table>
 **Returns:**
 
-rxjs.Observable&lt;{}&gt;
+import("rxjs").Observable&lt;{}&gt;
 

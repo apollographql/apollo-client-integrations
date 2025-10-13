@@ -9,7 +9,7 @@ A link that allows the response to be read from a readable stream, e.g. for hydr
 **Signature:**
 
 ```typescript
-declare class ReadFromReadableStreamLink extends ApolloLink 
+export declare class ReadFromReadableStreamLink extends ApolloLink 
 ```
 **Extends:** ApolloLink
 

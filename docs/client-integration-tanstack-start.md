@@ -65,33 +65,6 @@ Description
 
 </td><td>
 
-**_(ALPHA)_**
-
-
-</td></tr>
-</tbody></table>
-
-## Interfaces
-
-<table><thead><tr><th>
-
-Interface
-
-
-</th><th>
-
-Description
-
-
-</th></tr></thead>
-<tbody><tr><td>
-
-[ApolloClientRouterContext](./client-integration-tanstack-start.apolloclientroutercontext.md)
-
-
-</td><td>
-
-**_(ALPHA)_**
 
 
 </td></tr>
@@ -117,6 +90,25 @@ Description
 
 </td><td>
 
+
+
+</td></tr>
+<tr><td>
+
+[ApolloClientIntegration](./client-integration-tanstack-start.apolloclientintegration.md)
+
+
+</td><td>
+
+
+
+</td></tr>
+<tr><td>
+
+[routerWithApolloClient](./client-integration-tanstack-start.routerwithapolloclient.md)
+
+
+</td><td>
 
 
 </td></tr>

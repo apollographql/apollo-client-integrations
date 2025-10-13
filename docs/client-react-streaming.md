@@ -153,7 +153,7 @@ Creates a "manual" Data Transport, to be used with `WrapApolloProvider`<!-- -->.
 </td></tr>
 <tr><td>
 
-[createTransportedQueryPreloader(client)](./client-react-streaming.createtransportedquerypreloader.md)
+[createTransportedQueryPreloader(client, { prepareForReuse, notTransportedOptionOverrides, })](./client-react-streaming.createtransportedquerypreloader.md)
 
 
 </td><td>

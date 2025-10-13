@@ -8,9 +8,9 @@
 **Signature:**
 
 ```typescript
-interface Options extends Omit<ApolloClient$1.Options, "cache" | "ssrMode" | "ssrForceFetchDelay"> 
+interface Options extends Omit<OrigApolloClient.Options, "cache" | "ssrMode" | "ssrForceFetchDelay"> 
 ```
-**Extends:** Omit&lt;ApolloClient$1.Options, "cache" \| "ssrMode" \| "ssrForceFetchDelay"&gt;
+**Extends:** Omit&lt;OrigApolloClient.Options, "cache" \| "ssrMode" \| "ssrForceFetchDelay"&gt;
 
 ## Properties
 

@@ -9,7 +9,7 @@ A link that allows the request to be cloned into a readable stream, e.g. for tra
 **Signature:**
 
 ```typescript
-declare class TeeToReadableStreamLink extends ApolloLink 
+export declare class TeeToReadableStreamLink extends ApolloLink 
 ```
 **Extends:** ApolloLink
 

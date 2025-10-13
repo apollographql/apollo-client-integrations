@@ -8,7 +8,7 @@
 **Signature:**
 
 ```typescript
-declare function useWrapTransportedQueryRef<TData>(queryRef: QueryRef<TData, any, "complete" | "streaming" | "empty" | "partial"> | TransportedQueryRef): QueryRef<TData>;
+export declare function useWrapTransportedQueryRef<TData>(queryRef: QueryRef<TData, any, "complete" | "streaming" | "empty" | "partial"> | TransportedQueryRef): QueryRef<TData>;
 ```
 
 ## Parameters

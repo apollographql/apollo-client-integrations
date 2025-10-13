@@ -11,7 +11,7 @@ A version of `ApolloProvider` particularly suited for React's streaming SSR.
 **Signature:**
 
 ```typescript
-interface WrappedApolloProvider<ExtraProps> 
+export interface WrappedApolloProvider<ExtraProps> 
 ```
 
 ## Properties

@@ -8,7 +8,10 @@
 **Signature:**
 
 ```typescript
-declare function createTransportedQueryPreloader(client: ApolloClient$1): PreloadTransportedQueryFunction;
+export declare function createTransportedQueryPreloader(client: ApolloClient, { prepareForReuse, notTransportedOptionOverrides, }?: {
+    prepareForReuse?: boolean;
+    notTransportedOptionOverrides?: Partial<ApolloClient.WatchQueryOptions<any, any>>;
+}): PreloadTransportedQueryFunction;
 ```
 
 ## Parameters
@@ -36,10 +39,26 @@ client
 
 </td><td>
 
-ApolloClient$1
+ApolloClient
 
 
 </td><td>
+
+
+</td></tr>
+<tr><td>
+
+{ prepareForReuse, notTransportedOptionOverrides, }
+
+
+</td><td>
+
+{ prepareForReuse?: boolean; notTransportedOptionOverrides?: Partial&lt;ApolloClient.WatchQueryOptions&lt;any, any&gt;&gt;; }
+
+
+</td><td>
+
+_(Optional)_
 
 
 </td></tr>

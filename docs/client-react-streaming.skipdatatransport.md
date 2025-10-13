@@ -9,7 +9,7 @@ Apply to a context to prevent this operation from being transported over the SSR
 **Signature:**
 
 ```typescript
-declare function skipDataTransport<T extends Record<string, any>>(context: T): T & InternalContext;
+export declare function skipDataTransport<T extends Record<string, any>>(context: T): T & InternalContext;
 ```
 
 ## Parameters

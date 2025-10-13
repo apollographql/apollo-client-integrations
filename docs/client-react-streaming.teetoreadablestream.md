@@ -9,7 +9,7 @@ Apply to a context that will be passed to a link chain containing `TeeToReadable
 **Signature:**
 
 ```typescript
-declare function teeToReadableStream<T extends Record<string, any>>(onLinkHit: OnLinkHitFunction, context: T): T & InternalContext$1;
+export declare function teeToReadableStream<T extends Record<string, any>>(onLinkHit: OnLinkHitFunction, context: T): T & InternalContext;
 ```
 
 ## Parameters
@@ -61,5 +61,5 @@ T
 </tbody></table>
 **Returns:**
 
-T &amp; InternalContext$1
+T &amp; InternalContext
 

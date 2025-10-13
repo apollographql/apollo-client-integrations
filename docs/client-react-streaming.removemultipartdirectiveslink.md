@@ -26,7 +26,7 @@ You can also use the link with `stripDefer: false` and mark certain fragments to
 **Signature:**
 
 ```typescript
-declare class RemoveMultipartDirectivesLink extends ApolloLink 
+export declare class RemoveMultipartDirectivesLink extends ApolloLink 
 ```
 **Extends:** ApolloLink
 

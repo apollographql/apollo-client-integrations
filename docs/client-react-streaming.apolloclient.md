@@ -8,7 +8,7 @@
 **Signature:**
 
 ```typescript
-declare namespace ApolloClient 
+export declare namespace ApolloClient 
 ```
 
 ## Interfaces

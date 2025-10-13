@@ -11,7 +11,7 @@ A child client component reading the `TransportedQueryRef` via useReadQuery will
 **Signature:**
 
 ```typescript
-interface TransportedQueryRef<TData = unknown, TVariables extends OperationVariables = OperationVariables> extends QueryRef<TData, TVariables> 
+export interface TransportedQueryRef<TData = unknown, TVariables extends OperationVariables = OperationVariables> extends QueryRef<TData, TVariables> 
 ```
 **Extends:** QueryRef&lt;TData, TVariables&gt;
 

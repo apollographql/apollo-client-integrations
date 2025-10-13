@@ -11,9 +11,9 @@ For more documentation, please see [the Apollo Client API documentation](https:/
 **Signature:**
 
 ```typescript
-declare class InMemoryCache extends InMemoryCache$1 
+export declare class InMemoryCache extends OrigInMemoryCache 
 ```
-**Extends:** InMemoryCache$1
+**Extends:** OrigInMemoryCache
 
 ## Constructors
 

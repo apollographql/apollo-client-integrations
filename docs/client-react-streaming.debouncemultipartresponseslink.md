@@ -13,7 +13,7 @@ If `cutoffDelay` is `0`<!-- -->, the link will immediately return data as soon a
 **Signature:**
 
 ```typescript
-declare class AccumulateMultipartResponsesLink extends ApolloLink 
+export declare class AccumulateMultipartResponsesLink extends ApolloLink 
 ```
 **Extends:** ApolloLink
 

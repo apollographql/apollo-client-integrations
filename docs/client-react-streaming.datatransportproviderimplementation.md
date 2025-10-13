@@ -13,14 +13,14 @@ See for example https://github.com/apollographql/apollo-client-integrations/blob
 **Signature:**
 
 ```typescript
-type DataTransportProviderImplementation<ExtraProps = {}> = React.FC<{
+export type DataTransportProviderImplementation<ExtraProps = {}> = React.FC<{
     onQueryEvent?: (event: QueryEvent) => void;
     rerunSimulatedQueries?: () => void;
     registerDispatchRequestStarted?: (callback: (query: {
         event: Extract<QueryEvent, {
             type: "started";
         }>;
-        observable: Observable$1<Exclude<QueryEvent, {
+        observable: Observable<Exclude<QueryEvent, {
             type: "started";
         }>>;
     }) => void) => void;

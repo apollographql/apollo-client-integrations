@@ -8,5 +8,5 @@
 **Signature:**
 
 ```typescript
-interface PreloadTransportedQueryFunction 
+export interface PreloadTransportedQueryFunction 
 ```

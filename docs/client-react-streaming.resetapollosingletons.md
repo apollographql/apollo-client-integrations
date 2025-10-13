@@ -17,7 +17,7 @@ afterEach(resetApolloSingletons);
 **Signature:**
 
 ```typescript
-declare function resetApolloSingletons(): void;
+export declare function resetApolloSingletons(): void;
 ```
 **Returns:**
 

@@ -8,7 +8,7 @@
 **Signature:**
 
 ```typescript
-declare function isTransportedQueryRef(queryRef: any): queryRef is TransportedQueryRef;
+export declare function isTransportedQueryRef(queryRef: any): queryRef is TransportedQueryRef;
 ```
 
 ## Parameters

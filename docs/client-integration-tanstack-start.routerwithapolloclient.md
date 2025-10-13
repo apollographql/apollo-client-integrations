@@ -2,28 +2,19 @@
 
 [Home](./index.md) &gt; [@apollo/client-integration-tanstack-start](./client-integration-tanstack-start.md) &gt; [routerWithApolloClient](./client-integration-tanstack-start.routerwithapolloclient.md)
 
-## routerWithApolloClient() function
-
-> This API is provided as an alpha preview for developers and may change based on feedback that we receive. Do not use this API in a production environment.
-> 
-
+## routerWithApolloClient namespace
 
 **Signature:**
 
 ```typescript
-declare function routerWithApolloClient<TRouter extends AnyRouter>(router: TRouter["options"]["context"] extends ApolloClientRouterContext ? TRouter : never, apolloClient: ApolloClient$1): TRouter;
+declare namespace routerWithApolloClient 
 ```
 
-## Parameters
+## Variables
 
 <table><thead><tr><th>
 
-Parameter
-
-
-</th><th>
-
-Type
+Variable
 
 
 </th><th>
@@ -34,26 +25,7 @@ Description
 </th></tr></thead>
 <tbody><tr><td>
 
-router
-
-
-</td><td>
-
-TRouter\["options"\]\["context"\] extends [ApolloClientRouterContext](./client-integration-tanstack-start.apolloclientroutercontext.md) ? TRouter : never
-
-
-</td><td>
-
-
-</td></tr>
-<tr><td>
-
-apolloClient
-
-
-</td><td>
-
-ApolloClient$1
+[defaultContext](./client-integration-tanstack-start.routerwithapolloclient.defaultcontext.md)
 
 
 </td><td>
@@ -61,7 +33,3 @@ ApolloClient$1
 
 </td></tr>
 </tbody></table>
-**Returns:**
-
-TRouter
-

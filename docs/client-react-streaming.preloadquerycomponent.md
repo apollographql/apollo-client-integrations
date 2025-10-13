@@ -40,5 +40,5 @@ Preloads data in React Server Components to be hydrated in Client Components.
 **Signature:**
 
 ```typescript
-interface PreloadQueryComponent 
+export interface PreloadQueryComponent 
 ```

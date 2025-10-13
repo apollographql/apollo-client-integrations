@@ -8,5 +8,5 @@
 **Signature:**
 
 ```typescript
-type PreloadTransportedQueryOptions<TData, TVariables extends OperationVariables> = Omit<ApolloClient$1.QueryOptions<TData, TVariables>, "query"> & RestrictedPreloadOptions;
+export type PreloadTransportedQueryOptions<TData, TVariables extends OperationVariables> = Omit<ApolloClient.QueryOptions<TData, TVariables>, "query"> & RestrictedPreloadOptions;
 ```

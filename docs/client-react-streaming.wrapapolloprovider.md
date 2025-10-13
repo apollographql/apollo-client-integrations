@@ -11,7 +11,7 @@ Creates an ApolloProvider for streaming SSR.
 **Signature:**
 
 ```typescript
-declare function WrapApolloProvider<ExtraProps>(TransportProvider: DataTransportProviderImplementation<ExtraProps>): WrappedApolloProvider<ExtraProps>;
+export declare function WrapApolloProvider<ExtraProps>(TransportProvider: DataTransportProviderImplementation<ExtraProps>): WrappedApolloProvider<ExtraProps>;
 ```
 
 ## Parameters

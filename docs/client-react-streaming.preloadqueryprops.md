@@ -12,5 +12,5 @@
 **Signature:**
 
 ```typescript
-type PreloadQueryProps<TData, TVariables extends OperationVariables> = PreloadQuery.Props<TData, TVariables>;
+export type PreloadQueryProps<TData, TVariables extends OperationVariables> = PreloadQuery.Props<TData, TVariables>;
 ```

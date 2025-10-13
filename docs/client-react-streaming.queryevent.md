@@ -9,7 +9,7 @@ Events that will be emitted by a wrapped ApolloClient instance during SSR on `Da
 **Signature:**
 
 ```typescript
-type QueryEvent = {
+export type QueryEvent = {
     type: "started";
     options: TransportedOptions;
     id: TransportIdentifier;
