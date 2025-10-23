@@ -1,5 +1,12 @@
 # @apollo/client-integration-nextjs
 
+## 0.14.1
+
+### Patch Changes
+
+- a94bb01: Update peer dependencies for `next` to allow usage with `^16.0.0`.
+  - @apollo/client-react-streaming@0.14.1
+
 ## 0.14.0
 
 ### Patch Changes

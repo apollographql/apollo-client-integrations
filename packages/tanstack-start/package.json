@@ -1,6 +1,6 @@
 {
   "name": "@apollo/client-integration-tanstack-start",
-  "version": "0.14.0-rc.0",
+  "version": "0.14.1-rc.0",
   "repository": {
     "url": "git+https://github.com/apollographql/apollo-client-integrations"
   },
@@ -99,6 +99,6 @@
     "rxjs": "^7.3.0"
   },
   "dependencies": {
-    "@apollo/client-react-streaming": "0.14.0"
+    "@apollo/client-react-streaming": "0.14.1"
   }
 }
