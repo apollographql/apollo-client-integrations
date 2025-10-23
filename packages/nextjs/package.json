@@ -1,6 +1,6 @@
 {
   "name": "@apollo/client-integration-nextjs",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "repository": {
     "url": "git+https://github.com/apollographql/apollo-client-integrations.git"
   },

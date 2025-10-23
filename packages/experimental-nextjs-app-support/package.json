@@ -99,6 +99,6 @@
     "rxjs": "^7.3.0"
   },
   "dependencies": {
-    "@apollo/client-integration-nextjs": "0.14.0"
+    "@apollo/client-integration-nextjs": "0.14.1"
   }
 }
