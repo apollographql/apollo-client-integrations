@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build --webpack",
     "start": "next start",
     "build-and-test": "yarn build && yarn test",
     "test": "yarn test:nextjs"
@@ -22,7 +22,7 @@
     "graphql": "^16.7.1",
     "graphql-17-alpha2": "npm:graphql@17.0.0-alpha.2",
     "graphql-tag": "^2.12.6",
-    "next": "^15.2.4",
+    "next": "^16.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-error-boundary": "^4.0.13",
