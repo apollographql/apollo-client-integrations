@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const nonce = request.nextUrl.searchParams.get("nonce");
   if (nonce) {
     // we set a fixed nonce here so we can test correct and incorrect nonce values
