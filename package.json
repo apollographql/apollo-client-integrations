@@ -29,8 +29,8 @@
   "resolutions": {
     "@microsoft/api-documenter": "7.24.1",
     "graphql": "17.0.0-alpha.2",
-    "@types/react": "19.0.2",
-    "@types/react-dom": "19.0.2",
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
     "react": "19.0.0",
     "react-dom": "19.0.0"
   },
@@ -39,8 +39,8 @@
     "@size-limit/file": "11.1.2",
     "@size-limit/webpack": "11.1.2",
     "@size-limit/webpack-why": "11.1.2",
-    "@types/node": "^22.10.9",
-    "@types/pacote": "^11.1.8",
+    "@types/node": "22.10.9",
+    "@types/pacote": "11.1.8",
     "@yarnpkg/cli": "^4.9.1",
     "@yarnpkg/core": "^4.2.0",
     "knip": "^5.43.1",
