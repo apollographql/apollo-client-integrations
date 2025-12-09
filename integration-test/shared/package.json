@@ -9,7 +9,7 @@
     "@types/react": "*",
     "@types/react-dom": "*",
     "graphql": "*",
-    "react": "*",
+    "react": "^19.2.1",
     "react-dom": "*"
   },
   "dependencies": {
