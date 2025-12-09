@@ -87,7 +87,7 @@
     "@types/react-dom": "*",
     "graphql": "*",
     "publint": "0.2.7",
-    "react": "*",
+    "react": "^19.2.1",
     "react-dom": "*",
     "rxjs": "^7.8.2",
     "typescript": "^5.7.3"

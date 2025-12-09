@@ -20,7 +20,7 @@
     "@vercel/react-router": "^1.0.2",
     "graphql": "*",
     "isbot": "^5.1.17",
-    "react": "^19.0.0",
+    "react": "^19.2.1",
     "react-dom": "^19.0.0",
     "react-router": "^7.2.0-pre.3",
     "rxjs": "^7.8.2"
