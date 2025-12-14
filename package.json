@@ -36,16 +36,16 @@
   },
   "devDependencies": {
     "@microsoft/api-documenter": "7.24.3",
-    "@size-limit/file": "11.1.2",
-    "@size-limit/webpack": "11.1.2",
-    "@size-limit/webpack-why": "11.1.2",
+    "@size-limit/file": "12.0.0",
+    "@size-limit/webpack": "12.0.0",
+    "@size-limit/webpack-why": "12.0.0",
     "@types/node": "^22.10.9",
     "@types/pacote": "^11.1.8",
     "@yarnpkg/cli": "^4.9.1",
     "@yarnpkg/core": "^4.2.0",
     "knip": "^5.43.1",
     "pacote": "^21.0.3",
-    "size-limit": "11.1.2",
+    "size-limit": "12.0.0",
     "typescript": "^5.7.3",
     "zx": "^8.8.3"
   }
