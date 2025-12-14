@@ -27,7 +27,7 @@
     "changeset-version": "changeset version && node scripts/post-version.mts && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
   },
   "resolutions": {
-    "@microsoft/api-documenter": "7.24.1",
+    "@microsoft/api-documenter": "7.28.2",
     "graphql": "17.0.0-alpha.2",
     "@types/react": "19.0.2",
     "@types/react-dom": "19.0.2",
@@ -35,18 +35,18 @@
     "react-dom": "19.0.0"
   },
   "devDependencies": {
-    "@microsoft/api-documenter": "7.24.3",
-    "@size-limit/file": "11.1.2",
-    "@size-limit/webpack": "11.1.2",
-    "@size-limit/webpack-why": "11.1.2",
+    "@microsoft/api-documenter": "7.28.2",
+    "@size-limit/file": "11.2.0",
+    "@size-limit/webpack": "11.2.0",
+    "@size-limit/webpack-why": "11.2.0",
     "@types/node": "^22.10.9",
     "@types/pacote": "^11.1.8",
-    "@yarnpkg/cli": "^4.9.1",
-    "@yarnpkg/core": "^4.2.0",
-    "knip": "^5.43.1",
-    "pacote": "^21.0.3",
-    "size-limit": "11.1.2",
-    "typescript": "^5.7.3",
+    "@yarnpkg/cli": "4.9.1",
+    "@yarnpkg/core": "4.2.0",
+    "knip": "5.43.1",
+    "pacote": "21.0.3",
+    "size-limit": "11.2.0",
+    "typescript": "5.7.3",
     "zx": "^8.8.3"
   }
 }
