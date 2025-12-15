@@ -22,15 +22,21 @@ export const hookWrappers: HookWrappers = {
                   }
             );
 
-            return ret.dataState === "empty" &&
-              // if we changed the options to `cache-only` from something else,
-              // the value is not in the cache, and the query hasn't been skipped,
-              // we override the loading state to `true`
-              typeof "options" !== "symbol" &&
-              options?.fetchPolicy !== "cache-only" &&
-              ret.observable.options.fetchPolicy === "cache-only"
-              ? { ...ret, loading: true, networkStatus: NetworkStatus.loading }
-              : ret;
+            return typeof options === "symbol"
+              ? ret
+              : // if we changed the options to `cache-only` from something else,
+                options?.fetchPolicy !== "cache-only" &&
+                  // the value is not in the cache,
+                  ret.dataState === "empty" &&
+                  // and the query hasn't been skipped,
+                  ret.observable.options.fetchPolicy === "cache-only"
+                ? // we override the loading state to `true`
+                  {
+                    ...ret,
+                    loading: true,
+                    networkStatus: NetworkStatus.loading,
+                  }
+                : ret;
           }
         : orig_useQuery,
       ["data", "loading", "networkStatus", "dataState"]
