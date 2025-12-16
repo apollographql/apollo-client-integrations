@@ -1,6 +1,6 @@
 # @apollo/client-integration-tanstack-start
 
-## 0.14.2
+## 0.14.2-rc.0
 
 ### Patch Changes
 
