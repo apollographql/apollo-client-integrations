@@ -1,5 +1,12 @@
 # @apollo/client-integration-react-router
 
+## 0.14.2-alpha.0
+
+### Patch Changes
+
+- Updated dependencies [156a5e1]
+  - @apollo/client-react-streaming@0.14.2
+
 ## 0.14.0-alpha.0
 
 ### Patch Changes

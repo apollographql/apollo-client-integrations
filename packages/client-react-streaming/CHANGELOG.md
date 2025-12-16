@@ -1,5 +1,11 @@
 # @apollo/client-react-streaming
 
+## 0.14.2
+
+### Patch Changes
+
+- 156a5e1: Fix a bug where `useQuery` started off with `loading: false`.
+
 ## 0.14.0
 
 ### Minor Changes
