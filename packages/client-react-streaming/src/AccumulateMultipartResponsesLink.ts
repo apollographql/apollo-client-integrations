@@ -3,6 +3,7 @@ import { Observable } from "@apollo/client/utilities";
 import { hasDirectives } from "@apollo/client/utilities/internal";
 import type { InternalTypes } from "@apollo/client";
 import type { Incremental } from "@apollo/client/incremental";
+import type { FormattedExecutionResult } from "graphql";
 
 interface AccumulateMultipartResponsesConfig {
   /**
@@ -60,7 +61,8 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
 
     // TODO: this could be overwritten with a `@AccumulateMultipartResponsesConfig(maxDelay: 1000)` directive on the operation
     const maxDelay = this.maxDelay;
-    let accumulatedData: ApolloLink.Result, maxDelayTimeout: NodeJS.Timeout;
+    let accumulatedData: FormattedExecutionResult,
+      maxDelayTimeout: NodeJS.Timeout;
     const incrementalHandler = (
       operation.client["queryManager"] as InternalTypes.QueryManager
     ).incrementalHandler;
