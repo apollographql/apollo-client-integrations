@@ -40,6 +40,10 @@ jobs:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
           cache: "yarn"
+      - run: |
+          npm config set loglevel verbose
+          npm config set foreground-scripts true
+
       - run: yarn install --immutable --mode=skip-build
 
       - name: Alpha branch - Enter prerelease mode (alpha by default)
