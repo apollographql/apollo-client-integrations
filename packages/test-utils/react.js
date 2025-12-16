@@ -7,7 +7,7 @@ export async function browserEnv() {
   const jsdom = await import("global-jsdom");
   const cleanupJSDOM = jsdom.default();
   const origActEnv = globalThis.IS_REACT_ACT_ENVIRONMENT;
-
+  /** @type {ReturnType<typeof createRoot>} */
   let lastRoot;
 
   globalThis.IS_REACT_ACT_ENVIRONMENT = true;
@@ -25,8 +25,10 @@ export async function browserEnv() {
       await act(async () => lastRoot.render(reactNode));
       return lastRoot;
     },
-    [Symbol.dispose]: () => {
+    [Symbol.asyncDispose]: async () => {
       if (lastRoot) lastRoot.unmount();
+      // Give React time to finish cleanup
+      await new Promise((resolve) => setTimeout(resolve, 10));
       globalThis.IS_REACT_ACT_ENVIRONMENT = origActEnv;
       cleanupJSDOM();
     },
