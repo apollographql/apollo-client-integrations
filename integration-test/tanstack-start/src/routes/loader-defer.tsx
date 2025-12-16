@@ -10,7 +10,11 @@ import { DefaultContext } from "@apollo/client";
 
 export const Route = createFileRoute("/loader-defer")({
   component: LoaderDeferPage,
-  validateSearch: (search: Record<string, unknown>) => {
+  validateSearch: (
+    search: Record<string, unknown>
+  ): {
+    errorIn?: DefaultContext["error"];
+  } => {
     return {
       errorIn: search.errorIn as DefaultContext["error"],
     };
