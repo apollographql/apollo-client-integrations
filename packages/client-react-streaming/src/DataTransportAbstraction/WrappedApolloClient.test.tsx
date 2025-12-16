@@ -315,7 +315,13 @@ describe(
         appendToBody`<div hidden id="S:1"><div id="user">User</div></div>`;
         $RS("S:1", "P:1");
 
-        await new Promise((resolve) => setTimeout(resolve, 10));
+        // at this point, the server value has tried to render twice
+        await new Promise((resolve) => setTimeout(resolve, 20));
+        assert.deepStrictEqual(finishedRenders, [
+          { me: "User" },
+          { me: "User" },
+        ]);
+
         // meanwhile, in the browser, the cache is modified
         client.cache.writeQuery({
           query: QUERY_ME,
@@ -323,6 +329,14 @@ describe(
             me: "Future me.",
           },
         });
+
+        // component already reruns the render function
+        await new Promise((resolve) => setTimeout(resolve, 20));
+        assert.deepStrictEqual(finishedRenders, [
+          { me: "User" },
+          { me: "User" },
+          { me: "Future me." },
+        ]);
 
         // `ParallelSuspending` finishes rendering
         appendToBody`<div hidden id="S:2"><div id="parallel">suspending in parallel</div></div>`;
@@ -334,9 +348,9 @@ describe(
         // we expect the *new* value to appear after hydration finished, not the old value from the server
         await findByText("Future me.");
 
-        // one render to rehydrate the server value
-        // one rerender with the actual client value (which is hopefull equal)
+        // no more renders happened
         assert.deepStrictEqual(finishedRenders, [
+          { me: "User" },
           { me: "User" },
           { me: "Future me." },
         ]);
@@ -349,7 +363,7 @@ describe(
         });
         assert.equal(
           document.body.innerHTML,
-          `<!--$--><div id="user">Future me.</div><div id="parallel">suspending in parallel</div><!--/$-->`
+          `<div id="user">Future me.</div><div id="parallel">suspending in parallel</div>`
         );
       }
     );

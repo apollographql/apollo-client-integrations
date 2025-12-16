@@ -106,7 +106,7 @@ test(
     using _restoreConsole = silenceConsoleErrors();
 
     await test("@apollo/client should error", async () => {
-      using env = await browserEnv();
+      await using env = await browserEnv();
       const upstreamPkg = await import("@apollo/client");
       const promise = new Promise((_resolve, reject) => {
         env.render(
@@ -132,7 +132,7 @@ test(
       });
     });
     await test("@apollo/client-react-streaming should error", async () => {
-      using env = await browserEnv();
+      await using env = await browserEnv();
       const streamingPkg = await import("@apollo/client-react-streaming");
       const promise = new Promise((_resolve, reject) => {
         env.render(
@@ -157,7 +157,7 @@ test(
       });
     });
     await test("this package should work", async () => {
-      using env = await browserEnv();
+      await using env = await browserEnv();
       const promise = new Promise<void>((resolve, reject) => {
         function Child() {
           resolve();
