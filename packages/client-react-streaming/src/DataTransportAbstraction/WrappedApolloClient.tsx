@@ -181,9 +181,13 @@ class ApolloClientClientBaseImpl extends ApolloClientBase {
     const queryInfo = this.simulatedStreamingQueries.get(event.id);
     if (!queryInfo) return;
 
+    const handler = getQueryManager(this).incrementalHandler;
     if (
       event.type === "error" ||
-      (event.type === "next" && event.value.errors)
+      (event.type === "next" &&
+        (handler.isIncrementalResult(event.value)
+          ? handler.extractErrors(event.value)
+          : event.value.errors))
     ) {
       /**
        * At this point we're not able to correctly serialize the error over the wire

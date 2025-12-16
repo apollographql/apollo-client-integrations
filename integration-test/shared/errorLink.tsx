@@ -1,6 +1,7 @@
 import { ApolloLink, Observable } from "@apollo/client";
 import { GraphQLError, type GraphQLFormattedError } from "graphql";
 import * as entryPoint from "@apollo/client-react-streaming";
+import { Defer20220824Handler } from "@apollo/client/incremental";
 
 declare module "@apollo/client" {
   type Env = "ssr" | "browser" | "rsc";
@@ -31,6 +32,28 @@ export const errorLink = new ApolloLink((operation, forward) => {
     return new Observable((subscriber) => {
       if (errorConditions.includes("network_error")) {
         subscriber.error(new Error(`Simulated link chain error (${env})`));
+      } else if (errorConditions.includes("incremental_chunk_error_alpha2")) {
+        let chunk = 0;
+        const sub = forward(operation).subscribe((value) => {
+          if (++chunk === 3) {
+            subscriber.next({
+              hasNext: false,
+              incremental: [
+                {
+                  errors: [
+                    {
+                      message: `Simulated error (${env})`,
+                    },
+                  ],
+                },
+              ],
+            } satisfies Defer20220824Handler.SubsequentResult);
+            subscriber.complete();
+            sub.unsubscribe();
+          } else {
+            subscriber.next(value);
+          }
+        });
       } else {
         subscriber.next({
           data: null,

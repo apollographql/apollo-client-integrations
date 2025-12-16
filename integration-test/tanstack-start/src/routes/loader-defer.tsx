@@ -6,12 +6,23 @@ import {
   useReadQuery,
 } from "@apollo/client/react";
 import { useTransition } from "react";
+import { DefaultContext } from "@apollo/client";
 
 export const Route = createFileRoute("/loader-defer")({
   component: LoaderDeferPage,
-  loader: async ({ context: { preloadQuery } }) => {
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      errorIn: search.errorIn as DefaultContext["error"],
+    };
+  },
+  loaderDeps: ({ search: { errorIn } }) => ({ errorIn }),
+  loader: async ({ context: { preloadQuery }, deps: { errorIn } }) => {
     const queryRef = preloadQuery(DEFERRED_QUERY, {
       variables: { delayDeferred: 1000 },
+      context: {
+        delay: 1000,
+        ...(errorIn ? { error: errorIn } : {}),
+      },
     });
     return {
       queryRef,
