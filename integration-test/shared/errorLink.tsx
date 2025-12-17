@@ -34,25 +34,33 @@ export const errorLink = new ApolloLink((operation, forward) => {
         subscriber.error(new Error(`Simulated link chain error (${env})`));
       } else if (errorConditions.includes("incremental_chunk_error_alpha2")) {
         let chunk = 0;
-        const sub = forward(operation).subscribe((value) => {
-          if (++chunk === 3) {
-            subscriber.next({
-              hasNext: false,
-              incremental: [
-                {
-                  errors: [
-                    {
-                      message: `Simulated error (${env})`,
-                    },
-                  ],
-                },
-              ],
-            } satisfies Defer20220824Handler.SubsequentResult);
+        const sub = forward(operation).subscribe({
+          next(value) {
+            if (++chunk === 3) {
+              subscriber.next({
+                hasNext: false,
+                incremental: [
+                  {
+                    errors: [
+                      {
+                        message: `Simulated error (${env})`,
+                      },
+                    ],
+                  },
+                ],
+              } satisfies Defer20220824Handler.SubsequentResult);
+              subscriber.complete();
+              sub.unsubscribe();
+            } else {
+              subscriber.next(value);
+            }
+          },
+          error(err) {
+            subscriber.error(err);
+          },
+          complete() {
             subscriber.complete();
-            sub.unsubscribe();
-          } else {
-            subscriber.next(value);
-          }
+          },
         });
       } else {
         subscriber.next({
