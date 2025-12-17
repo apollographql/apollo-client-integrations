@@ -61,7 +61,7 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
 
     // TODO: this could be overwritten with a `@AccumulateMultipartResponsesConfig(maxDelay: 1000)` directive on the operation
     const maxDelay = this.maxDelay;
-    let accumulatedData: FormattedExecutionResult,
+    let accumulatedData: FormattedExecutionResult | undefined,
       maxDelayTimeout: NodeJS.Timeout;
     const incrementalHandler = (
       operation.client["queryManager"] as InternalTypes.QueryManager
@@ -78,7 +78,7 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
             incremental ||= incrementalHandler.startRequest({
               query: operation.query,
             });
-            accumulatedData = incremental.handle(accumulatedData.data, result);
+            accumulatedData = incremental.handle(accumulatedData?.data, result);
           } else {
             accumulatedData = result;
           }
@@ -102,7 +102,9 @@ export class AccumulateMultipartResponsesLink extends ApolloLink {
       });
 
       function flushAccumulatedData() {
-        subscriber.next(accumulatedData);
+        if (accumulatedData) {
+          subscriber.next(accumulatedData);
+        }
         subscriber.complete();
         upstreamSubscription.unsubscribe();
       }
