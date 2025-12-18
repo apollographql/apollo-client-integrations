@@ -87,7 +87,7 @@ test("if the head has been flushed, just insert wherever", async () => {
   const { resultPromise, controller } = setupStream(transformStream);
 
   controller.enqueue("<html><head><title>Test</title></head><body>");
-  await scheduler.wait(1);
+  await scheduler.wait(10);
   injectIntoStream(() => <TestComponent />);
   controller.enqueue("</body></html>");
   controller.close();
@@ -113,7 +113,7 @@ test("race condition: injection queued while currentlyStreaming is true, no asyn
   const { resultPromise, controller } = setupStream(transformStream);
 
   controller.enqueue("<html><head><title>Test</title></head><body>");
-  await scheduler.wait(0);
+  await scheduler.wait(10);
   controller.enqueue("<di");
   injectIntoStream(() => <TestComponent />);
   controller.enqueue("v>unrelated content</div>");
