@@ -152,7 +152,60 @@ test.describe("CC dynamic", () => {
     );
   });
 
-  test.fixme("useSuspenseQuery with @defer", { tag: ["@tanstack"] }, () => {});
+  test(
+    "useSuspenseQuery with @defer, success",
+    { tag: ["@tanstack"] },
+    async ({ page }) => {
+      await page.goto(`${base}/useSuspenseQuery-defer`, {
+        waitUntil: "commit",
+      });
+
+      // main data already there
+      await expect(page.getByText("Soft Warm Apollo Beanie")).toBeVisible();
+      expect(await page.getByText("Queried in SSR environment").count()).toBe(
+        1
+      );
+      // deferred chunks still loading
+      expect(await page.getByText("loading...").count()).toBe(6);
+      // deferred chunk came in
+      await expect(page.getByText("cuteness overload")).toBeVisible();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      expect(await page.getByText("Queried in SSR environment").count()).toBe(
+        7
+      );
+      expect(await page.getByText("loading...").count()).toBe(0);
+    }
+  );
+
+  test(
+    "useSuspenseQuery with @defer, error in deferred chunk",
+    { tag: ["@tanstack"] },
+    async ({ page }) => {
+      await page.goto(
+        `${base}/useSuspenseQuery-defer?errorIn=ssr,incremental_chunk_error_alpha2`,
+        {
+          waitUntil: "commit",
+        }
+      );
+
+      // main data already there
+      await expect(page.getByText("Soft Warm Apollo Beanie")).toBeVisible();
+      expect(await page.getByText("Queried in SSR environment").count()).toBe(
+        1
+      );
+      // deferred chunks still loading
+      expect(await page.getByText("loading...").count()).toBe(6);
+      // deferred chunk came in
+      await expect(page.getByText("cuteness overload")).toBeVisible();
+      await new Promise((resolve) => setTimeout(resolve, 500));
+
+      expect(
+        await page.getByText("Queried in Browser environment").count()
+      ).toBe(7);
+      expect(await page.getByText("loading...").count()).toBe(0);
+    }
+  );
 
   test.describe("useSuspenseQuery with a nonce", () => {
     test(

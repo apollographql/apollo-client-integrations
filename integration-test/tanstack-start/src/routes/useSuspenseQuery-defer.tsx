@@ -2,16 +2,26 @@ import { createFileRoute } from "@tanstack/react-router";
 import { DEFERRED_QUERY } from "@integration-test/shared/queries";
 import { useApolloClient, useSuspenseQuery } from "@apollo/client/react";
 import { useTransition } from "react";
+import { DefaultContext } from "@apollo/client";
 
 export const Route = createFileRoute("/useSuspenseQuery-defer")({
+  validateSearch: (search: Record<string, unknown>) => {
+    return {
+      errorIn: search.errorIn as DefaultContext["error"],
+    };
+  },
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const [refetching, startTransition] = useTransition();
   const client = useApolloClient();
+  const { errorIn } = Route.useSearch();
   const { data, refetch } = useSuspenseQuery(DEFERRED_QUERY, {
     variables: { delayDeferred: 1000 },
+    context: {
+      ...(errorIn ? { error: errorIn } : {}),
+    },
   });
 
   return (
