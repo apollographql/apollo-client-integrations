@@ -118,7 +118,7 @@ test("race condition: injection queued while currentlyStreaming is true, no asyn
   injectIntoStream(() => <TestComponent />);
   controller.enqueue("v>unrelated content</div>");
   controller.enqueue("</body></html>");
-  // TODO: it would be better if the script chunk ended up inside the `html`, tag, but right now it's better here than nowhere. Browsers will be okay with it.
+  // TODO: it would be better if the script chunk ended up inside the `html` tag, but right now it's better here than nowhere. Browsers will be okay with it.
   controller.close();
 
   assert.equal(
