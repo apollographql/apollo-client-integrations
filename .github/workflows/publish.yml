@@ -20,7 +20,7 @@ jobs:
     steps:
       # Create an access token for the Github Actions Bot app. This one has permissions
       # to push directly to this repository (only!) without required status checks.
-      - uses: actions/create-github-app-token@v1
+      - uses: actions/create-github-app-token@v2
         id: github-actions-bot-app-token
         with:
           app-id: 819772
@@ -28,14 +28,14 @@ jobs:
 
       # Check out the repository, using the Github Actions Bot app's token so that we
       # can push later and override required statuses.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           token: ${{ steps.github-actions-bot-app-token.outputs.token }}
           # Fetch entire git history so  Changesets can generate changelogs
           # with the correct commits
           fetch-depth: 0
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v6
         with:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
@@ -78,3 +78,16 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      - name: Output npm logs on failure
+        if: failure()
+        run: |
+          echo "::group::NPM Debug Logs"
+          for log in ~/.npm/_logs/*-debug*.log; do
+            if [ -f "$log" ]; then
+              echo "=== $log ==="
+              cat "$log"
+              echo ""
+            fi
+          done
+          echo "::endgroup::"
