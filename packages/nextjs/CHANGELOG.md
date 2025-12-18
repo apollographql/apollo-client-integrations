@@ -1,5 +1,13 @@
 # @apollo/client-integration-nextjs
 
+## 0.14.3
+
+### Patch Changes
+
+- Updated dependencies [0385d57]
+- Updated dependencies [00e61e5]
+  - @apollo/client-react-streaming@0.14.3
+
 ## 0.14.2
 
 ### Patch Changes

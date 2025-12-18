@@ -1,5 +1,12 @@
 # @apollo/client-react-streaming
 
+## 0.14.3
+
+### Patch Changes
+
+- 0385d57: fix race condition in `createInjectionTransformStream`
+- 00e61e5: Handle errors in incremental chunks when streaming from hook SSR.
+
 ## 0.14.2
 
 ### Patch Changes
