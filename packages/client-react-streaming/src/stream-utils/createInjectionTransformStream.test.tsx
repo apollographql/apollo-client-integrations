@@ -107,7 +107,7 @@ test("if the head has been flushed, just insert wherever", async () => {
   );
 });
 
-test("race condition: injection queued while currentlyStreaming is true", async () => {
+test("race condition: injection queued while currentlyStreaming is true, no async follow-up chunks", async () => {
   const { transformStream, injectIntoStream } =
     createInjectionTransformStream();
   const { resultPromise, controller } = setupStream(transformStream);
