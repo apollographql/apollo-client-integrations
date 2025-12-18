@@ -83,7 +83,9 @@ export function createInjectionTransformStream(): {
 
   const transformStream = new TransformStream({
     async transform(chunk, controller) {
-      // While react is flushing chunks, we don't apply insertions
+      // While react is flushing chunks, we don't apply insertions.
+      // Injecting during streaming could break HTML by inserting content
+      // at arbitrary chunk boundaries (e.g., inside partial tags like <di${injected}v>).
       if (currentlyStreaming) {
         controller.enqueue(chunk);
         return;
@@ -109,12 +111,19 @@ export function createInjectionTransformStream(): {
           controller.enqueue(textEncoder.encode(content.slice(0, -KEEP_BYTES)));
         }
       } else {
-        controller.enqueue(textEncoder.encode(await renderInjectedHtml()));
+        if (queuedInjections.length > 0) {
+          controller.enqueue(textEncoder.encode(await renderInjectedHtml()));
+        }
         controller.enqueue(chunk);
         currentlyStreaming = true;
         setImmediate(() => {
           currentlyStreaming = false;
         });
+      }
+    },
+    async flush(controller) {
+      if (queuedInjections.length > 0) {
+        controller.enqueue(textEncoder.encode(await renderInjectedHtml()));
       }
     },
   });

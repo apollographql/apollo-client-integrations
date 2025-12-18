@@ -87,7 +87,7 @@ test("if the head has been flushed, just insert wherever", async () => {
   const { resultPromise, controller } = setupStream(transformStream);
 
   controller.enqueue("<html><head><title>Test</title></head><body>");
-  await scheduler.wait(1);
+  await scheduler.wait(10);
   injectIntoStream(() => <TestComponent />);
   controller.enqueue("</body></html>");
   controller.close();
@@ -104,6 +104,36 @@ test("if the head has been flushed, just insert wherever", async () => {
         </script>
       </body>
     </html>`
+  );
+});
+
+test("race condition: injection queued while currentlyStreaming is true, no async follow-up chunks", async () => {
+  const { transformStream, injectIntoStream } =
+    createInjectionTransformStream();
+  const { resultPromise, controller } = setupStream(transformStream);
+
+  controller.enqueue("<html><head><title>Test</title></head><body>");
+  await scheduler.wait(10);
+  controller.enqueue("<di");
+  injectIntoStream(() => <TestComponent />);
+  controller.enqueue("v>unrelated content</div>");
+  controller.enqueue("</body></html>");
+  // TODO: it would be better if the script chunk ended up inside the `html` tag, but right now it's better here than nowhere. Browsers will be okay with it.
+  controller.close();
+
+  assert.equal(
+    await resultPromise,
+    html`<html>
+        <head>
+          <title>Test</title>
+        </head>
+        <body>
+          <div>unrelated content</div>
+        </body>
+      </html>
+      <script>
+        console.log("test");
+      </script>`
   );
 });
 
