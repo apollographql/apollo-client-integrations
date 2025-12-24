@@ -142,7 +142,7 @@
     "@testing-library/react": "^16.1.0",
     "@total-typescript/shoehorn": "0.1.2",
     "@tsconfig/recommended": "1.0.6",
-    "@types/node": "20.12.11",
+    "@types/node": "24.10.4",
     "@types/react": "^19.0.0",
     "@types/react-dom": "*",
     "concurrently": "8.2.2",
