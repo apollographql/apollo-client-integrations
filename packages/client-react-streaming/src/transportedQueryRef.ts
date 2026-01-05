@@ -316,7 +316,7 @@ function sanitizeForTransport<T>(value: T) {
   return JSON.parse(JSON.stringify(value)) as T;
 }
 
-function unmask(query: DocumentNode) {
+function unmask(query: DocumentNode): DocumentNode {
   return visit(query, {
     FragmentSpread(node) {
       return {
