@@ -11,7 +11,7 @@
   ],
   "main": "package.json",
   "dependencies": {
-    "@changesets/cli": "^2.27.10",
+    "@changesets/cli": "patch:@changesets/cli@npm%3A2.27.10#~/.yarn/patches/@changesets-cli-npm-2.27.10-24546ed993.patch",
     "@yarnpkg/types": "^4.0.0",
     "prettier": "^3.0.0",
     "semver": "^7.6.0"

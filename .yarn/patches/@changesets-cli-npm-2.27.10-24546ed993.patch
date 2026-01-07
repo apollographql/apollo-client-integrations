@@ -1,0 +1,26 @@
+diff --git a/dist/changesets-cli.cjs.js b/dist/changesets-cli.cjs.js
+index eaba708933af221632c9b54d09721ae5982e448a..6026b34138a9c2fbb2b02665e6d5b6a8620339da 100644
+--- a/dist/changesets-cli.cjs.js
++++ b/dist/changesets-cli.cjs.js
+@@ -664,7 +664,7 @@ const getLastJsonObjectFromString = str => {
+ };
+ 
+ const npmRequestLimit = pLimit__default["default"](40);
+-const npmPublishLimit = pLimit__default["default"](10);
++const npmPublishLimit = pLimit__default["default"](1);
+ 
+ function jsonParse(input) {
+   try {
+diff --git a/dist/changesets-cli.esm.js b/dist/changesets-cli.esm.js
+index 817d3ceeca7adcdea87b1f5603b2aee4f06c57c8..0e025974bed2cf6b6f4104ab460398ebe901f14f 100644
+--- a/dist/changesets-cli.esm.js
++++ b/dist/changesets-cli.esm.js
+@@ -626,7 +626,7 @@ const getLastJsonObjectFromString = str => {
+ };
+ 
+ const npmRequestLimit = pLimit(40);
+-const npmPublishLimit = pLimit(10);
++const npmPublishLimit = pLimit(1);
+ 
+ function jsonParse(input) {
+   try {
