@@ -49,6 +49,7 @@
         "types": "./dist/combined.d.cts",
         "react-server": "./dist/index.rsc.cjs",
         "edge-light": "./dist/index.ssr.cjs",
+        "workerd": "./dist/index.ssr.cjs",
         "browser": "./dist/index.browser.cjs",
         "node": "./dist/index.ssr.cjs"
       },
@@ -56,6 +57,7 @@
         "types": "./dist/combined.d.ts",
         "react-server": "./dist/index.rsc.js",
         "edge-light": "./dist/index.ssr.js",
+        "workerd": "./dist/index.ssr.js",
         "browser": "./dist/index.browser.js",
         "node": "./dist/index.ssr.js"
       }
@@ -65,6 +67,7 @@
         "types": "./dist/manual-transport.ssr.d.cts",
         "react-server": "./dist/empty.cjs",
         "edge-light": "./dist/manual-transport.ssr.cjs",
+        "workerd": "./dist/manual-transport.ssr.cjs",
         "browser": "./dist/manual-transport.browser.cjs",
         "node": "./dist/manual-transport.ssr.cjs"
       },
@@ -72,6 +75,7 @@
         "types": "./dist/manual-transport.ssr.d.ts",
         "react-server": "./dist/empty.js",
         "edge-light": "./dist/manual-transport.ssr.js",
+        "workerd": "./dist/manual-transport.ssr.js",
         "browser": "./dist/manual-transport.browser.js",
         "node": "./dist/manual-transport.ssr.js"
       }
@@ -81,6 +85,7 @@
         "types": "./dist/stream-utils.combined.d.cts",
         "react-server": "./dist/stream-utils.cjs",
         "edge-light": "./dist/stream-utils.ssr.cjs",
+        "workerd": "./dist/stream-utils.ssr.cjs",
         "browser": "./dist/stream-utils.cjs",
         "node": "./dist/stream-utils.ssr.cjs"
       },
@@ -88,6 +93,7 @@
         "types": "./dist/stream-utils.combined.d.ts",
         "react-server": "./dist/stream-utils.js",
         "edge-light": "./dist/stream-utils.ssr.js",
+        "workerd": "./dist/stream-utils.ssr.js",
         "browser": "./dist/stream-utils.js",
         "node": "./dist/stream-utils.ssr.js"
       }

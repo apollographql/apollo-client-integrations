@@ -38,6 +38,16 @@
       "SSRMultipartLink",
       "resetApolloClientSingletons",
       "built_for_ssr"
+    ],
+    "workerd,worker,module,browser": [
+      "ApolloNextAppProvider",
+      "DebounceMultipartResponsesLink",
+      "ApolloClient",
+      "InMemoryCache",
+      "RemoveMultipartDirectivesLink",
+      "SSRMultipartLink",
+      "resetApolloClientSingletons",
+      "built_for_ssr"
     ]
   },
   "@apollo/experimental-nextjs-app-support/ssr": {
@@ -96,12 +106,27 @@
       "useQuery",
       "useReadQuery",
       "useSuspenseQuery"
+    ],
+    "workerd,worker,module,browser": [
+      "ApolloNextAppProvider",
+      "DebounceMultipartResponsesLink",
+      "NextSSRApolloClient",
+      "NextSSRInMemoryCache",
+      "RemoveMultipartDirectivesLink",
+      "SSRMultipartLink",
+      "resetNextSSRApolloSingletons",
+      "useBackgroundQuery",
+      "useFragment",
+      "useQuery",
+      "useReadQuery",
+      "useSuspenseQuery"
     ]
   },
   "@apollo/experimental-nextjs-app-support/rsc": {
     "react-server": ["registerApolloClient"],
     "browser": ["built_for_other"],
     "node": ["built_for_other"],
-    "edge-light,worker,browser": ["built_for_other"]
+    "edge-light,worker,browser": ["built_for_other"],
+    "workerd,worker,module,browser": ["built_for_other"]
   }
 }
