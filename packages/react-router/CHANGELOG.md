@@ -1,5 +1,13 @@
 # @apollo/client-integration-react-router
 
+## 0.14.4
+
+### Patch Changes
+
+- 6f3b15a: Update `package.json` with correct `exports` for Cloudflare `workerd` condition.
+- Updated dependencies [6f3b15a]
+  - @apollo/client-react-streaming@0.14.4
+
 ## 0.14.3-alpha.0
 
 ### Patch Changes
