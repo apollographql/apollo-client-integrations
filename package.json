@@ -27,7 +27,7 @@
     "changeset-version": "changeset version && node scripts/post-version.mts && YARN_ENABLE_IMMUTABLE_INSTALLS=false yarn install --mode=skip-build"
   },
   "resolutions": {
-    "@microsoft/api-documenter": "7.24.1",
+    "@microsoft/api-documenter": "7.28.2",
     "graphql": "17.0.0-alpha.2",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
