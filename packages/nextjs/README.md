@@ -10,7 +10,7 @@
 
 ## Apollo Client AI Skill
 
-Add the Apollo Client AI skill to your project to get AI-powered assistance:
+Add the Apollo Client AI skill to your project to get AI-powered assistance with setup instructions:
 
 ```sh
 npx skills add apollographql/skills --skill apollo-client
