@@ -2,6 +2,14 @@
 
 This package provides integrations between Apollo Client and TanStack Start to support modern streaming SSR.
 
+## Apollo Client AI Skill
+
+Add the Apollo Client AI skill to your project to get AI-powered assistance:
+
+```sh
+npx skills add apollographql/skills --skill apollo-client
+```
+
 ## Setup
 
 Install dependencies:
