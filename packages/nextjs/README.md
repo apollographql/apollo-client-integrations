@@ -8,9 +8,9 @@
 | :--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | What do you like best about Apollo Client? What needs to be improved? Please tell us by taking a [one-minute survey](https://docs.google.com/forms/d/e/1FAIpQLSczNDXfJne3ZUOXjk9Ursm9JYvhTh1_nFTDfdq3XBAFWCzplQ/viewform?usp=pp_url&entry.1170701325=Apollo+Client&entry.204965213=Readme). Your responses will help us understand Apollo Client usage and allow us to serve you better. |
 
-## Apollo Client AI Skill
+## Apollo Client Skill
 
-Add the Apollo Client AI skill to your project to get AI-powered assistance with setup instructions:
+Give your AI agent specialized Apollo Client knowledge and setup guidance:
 
 ```sh
 npx skills add apollographql/skills --skill apollo-client

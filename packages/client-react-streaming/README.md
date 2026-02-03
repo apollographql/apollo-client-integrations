@@ -4,9 +4,9 @@ This package provides building blocks to create framework-level integration of A
 
 It can also be used to use Apollo Client with a custom streaming SSR setup, e.g. with Vite. See the [vite streaming integration test](https://github.com/apollographql/apollo-client-integrations/tree/main/integration-test/vite-streaming) as an example.
 
-## Apollo Client AI Skill
+## Apollo Client Skill
 
-Add the Apollo Client AI skill to your project to get AI-powered assistance with setup instructions:
+Give your AI agent specialized Apollo Client knowledge and setup guidance:
 
 ```sh
 npx skills add apollographql/skills --skill apollo-client
