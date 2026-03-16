@@ -40,6 +40,7 @@ export declare namespace createApolloLoaderHandler {
     loader: (
       args: LoaderArgs & {
         preloadQuery: PreloadQueryFn;
+        client: ApolloClient;
       }
     ) => ReturnValue
   ) => (args: LoaderArgs) => ReturnValue;
@@ -59,6 +60,7 @@ export function createApolloLoaderHandler(
     return loader({
       ...args,
       preloadQuery,
+      client,
     });
   };
 }
