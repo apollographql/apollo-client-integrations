@@ -195,6 +195,7 @@ export function meta({ data }: Route.MetaArgs) {
 export default function Products() {
   const { queryRef } = useLoaderData<typeof loader>();
   const { data } = useReadQuery(queryRef);
+  const product = data.product;
 
   return (
     <div>
@@ -203,7 +204,6 @@ export default function Products() {
     </div>
   );
 }
-```
 
 > [!NOTE] > `resolveWhen` rejects if the query completes (all deferred chunks arrive)
 > without the predicate ever returning `true`, or if the query errors.
