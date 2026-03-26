@@ -137,4 +137,74 @@ export default function Home() {
   return (
     <div> do something with `data` here </div>
   )
+}
 ```
+
+### Using `preloadQuery.awaitable` for `meta()` and other loader data needs
+
+The standard `preloadQuery()` returns an opaque query ref that can only be consumed by
+`useReadQuery` in a component — you cannot `await` it for raw data inside the loader.
+This is a problem when you need actual values in the loader, for example to set document
+metadata via React Router's `meta()` export.
+
+`preloadQuery.awaitable()` solves this by returning two things:
+
+- **`queryRef`** — the same transportable query ref as `preloadQuery()`, for streaming to
+  the client.
+- **`resolveWhen(predicate)`** — a function that returns a Promise. The promise resolves
+  with the query `data` as soon as the predicate returns `true` against an incoming result.
+  This works with `@defer` — the predicate is evaluated against each incremental result,
+  so you can await only the critical initial data while deferred fields keep streaming.
+
+```ts
+import { gql } from "@apollo/client";
+
+const MY_QUERY = gql`
+  query Product($id: ID!) {
+    product(id: $id) {
+      id
+      title
+      rating @defer {
+        value
+      }
+    }
+  }
+`;
+
+export const loader = apolloLoader<Route.LoaderArgs>()(async ({
+  preloadQuery,
+}) => {
+  const { queryRef, resolveWhen } = preloadQuery.awaitable(MY_QUERY);
+
+  // Await only the product title — `rating` will stream in later via @defer
+  const data = await resolveWhen(
+    (data) => data?.product?.title !== null
+  );
+
+  return {
+    queryRef,
+    title: data.product.title,
+  };
+});
+
+// `meta()` now has access to the awaited data
+export function meta({ data }: Route.MetaArgs) {
+  return [{ title: data!.title }];
+}
+
+export default function Products() {
+  const { queryRef } = useLoaderData<typeof loader>();
+  const { data } = useReadQuery(queryRef);
+
+  return (
+    <div>
+      <h1>{product.title}</h1>
+      <span>Rating: {product.rating?.value ?? "loading..."}</span>
+    </div>
+  );
+}
+```
+
+> [!NOTE] > `resolveWhen` rejects if the query completes (all deferred chunks arrive)
+> without the predicate ever returning `true`, or if the query errors.
+> Make sure your predicate matches on a condition that the initial (non-deferred) response satisfies.

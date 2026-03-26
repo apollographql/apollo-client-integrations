@@ -87,6 +87,48 @@ export interface PreloadTransportedQueryFunction {
     query: DocumentNode | TypedDocumentNode<TData, TVariables>,
     options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
   ): TransportedQueryRef<TData, TVariables>;
+
+  /**
+   * Starts a query and returns both a transportable `queryRef` and a `resolveWhen`
+   * function that can selectively await partial results without blocking streaming.
+   *
+   * @remarks
+   * Use this when you need actual data values in the loader (e.g. for the `meta()`
+   * function) but still want the rest of the query to stream progressively via the
+   * `queryRef`. The `resolveWhen` function subscribes to the query observable and
+   * resolves as soon as the provided predicate returns `true` against the incoming data.
+   *
+   * Not supported when `prepareForReuse` is `true`.
+   */
+  awaitable: <
+    TData = unknown,
+    TVariables extends OperationVariables = OperationVariables,
+  >(
+    query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+    options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
+  ) => AwaitablePreloadResult<TData, TVariables>;
+}
+
+/**
+ * The result of calling `preloadQuery.awaitable()`.
+ *
+ * @public
+ */
+export interface AwaitablePreloadResult<
+  TData = unknown,
+  TVariables extends OperationVariables = OperationVariables,
+> {
+  /** The transportable query ref, identical to what `preloadQuery()` returns. */
+  queryRef: TransportedQueryRef<TData, TVariables>;
+  /**
+   * Returns a promise that resolves with `data` as soon as the predicate returns `true`
+   * against an incoming query result. Rejects if the query completes without the
+   * predicate ever returning `true`, or if the query errors.
+   *
+   * @param predicate - Called with the current `data` on each incremental result.
+   *   Return `true` to resolve the promise with that data.
+   */
+  resolveWhen: (predicate: (data: TData) => boolean) => Promise<TData>;
 }
 
 /** @internal */
@@ -127,8 +169,9 @@ export function createTransportedQueryPreloader(
         >;
       } = {}
 ): PreloadTransportedQueryFunction {
-  return (...[query, options]: Parameters<PreloadTransportedQueryFunction>) => {
-    // unset options that we do not support
+  function prepareQuery(
+    ...[query, options]: Parameters<PreloadTransportedQueryFunction>
+  ) {
     options = { ...options };
     delete options.returnPartialData;
     delete options.nextFetchPolicy;
@@ -176,14 +219,27 @@ export function createTransportedQueryPreloader(
       watchQueryOptions.fetchPolicy = "network-only";
     }
 
+    return { transportedQueryRef, watchQueryOptions, query, options };
+  }
+
+  function preload(
+    ...[query, options]: Parameters<PreloadTransportedQueryFunction>
+  ): TransportedQueryRef {
+    const { transportedQueryRef, watchQueryOptions } = prepareQuery(
+      query,
+      options
+    );
+
     if (prepareForReuse) {
       const internalQueryRef = getInternalQueryRef(
         client,
         { query, ...options },
         watchQueryOptions
       );
-
-      return Object.assign(transportedQueryRef, wrapQueryRef(internalQueryRef));
+      return Object.assign(
+        transportedQueryRef,
+        wrapQueryRef(internalQueryRef)
+      );
     } else {
       const subscription = client.watchQuery(watchQueryOptions).subscribe({
         next() {
@@ -193,7 +249,67 @@ export function createTransportedQueryPreloader(
     }
 
     return transportedQueryRef;
+  }
+
+  preload.awaitable = <
+    TData = unknown,
+    TVariables extends OperationVariables = OperationVariables,
+  >(
+    ...[query, options]: Parameters<PreloadTransportedQueryFunction>
+  ): AwaitablePreloadResult<TData, TVariables> => {
+    if (prepareForReuse) {
+      throw new Error(
+        "preloadQuery.awaitable is not supported with prepareForReuse."
+      );
+    }
+
+    const { transportedQueryRef, watchQueryOptions } = prepareQuery(
+      query,
+      options
+    );
+
+    const observable = client.watchQuery(watchQueryOptions);
+
+    const resolveWhen = (
+      predicate: (data: TData) => boolean
+    ): Promise<TData> => {
+      return new Promise<TData>((resolve, reject) => {
+        const subscription = observable.subscribe({
+          next(result) {
+            try {
+              if (
+                result.data != null &&
+                predicate(result.data as TData)
+              ) {
+                subscription.unsubscribe();
+                resolve(result.data as TData);
+              } else if (!result.loading) {
+                subscription.unsubscribe();
+                reject(
+                  new Error(
+                    "Query completed without the resolveWhen predicate returning true."
+                  )
+                );
+              }
+            } catch (e) {
+              subscription.unsubscribe();
+              reject(e);
+            }
+          },
+          error(err) {
+            reject(err);
+          },
+        });
+      });
+    };
+
+    return {
+      queryRef: transportedQueryRef as TransportedQueryRef<TData, TVariables>,
+      resolveWhen,
+    };
   };
+
+  return preload as unknown as PreloadTransportedQueryFunction;
 }
 
 function createTransportedQueryRef<

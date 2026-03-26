@@ -24,6 +24,23 @@ import type {
 
 /** @alpha */
 export declare namespace createApolloLoaderHandler {
+  /**
+   * The result of calling `preloadQuery.awaitable()` inside a loader.
+   */
+  export interface AwaitablePreloadQueryResult<
+    TData = unknown,
+    TVariables extends OperationVariables = OperationVariables,
+  > {
+    /** The transportable query ref — pass this to `useReadQuery` on the client. */
+    queryRef: unstable_SerializesTo<QueryRef<TData, TVariables>>;
+    /**
+     * Returns a promise that resolves with `data` as soon as the predicate
+     * returns `true`. Use this to selectively await critical data (e.g. for
+     * the `meta()` function) without blocking the full streaming response.
+     */
+    resolveWhen: (predicate: (data: TData) => boolean) => Promise<TData>;
+  }
+
   export interface PreloadQueryFn {
     <
       TData = unknown,
@@ -32,6 +49,20 @@ export declare namespace createApolloLoaderHandler {
       query: DocumentNode | TypedDocumentNode<TData, TVariables>,
       options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
     ): unstable_SerializesTo<QueryRef<TData, TVariables>>;
+
+    /**
+     * Like `preloadQuery()`, but returns `{ queryRef, resolveWhen }` so you can
+     * selectively await partial data in the loader while streaming continues.
+     *
+     * @see {@link AwaitablePreloadQueryResult}
+     */
+    awaitable: <
+      TData = unknown,
+      TVariables extends OperationVariables = OperationVariables,
+    >(
+      query: DocumentNode | TypedDocumentNode<TData, TVariables>,
+      options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
+    ) => AwaitablePreloadQueryResult<TData, TVariables>;
   }
 
   export type ApolloLoader = <
@@ -55,8 +86,20 @@ export function createApolloLoaderHandler(
     const preloader = createTransportedQueryPreloader(client, {
       notTransportedOptionOverrides: { fetchPolicy: "no-cache" },
     });
-    const preloadQuery: createApolloLoaderHandler.PreloadQueryFn = (...args) =>
+    const preloadQueryFn = (...args: Parameters<typeof preloader>) =>
       replaceStreamWithPromiscade(preloader(...args));
+    preloadQueryFn.awaitable = (
+      ...args: Parameters<typeof preloader.awaitable>
+    ) => {
+      const { queryRef, resolveWhen } = preloader.awaitable(...args);
+      return {
+        queryRef: replaceStreamWithPromiscade(queryRef),
+        resolveWhen,
+      };
+    };
+    const preloadQuery =
+      preloadQueryFn as unknown as createApolloLoaderHandler.PreloadQueryFn;
+
     return loader({
       ...args,
       preloadQuery,
