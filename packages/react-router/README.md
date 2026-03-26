@@ -205,6 +205,8 @@ export default function Products() {
   );
 }
 
-> [!NOTE] > `resolveWhen` rejects if the query completes (all deferred chunks arrive)
+> [!NOTE]
+> `resolveWhen` rejects if the query completes (all deferred chunks arrive)
+> without the predicate ever returning `true`, or if the query errors.
 > without the predicate ever returning `true`, or if the query errors.
 > Make sure your predicate matches on a condition that the initial (non-deferred) response satisfies.
