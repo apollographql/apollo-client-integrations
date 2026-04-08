@@ -27,6 +27,7 @@ import {
 import { InternalQueryReference } from "@apollo/client/react/internal";
 import { invariant } from "@apollo/client/utilities/invariant";
 import { __DEV__ } from "@apollo/client/utilities/environment";
+import { Kind, visit } from "graphql";
 
 type RestrictedPreloadOptions = {
   fetchPolicy?: "network-only" | "cache-and-network" | "cache-first";
@@ -107,19 +108,24 @@ export function createTransportedQueryPreloader(
   {
     prepareForReuse = false,
     notTransportedOptionOverrides = {},
-  }: {
-    /**
-     * Set this to `true` to indicate that this `queryRef` will be reused within the same process with the same Apollo Client instance without being dehydrated and hydrated.
-     * In that case, it will already be written to the suspense cache so it doesn't need to be hydrated by re-running the query with a fake network request.
-     */
-    prepareForReuse?: boolean;
-    /**
-     * Overrides to the options that should happen only in the `preloader` call, but should not be transported/hydrated on the client.
-     */
-    notTransportedOptionOverrides?: Partial<
-      ApolloClient.WatchQueryOptions<any, any>
-    >;
-  } = {}
+  }:
+    | {
+        /**
+         * Set this to `true` to indicate that this `queryRef` will be reused within the same process with the same Apollo Client instance without being dehydrated and hydrated.
+         * In that case, it will already be written to the suspense cache so it doesn't need to be hydrated by re-running the query with a fake network request.
+         */
+        prepareForReuse?: boolean;
+        notTransportedOptionOverrides?: never;
+      }
+    | {
+        prepareForReuse?: never;
+        /**
+         * Overrides to the options that should happen only in the `preloader` call, but should not be transported/hydrated on the client.
+         */
+        notTransportedOptionOverrides?: Partial<
+          ApolloClient.WatchQueryOptions<any, any>
+        >;
+      } = {}
 ): PreloadTransportedQueryFunction {
   return (...[query, options]: Parameters<PreloadTransportedQueryFunction>) => {
     // unset options that we do not support
@@ -149,6 +155,17 @@ export function createTransportedQueryPreloader(
       ),
       ...notTransportedOptionOverrides,
     };
+
+    if (notTransportedOptionOverrides?.fetchPolicy === "no-cache") {
+      // If the `fetchPolicy` is overwritten to `no-cache`, we don't want to
+      // provoke the warning about masked fields in a no-cache query.
+      // `QueryManager` will strip these `@unmask` directives to get `serverQuery`
+      // before query deduplication hits, so this will still deduplicate fine.
+      watchQueryOptions.query = unmask(
+        client.documentTransform.transformDocument(query)
+      );
+    }
+
     if (
       watchQueryOptions.fetchPolicy !== "no-cache" &&
       watchQueryOptions.fetchPolicy !== "network-only" &&
@@ -297,4 +314,18 @@ export function useWrapTransportedQueryRef<TData>(
 
 function sanitizeForTransport<T>(value: T) {
   return JSON.parse(JSON.stringify(value)) as T;
+}
+
+function unmask(query: DocumentNode): DocumentNode {
+  return visit(query, {
+    FragmentSpread(node) {
+      return {
+        ...node,
+        directives: (node.directives || []).concat({
+          kind: Kind.DIRECTIVE,
+          name: { kind: Kind.NAME, value: "unmask" },
+        }),
+      };
+    },
+  });
 }
