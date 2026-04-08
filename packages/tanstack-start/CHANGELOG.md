@@ -1,5 +1,12 @@
 # @apollo/client-integration-tanstack-start
 
+## 0.14.5-rc.0
+
+### Patch Changes
+
+- Updated dependencies [077a94e]
+  - @apollo/client-react-streaming@0.14.5
+
 ## 0.14.4-rc.0
 
 ### Patch Changes
