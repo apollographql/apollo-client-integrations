@@ -75,6 +75,26 @@
       "reviveTransportedQueryRef",
       "useWrapTransportedQueryRef",
       "built_for_ssr"
+    ],
+    "workerd,worker,module,browser": [
+      "ApolloClient",
+      "DataTransportContext",
+      "DebounceMultipartResponsesLink",
+      "InMemoryCache",
+      "RemoveMultipartDirectivesLink",
+      "SSRMultipartLink",
+      "WrapApolloProvider",
+      "skipDataTransport",
+      "resetApolloSingletons",
+      "ReadFromReadableStreamLink",
+      "TeeToReadableStreamLink",
+      "readFromReadableStream",
+      "teeToReadableStream",
+      "createTransportedQueryPreloader",
+      "isTransportedQueryRef",
+      "reviveTransportedQueryRef",
+      "useWrapTransportedQueryRef",
+      "built_for_ssr"
     ]
   },
   "@apollo/client-react-streaming/manual-transport": {
@@ -96,6 +116,12 @@
       "resetManualSSRApolloSingletons",
       "registerLateInitializingQueue",
       "built_for_ssr"
+    ],
+    "workerd,worker,module,browser": [
+      "buildManualDataTransport",
+      "resetManualSSRApolloSingletons",
+      "registerLateInitializingQueue",
+      "built_for_ssr"
     ]
   },
   "@apollo/client-react-streaming/stream-utils": {
@@ -113,6 +139,13 @@
       "JSONEncodeStream"
     ],
     "edge-light,worker,browser": [
+      "built_for_ssr",
+      "createInjectionTransformStream",
+      "pipeReaderToResponse",
+      "JSONDecodeStream",
+      "JSONEncodeStream"
+    ],
+    "workerd,worker,module,browser": [
       "built_for_ssr",
       "createInjectionTransformStream",
       "pipeReaderToResponse",

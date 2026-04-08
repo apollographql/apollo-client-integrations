@@ -2,6 +2,14 @@
 
 This package provides integrations between Apollo Client and React Router 7 to support modern streaming SSR.
 
+## Apollo Client Skill
+
+Give your AI agent specialized Apollo Client knowledge and setup guidance:
+
+```sh
+npx skills add apollographql/skills --skill apollo-client
+```
+
 ## Setup
 
 Install dependencies:

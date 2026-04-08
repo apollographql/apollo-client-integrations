@@ -38,6 +38,16 @@
       "SSRMultipartLink",
       "resetApolloClientSingletons",
       "built_for_ssr"
+    ],
+    "workerd,worker,module,browser": [
+      "ApolloNextAppProvider",
+      "DebounceMultipartResponsesLink",
+      "ApolloClient",
+      "InMemoryCache",
+      "RemoveMultipartDirectivesLink",
+      "SSRMultipartLink",
+      "resetApolloClientSingletons",
+      "built_for_ssr"
     ]
   }
 }

@@ -9,6 +9,7 @@ import { getPackages } from "@manypkg/get-packages";
 import { join, relative } from "node:path";
 import { parse } from "semver";
 import pacote from "pacote";
+import { readFile, writeFile } from "node:fs/promises";
 const { packument } = pacote;
 
 const fixedTags: Record<string, "alpha" | "beta" | "rc" | "skip"> = {
@@ -70,6 +71,26 @@ for (const pkg of packages) {
     }
   }
 }
-for (const [name, version] of Object.entries(changedPackages)) {
-  await $`npm --workspace=${name} pkg set version=${version}`;
+for (const [name, newVersion] of Object.entries(changedPackages)) {
+  const pkg = packages.find((p) => p.packageJson.name === name);
+  if (!pkg) continue;
+  const oldVersion = pkg.packageJson.version;
+  await $`npm --workspace=${name} pkg set version=${newVersion}`;
+
+  const changelogPath = join(pkg.dir, "CHANGELOG.md");
+
+  const changelog = await readFile(changelogPath, "utf-8");
+  const updated = changelog.replace(
+    new RegExp(
+      `^## ${
+        // @ts-expect-error this is present in node 24, but `@node/types` deliberately is on node 24 for the workspace
+        RegExp.escape(oldVersion)
+      }$`,
+      "m"
+    ),
+    `## ${newVersion}`
+  );
+  if (updated !== changelog) {
+    await writeFile(changelogPath, updated, "utf-8");
+  }
 }
