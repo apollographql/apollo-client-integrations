@@ -10,6 +10,9 @@
 ```typescript
 export declare function createTransportedQueryPreloader(client: ApolloClient, { prepareForReuse, notTransportedOptionOverrides, }?: {
     prepareForReuse?: boolean;
+    notTransportedOptionOverrides?: never;
+} | {
+    prepareForReuse?: never;
     notTransportedOptionOverrides?: Partial<ApolloClient.WatchQueryOptions<any, any>>;
 }): PreloadTransportedQueryFunction;
 ```
@@ -53,7 +56,7 @@ ApolloClient
 
 </td><td>
 
-{ prepareForReuse?: boolean; notTransportedOptionOverrides?: Partial&lt;ApolloClient.WatchQueryOptions&lt;any, any&gt;&gt;; }
+{ prepareForReuse?: boolean; notTransportedOptionOverrides?: never; } \| { prepareForReuse?: never; notTransportedOptionOverrides?: Partial&lt;ApolloClient.WatchQueryOptions&lt;any, any&gt;&gt;; }
 
 
 </td><td>
