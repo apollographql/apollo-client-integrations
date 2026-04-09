@@ -1,5 +1,13 @@
 # @apollo/client-react-streaming
 
+## 0.14.5
+
+### Patch Changes
+
+- 077a94e: Suppress this warning when using fragments with `dataMasking: true` and `preloadQuery`:
+
+  > Fragments masked by data masking are inaccessible when using fetch policy "no-cache".
+
 ## 0.14.4
 
 ### Patch Changes
