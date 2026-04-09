@@ -12,6 +12,7 @@
   "dependencies": {
     "@apollo/client": "^4.0.0",
     "@apollo/client-integration-nextjs": "workspace:^",
+    "@apollo/client-react-streaming": "workspace:^",
     "@apollo/server": "^4.11.2",
     "@as-integrations/next": "^3.2.0",
     "@graphql-tools/schema": "^10.0.0",
