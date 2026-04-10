@@ -1,24 +1,28 @@
 import { useLoaderData } from "react-router";
 import type { Route } from "./+types/preloadQuery.awaitable";
-import { useReadQuery } from "@apollo/client/react";
+import { useReadQuery, type QueryRef } from "@apollo/client/react";
 import { apolloLoader } from "~/apollo";
-import { DEFERRED_QUERY } from "@integration-test/shared/queries";
+import {
+  DEFERRED_QUERY,
+  type DeferredDynamicProductResult,
+} from "@integration-test/shared/queries";
 import { Suspense } from "react";
 
 export const loader = apolloLoader<Route.LoaderArgs>()(async ({
   preloadQuery,
 }) => {
-  const { queryRef, resolveWhen } = preloadQuery.awaitable(DEFERRED_QUERY, {
+  const queryRef = preloadQuery(DEFERRED_QUERY, {
     variables: { delayDeferred: 1000 },
   });
 
-  const data = await resolveWhen(
-    (data) => data.products != null && data.products.length > 0
+  const result = await preloadQuery.waitForStaticResult(
+    queryRef,
+    (result) => result.data.products != null && result.data.products.length > 0
   );
 
   return {
     queryRef,
-    firstProductTitle: data.products[0].title,
+    firstProductTitle: result.data.products[0].title,
   };
 });
 
@@ -35,11 +39,15 @@ export default function RouteComponent() {
   );
 }
 
-function StreamingContent({ queryRef }: { queryRef: any }) {
+function StreamingContent({
+  queryRef,
+}: {
+  queryRef: QueryRef<DeferredDynamicProductResult>;
+}) {
   const { data } = useReadQuery(queryRef);
   return (
     <ul>
-      {data.products.map(({ id, title, rating }: any) => (
+      {data.products.map(({ id, title, rating }) => (
         <li key={id}>
           {title}
           <br />

@@ -89,46 +89,39 @@ export interface PreloadTransportedQueryFunction {
   ): TransportedQueryRef<TData, TVariables>;
 
   /**
-   * Starts a query and returns both a transportable `queryRef` and a `resolveWhen`
-   * function that can selectively await partial results without blocking streaming.
+   * Awaits a query result from an already-created `queryRef`, optionally resolving
+   * early when a predicate is satisfied.
    *
    * @remarks
-   * Use this when you need actual data values in the loader (e.g. for the `meta()`
-   * function) but still want the rest of the query to stream progressively via the
-   * `queryRef`. The `resolveWhen` function subscribes to the query observable and
-   * resolves as soon as the provided predicate returns `true` against the incoming data.
-   *
-   * Not supported when `prepareForReuse` is `true`.
+   * Use this when you need actual data values in the loader (e.g. for React Router's
+   * `meta()` function) but still want the rest of the query to stream progressively
+   * via the `queryRef`. Without a predicate the promise resolves when the query fully
+   * completes. With a predicate it resolves as soon as the predicate returns `true`
+   * against an incoming (potentially partial / `@defer`) result, and rejects if the
+   * query completes without the predicate ever being satisfied.
    */
-  awaitable: <
-    TData = unknown,
-    TVariables extends OperationVariables = OperationVariables,
-  >(
-    query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-    options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
-  ) => AwaitablePreloadResult<TData, TVariables>;
+  waitForStaticResult: {
+    <TData>(
+      queryRef: TransportedQueryRef<TData, any>
+    ): Promise<StaticResult<TData>>;
+    <TData, TResult extends StaticResult<TData>>(
+      queryRef: TransportedQueryRef<TData, any>,
+      predicate: (result: StaticResult<TData>) => result is TResult
+    ): Promise<TResult>;
+    <TData>(
+      queryRef: TransportedQueryRef<TData, any>,
+      predicate: (result: StaticResult<TData>) => boolean
+    ): Promise<StaticResult<TData>>;
+  };
 }
 
 /**
- * The result of calling `preloadQuery.awaitable()`.
+ * The resolved value of {@link PreloadTransportedQueryFunction.waitForStaticResult}.
  *
  * @public
  */
-export interface AwaitablePreloadResult<
-  TData = unknown,
-  TVariables extends OperationVariables = OperationVariables,
-> {
-  /** The transportable query ref, identical to what `preloadQuery()` returns. */
-  queryRef: TransportedQueryRef<TData, TVariables>;
-  /**
-   * Returns a promise that resolves with `data` as soon as the predicate returns `true`
-   * against an incoming query result. Rejects if the query completes without the
-   * predicate ever returning `true`, or if the query errors.
-   *
-   * @param predicate - Called with the current `data` on each incremental result.
-   *   Return `true` to resolve the promise with that data.
-   */
-  resolveWhen: (predicate: (data: TData) => boolean) => Promise<TData>;
+export interface StaticResult<TData> {
+  data: TData;
 }
 
 /** @internal */
@@ -222,6 +215,8 @@ export function createTransportedQueryPreloader(
     return { transportedQueryRef, watchQueryOptions, query, options };
   }
 
+  const observableByRef = new WeakMap<object, any>();
+
   function preload(
     ...[query, options]: Parameters<PreloadTransportedQueryFunction>
   ): TransportedQueryRef {
@@ -241,7 +236,9 @@ export function createTransportedQueryPreloader(
         wrapQueryRef(internalQueryRef)
       );
     } else {
-      const subscription = client.watchQuery(watchQueryOptions).subscribe({
+      const observable = client.watchQuery(watchQueryOptions);
+      observableByRef.set(transportedQueryRef, observable);
+      const subscription = observable.subscribe({
         next() {
           subscription.unsubscribe();
         },
@@ -251,62 +248,53 @@ export function createTransportedQueryPreloader(
     return transportedQueryRef;
   }
 
-  preload.awaitable = <
-    TData = unknown,
-    TVariables extends OperationVariables = OperationVariables,
-  >(
-    ...[query, options]: Parameters<PreloadTransportedQueryFunction>
-  ): AwaitablePreloadResult<TData, TVariables> => {
-    if (prepareForReuse) {
+  preload.waitForStaticResult = <TData,>(
+    queryRef: TransportedQueryRef<TData, any>,
+    predicate?: (result: StaticResult<TData>) => boolean
+  ): Promise<StaticResult<TData>> => {
+    const observable = observableByRef.get(queryRef);
+    if (!observable) {
       throw new Error(
-        "preloadQuery.awaitable is not supported with prepareForReuse."
+        "waitForStaticResult: no observable found for this queryRef. " +
+          "Make sure the queryRef was created by this preloadQuery instance."
       );
     }
 
-    const { transportedQueryRef, watchQueryOptions } = prepareQuery(
-      query,
-      options
-    );
-
-    const observable = client.watchQuery(watchQueryOptions);
-
-    const resolveWhen = (
-      predicate: (data: TData) => boolean
-    ): Promise<TData> => {
-      return new Promise<TData>((resolve, reject) => {
-        const subscription = observable.subscribe({
-          next(result) {
-            try {
-              if (
-                result.data != null &&
-                predicate(result.data as TData)
-              ) {
+    return new Promise<StaticResult<TData>>((resolve, reject) => {
+      const subscription = observable.subscribe({
+        next(result: any) {
+          try {
+            const staticResult: StaticResult<TData> = {
+              data: result.data as TData,
+            };
+            if (predicate) {
+              if (result.data != null && predicate(staticResult)) {
                 subscription.unsubscribe();
-                resolve(result.data as TData);
+                resolve(staticResult);
               } else if (!result.loading) {
                 subscription.unsubscribe();
                 reject(
                   new Error(
-                    "Query completed without the resolveWhen predicate returning true."
+                    "Query completed without the waitForStaticResult predicate returning true."
                   )
                 );
               }
-            } catch (e) {
-              subscription.unsubscribe();
-              reject(e);
+            } else {
+              if (!result.loading) {
+                subscription.unsubscribe();
+                resolve(staticResult);
+              }
             }
-          },
-          error(err) {
-            reject(err);
-          },
-        });
+          } catch (e) {
+            subscription.unsubscribe();
+            reject(e);
+          }
+        },
+        error(err: any) {
+          reject(err);
+        },
       });
-    };
-
-    return {
-      queryRef: transportedQueryRef as TransportedQueryRef<TData, TVariables>,
-      resolveWhen,
-    };
+    });
   };
 
   return preload as unknown as PreloadTransportedQueryFunction;

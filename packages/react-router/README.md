@@ -140,21 +140,21 @@ export default function Home() {
 }
 ```
 
-### Using `preloadQuery.awaitable` for `meta()` and other loader data needs
+### Using `preloadQuery.waitForStaticResult` for `meta()` and other loader data needs
 
 The standard `preloadQuery()` returns an opaque query ref that can only be consumed by
 `useReadQuery` in a component — you cannot `await` it for raw data inside the loader.
 This is a problem when you need actual values in the loader, for example to set document
 metadata via React Router's `meta()` export.
 
-`preloadQuery.awaitable()` solves this by returning two things:
+`preloadQuery.waitForStaticResult(queryRef, predicate?)` solves this. It takes an
+already-created `queryRef` and returns a promise that resolves with the query result:
 
-- **`queryRef`** — the same transportable query ref as `preloadQuery()`, for streaming to
-  the client.
-- **`resolveWhen(predicate)`** — a function that returns a Promise. The promise resolves
-  with the query `data` as soon as the predicate returns `true` against an incoming result.
-  This works with `@defer` — the predicate is evaluated against each incremental result,
-  so you can await only the critical initial data while deferred fields keep streaming.
+- **Without a predicate** — resolves when the query fully completes.
+- **With a predicate** — resolves as soon as the predicate returns `true` against an
+  incoming result. This works with `@defer` — the predicate is evaluated against each
+  incremental result, so you can await only the critical initial data while deferred
+  fields keep streaming.
 
 ```ts
 import { gql } from "@apollo/client";
@@ -174,16 +174,17 @@ const MY_QUERY = gql`
 export const loader = apolloLoader<Route.LoaderArgs>()(async ({
   preloadQuery,
 }) => {
-  const { queryRef, resolveWhen } = preloadQuery.awaitable(MY_QUERY);
+  const queryRef = preloadQuery(MY_QUERY);
 
   // Await only the product title — `rating` will stream in later via @defer
-  const data = await resolveWhen(
-    (data) => data?.product?.title !== null
+  const result = await preloadQuery.waitForStaticResult(
+    queryRef,
+    (result) => result.data?.product?.title != null
   );
 
   return {
     queryRef,
-    title: data.product.title,
+    title: result.data.product.title,
   };
 });
 
@@ -204,9 +205,9 @@ export default function Products() {
     </div>
   );
 }
+```
 
 > [!NOTE]
-> `resolveWhen` rejects if the query completes (all deferred chunks arrive)
-> without the predicate ever returning `true`, or if the query errors.
+> With a predicate, the promise rejects if the query completes (all deferred chunks arrive)
 > without the predicate ever returning `true`, or if the query errors.
 > Make sure your predicate matches on a condition that the initial (non-deferred) response satisfies.

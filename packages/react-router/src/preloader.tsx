@@ -5,6 +5,7 @@ import type { QueryRef } from "@apollo/client/react";
 import type {
   PreloadTransportedQueryOptions,
   ReadableStreamLinkEvent,
+  StaticResult,
   TransportedQueryRef,
 } from "@apollo/client-react-streaming";
 import {
@@ -24,23 +25,6 @@ import type {
 
 /** @alpha */
 export declare namespace createApolloLoaderHandler {
-  /**
-   * The result of calling `preloadQuery.awaitable()` inside a loader.
-   */
-  export interface AwaitablePreloadQueryResult<
-    TData = unknown,
-    TVariables extends OperationVariables = OperationVariables,
-  > {
-    /** The transportable query ref — pass this to `useReadQuery` on the client. */
-    queryRef: unstable_SerializesTo<QueryRef<TData, TVariables>>;
-    /**
-     * Returns a promise that resolves with `data` as soon as the predicate
-     * returns `true`. Use this to selectively await critical data (e.g. for
-     * the `meta()` function) without blocking the full streaming response.
-     */
-    resolveWhen: (predicate: (data: TData) => boolean) => Promise<TData>;
-  }
-
   export interface PreloadQueryFn {
     <
       TData = unknown,
@@ -51,18 +35,23 @@ export declare namespace createApolloLoaderHandler {
     ): unstable_SerializesTo<QueryRef<TData, TVariables>>;
 
     /**
-     * Like `preloadQuery()`, but returns `{ queryRef, resolveWhen }` so you can
-     * selectively await partial data in the loader while streaming continues.
-     *
-     * @see {@link AwaitablePreloadQueryResult}
+     * Awaits a query result from an already-created `queryRef`, optionally resolving
+     * early when a predicate is satisfied. Use this to access data in the loader
+     * (e.g. for the `meta()` function) without blocking the full streaming response.
      */
-    awaitable: <
-      TData = unknown,
-      TVariables extends OperationVariables = OperationVariables,
-    >(
-      query: DocumentNode | TypedDocumentNode<TData, TVariables>,
-      options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
-    ) => AwaitablePreloadQueryResult<TData, TVariables>;
+    waitForStaticResult: {
+      <TData>(
+        queryRef: unstable_SerializesTo<QueryRef<TData, any>>
+      ): Promise<StaticResult<TData>>;
+      <TData, TResult extends StaticResult<TData>>(
+        queryRef: unstable_SerializesTo<QueryRef<TData, any>>,
+        predicate: (result: StaticResult<TData>) => result is TResult
+      ): Promise<TResult>;
+      <TData>(
+        queryRef: unstable_SerializesTo<QueryRef<TData, any>>,
+        predicate: (result: StaticResult<TData>) => boolean
+      ): Promise<StaticResult<TData>>;
+    };
   }
 
   export type ApolloLoader = <
@@ -88,15 +77,10 @@ export function createApolloLoaderHandler(
     });
     const preloadQueryFn = (...args: Parameters<typeof preloader>) =>
       replaceStreamWithPromiscade(preloader(...args));
-    preloadQueryFn.awaitable = (
-      ...args: Parameters<typeof preloader.awaitable>
-    ) => {
-      const { queryRef, resolveWhen } = preloader.awaitable(...args);
-      return {
-        queryRef: replaceStreamWithPromiscade(queryRef),
-        resolveWhen,
-      };
-    };
+    preloadQueryFn.waitForStaticResult = (
+      queryRef: any,
+      predicate?: any
+    ) => preloader.waitForStaticResult(queryRef, predicate);
     const preloadQuery =
       preloadQueryFn as unknown as createApolloLoaderHandler.PreloadQueryFn;
 

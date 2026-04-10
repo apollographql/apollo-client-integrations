@@ -9,7 +9,7 @@ export type {
   TransportedQueryRef,
   PreloadTransportedQueryOptions,
   PreloadTransportedQueryFunction,
-  AwaitablePreloadResult,
+  StaticResult,
 } from "./transportedQueryRef.js";
 export {
   createTransportedQueryPreloader,

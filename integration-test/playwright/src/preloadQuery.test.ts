@@ -177,9 +177,9 @@ test.describe("PreloadQuery", () => {
     }
   );
 
-  test.describe("awaitable", () => {
+  test.describe("waitForStaticResult", () => {
     test(
-      "meta title is set from resolveWhen data while deferred content is still loading",
+      "meta title is set from waitForStaticResult data while deferred content is still loading",
       {
         tag: ["@react-router"],
       },
@@ -188,7 +188,7 @@ test.describe("PreloadQuery", () => {
           waitUntil: "commit",
         });
 
-        // The meta function consumed data from resolveWhen — the document
+        // The meta function consumed data from waitForStaticResult — the document
         // title should be set to the first product's title immediately,
         // while the deferred ratings are still streaming
         await expect(page).toHaveTitle("Soft Warm Apollo Beanie");
