@@ -268,7 +268,7 @@ export function createTransportedQueryPreloader(
               data: result.data as TData,
             };
             if (predicate) {
-              if (result.data != null && predicate(staticResult)) {
+              if (predicate(staticResult)) {
                 subscription.unsubscribe();
                 resolve(staticResult);
               } else if (!result.loading) {
