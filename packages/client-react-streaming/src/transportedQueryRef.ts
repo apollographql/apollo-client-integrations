@@ -231,10 +231,7 @@ export function createTransportedQueryPreloader(
         { query, ...options },
         watchQueryOptions
       );
-      return Object.assign(
-        transportedQueryRef,
-        wrapQueryRef(internalQueryRef)
-      );
+      return Object.assign(transportedQueryRef, wrapQueryRef(internalQueryRef));
     } else {
       const observable = client.watchQuery(watchQueryOptions);
       observableByRef.set(transportedQueryRef, observable);
@@ -248,12 +245,17 @@ export function createTransportedQueryPreloader(
     return transportedQueryRef;
   }
 
-  preload.waitForStaticResult = <TData,>(
+  preload.waitForStaticResult = <TData>(
     queryRef: TransportedQueryRef<TData, any>,
     predicate?: (result: StaticResult<TData>) => boolean
   ): Promise<StaticResult<TData>> => {
     const observable = observableByRef.get(queryRef);
     if (!observable) {
+      if (prepareForReuse) {
+        throw new Error(
+          "waitForStaticResult is not supported when prepareForReuse is true."
+        );
+      }
       throw new Error(
         "waitForStaticResult: no observable found for this queryRef. " +
           "Make sure the queryRef was created by this preloadQuery instance."
