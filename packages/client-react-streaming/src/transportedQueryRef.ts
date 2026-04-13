@@ -235,11 +235,24 @@ export function createTransportedQueryPreloader(
     } else {
       const observable = client.watchQuery(watchQueryOptions);
       observableByRef.set(transportedQueryRef, observable);
-      const subscription = observable.subscribe({
-        next() {
+      let subscription: { unsubscribe(): void } | undefined;
+      let unsubscribeOnAssign = false;
+      const stop = () => {
+        if (subscription) {
           subscription.unsubscribe();
+          subscription = undefined;
+        } else {
+          unsubscribeOnAssign = true;
+        }
+      };
+      subscription = observable.subscribe({
+        next() {
+          stop();
         },
       });
+      if (unsubscribeOnAssign) {
+        stop();
+      }
     }
 
     return transportedQueryRef;
@@ -263,7 +276,17 @@ export function createTransportedQueryPreloader(
     }
 
     return new Promise<StaticResult<TData>>((resolve, reject) => {
-      const subscription = observable.subscribe({
+      let subscription: { unsubscribe(): void } | undefined;
+      let unsubscribeOnAssign = false;
+      const stop = () => {
+        if (subscription) {
+          subscription.unsubscribe();
+          subscription = undefined;
+        } else {
+          unsubscribeOnAssign = true;
+        }
+      };
+      subscription = observable.subscribe({
         next(result: any) {
           try {
             const staticResult: StaticResult<TData> = {
@@ -271,10 +294,10 @@ export function createTransportedQueryPreloader(
             };
             if (predicate) {
               if (predicate(staticResult)) {
-                subscription.unsubscribe();
+                stop();
                 resolve(staticResult);
               } else if (!result.loading) {
-                subscription.unsubscribe();
+                stop();
                 reject(
                   new Error(
                     "Query completed without the waitForStaticResult predicate returning true."
@@ -283,12 +306,12 @@ export function createTransportedQueryPreloader(
               }
             } else {
               if (!result.loading) {
-                subscription.unsubscribe();
+                stop();
                 resolve(staticResult);
               }
             }
           } catch (e) {
-            subscription.unsubscribe();
+            stop();
             reject(e);
           }
         },
@@ -296,6 +319,9 @@ export function createTransportedQueryPreloader(
           reject(err);
         },
       });
+      if (unsubscribeOnAssign) {
+        stop();
+      }
     });
   };
 
