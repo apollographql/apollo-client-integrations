@@ -20,7 +20,7 @@ jobs:
     steps:
       # Create an access token for the Github Actions Bot app. This one has permissions
       # to push directly to this repository (only!) without required status checks.
-      - uses: actions/create-github-app-token@v2
+      - uses: actions/create-github-app-token@1b10c78c7865c340bc4f6099eb2f838309f1e8c3
         id: github-actions-bot-app-token
         with:
           app-id: 819772
@@ -28,18 +28,19 @@ jobs:
 
       # Check out the repository, using the Github Actions Bot app's token so that we
       # can push later and override required statuses.
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd
         with:
           token: ${{ steps.github-actions-bot-app-token.outputs.token }}
           # Fetch entire git history so  Changesets can generate changelogs
           # with the correct commits
           fetch-depth: 0
 
-      - uses: actions/setup-node@v6
+      - uses: actions/setup-node@48b55a011bda9f5d6aeb4c2d9c7362e8dae4041e
         with:
           node-version: "24.x"
           registry-url: "https://registry.npmjs.org"
-          cache: "yarn"
+          # deliberately not using a cache for action with elevated permissions, see https://tanstack.com/blog/npm-supply-chain-compromise-postmortem
+          package-manager-cache: false
       - run: |
           npm config set loglevel verbose
           npm config set foreground-scripts true
@@ -71,7 +72,7 @@ jobs:
 
       - name: Create Release Pull Request or Publish to npm
         id: changesets
-        uses: changesets/action@v1
+        uses: changesets/action@63a615b9cd06ba9a3e6d13796c7fbcb080a60a0b
         with:
           version: yarn changeset-version
           publish: yarn changeset-publish
