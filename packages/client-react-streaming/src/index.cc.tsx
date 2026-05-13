@@ -2,13 +2,21 @@
 
 import * as React from "react";
 
-let RealSimulatePreloadedQuery: typeof import("./SimulatePreloadedQuery.cc.js").default;
-export const SimulatePreloadedQuery: typeof import("./SimulatePreloadedQuery.cc.js").default =
+let RealPreloadQueryRef: typeof import("./PreloadQueryRef.cc.js").default;
+/**
+ * Hydrates a pre-created `TransportedQueryRef` into Apollo Client's suspense cache.
+ *
+ * This is the lower-level primitive used by `PreloadQuery`. Use it when you
+ * already created a `queryRef` with `createTransportedQueryPreloader`.
+ *
+ * @public
+ */
+export const PreloadQueryRef: typeof import("./PreloadQueryRef.cc.js").default =
   (props) => {
-    if (!RealSimulatePreloadedQuery) {
-      RealSimulatePreloadedQuery = React.lazy(
-        () => import("./SimulatePreloadedQuery.cc.js")
+    if (!RealPreloadQueryRef) {
+      RealPreloadQueryRef = React.lazy(
+        () => import("./PreloadQueryRef.cc.js")
       );
     }
-    return <RealSimulatePreloadedQuery {...props} />;
+    return <RealPreloadQueryRef {...props} />;
   };

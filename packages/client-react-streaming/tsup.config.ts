@@ -87,8 +87,8 @@ export default defineConfig((options) => {
     {
       ...entry(
         "browser",
-        "src/SimulatePreloadedQuery.cc.ts",
-        "SimulatePreloadedQuery.cc"
+        "src/PreloadQueryRef.cc.ts",
+        "PreloadQueryRef.cc"
       ),
       treeshake: false, // would remove the "use client" directive
     },
