@@ -152,7 +152,7 @@
     "@types/react": "^19.0.0",
     "@types/react-dom": "*",
     "concurrently": "8.2.2",
-    "esbuild": "^0.24.2",
+    "esbuild": "^0.25.0",
     "eslint": "8.57.0",
     "global-jsdom": "24.0.0",
     "graphql": "^16.10.0",
