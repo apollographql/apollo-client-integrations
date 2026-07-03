@@ -1,4 +1,4 @@
-import { SimulatePreloadedQuery } from "./index.cc.js";
+import { PreloadQueryRef } from "./index.cc.js";
 import type {
   ApolloClient,
   DocumentNode,
@@ -58,8 +58,8 @@ export async function PreloadQuery<
   );
 
   return (
-    <SimulatePreloadedQuery<TData> queryRef={queryRef}>
+    <PreloadQueryRef<TData> queryRef={queryRef}>
       {typeof children === "function" ? children(queryRef) : children}
-    </SimulatePreloadedQuery>
+    </PreloadQueryRef>
   );
 }

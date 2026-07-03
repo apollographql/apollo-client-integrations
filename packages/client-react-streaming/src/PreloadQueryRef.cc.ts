@@ -9,7 +9,8 @@ import {
 import { deserializeOptions } from "./DataTransportAbstraction/transportedOptions.js";
 import type { PreloadQueryOptions } from "./PreloadQuery.js";
 
-export default function SimulatePreloadedQuery<T>({
+/** @public */
+export default function PreloadQueryRef<T>({
   queryRef,
   children,
 }: {

@@ -9,3 +9,4 @@ export {
   skipDataTransport,
 } from "./DataTransportAbstraction/index.js";
 export { useWrapTransportedQueryRef } from "./transportedQueryRef.js";
+export { PreloadQueryRef } from "./index.cc.js";

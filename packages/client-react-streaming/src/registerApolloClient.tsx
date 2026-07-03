@@ -3,6 +3,7 @@ import React from "react";
 import { cache } from "react";
 import type { PreloadQuery } from "./PreloadQuery.js";
 import { PreloadQuery as UnboundPreloadQuery } from "./PreloadQuery.js";
+import { PreloadQueryRef } from "./index.cc.js";
 
 const seenWrappers = WeakSet
   ? new WeakSet<{ client: ApolloClient | Promise<ApolloClient> }>()
@@ -22,7 +23,7 @@ const checkForStableCache = cache(() => ({}));
  *
  * @example
  * ```ts
- * export const { getClient, query, PreloadQuery } = registerApolloClient(() => {
+ * export const { getClient, query, PreloadQuery, PreloadQueryRef } = registerApolloClient(() => {
  *   return new ApolloClient({
  *     cache: new InMemoryCache(),
  *     link: new HttpLink({
@@ -76,8 +77,12 @@ export function registerApolloClient<
    *    </Suspense>
    *  </PreloadQuery>
    * ```
-   */
+  */
   PreloadQuery: PreloadQueryComponent;
+  /**
+   * Hydrates a `queryRef` created ahead of render for usage in Client Components.
+   */
+  PreloadQueryRef: typeof PreloadQueryRef;
 } {
   const getClient = makeGetClient(makeClient);
   /*
@@ -108,6 +113,7 @@ function and then call \`client.query\` multiple times instead.
       return (await getClient()).query(...args);
     },
     PreloadQuery,
+    PreloadQueryRef,
   };
 }
 
