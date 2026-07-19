@@ -1,14 +1,16 @@
-import type { InMemoryCacheConfig } from "@apollo/client";
+import type {
+  Cache,
+  InMemoryCacheConfig,
+  OperationVariables,
+  Reference,
+} from "@apollo/client";
 import { InMemoryCache as OrigInMemoryCache } from "@apollo/client";
 import { bundle, sourceSymbol } from "../bundleInfo.js";
+import { isTransportEmission } from "../ReadableStreamLink.js";
 /*
- * We just subclass `InMemoryCache` here so that `WrappedApolloClient`
+ * We subclass `InMemoryCache` here so that `WrappedApolloClient`
  * can detect if it was initialized with an `InMemoryCache` instance that
  * was also exported from this package.
- * Right now, we don't have extra logic here, but we might have so again
- * in the future.
- * So we want to enforce this import path from the start to prevent future
- * subtle bugs if people update the package and don't read the patch notes.
  */
 /**
  * A version of `InMemoryCache` to be used with streaming SSR.
@@ -29,5 +31,40 @@ export class InMemoryCache extends OrigInMemoryCache {
     super(config);
     const info = (this.constructor as typeof InMemoryCache).info;
     this[sourceSymbol] = `${info.pkg}:InMemoryCache`;
+  }
+
+  /**
+   * Counts cache writes that did not originate from the SSR data transport —
+   * e.g. mutation results, optimistic updates, or direct `writeQuery`/
+   * `writeFragment`/`modify`/`evict` calls.
+   * `WrappedApolloClient` compares this before and after a transported query
+   * result was in flight to detect that the (older) transported result would
+   * overwrite newer data.
+   * @internal
+   */
+  nonTransportWrites = 0;
+
+  write<
+    TData = unknown,
+    TVariables extends OperationVariables = OperationVariables,
+  >(options: Cache.WriteOptions<TData, TVariables>): Reference | undefined {
+    if (!isTransportEmission()) this.nonTransportWrites++;
+    return super.write(options);
+  }
+
+  modify<Entity extends Record<string, any> = Record<string, any>>(
+    options: Cache.ModifyOptions<Entity>
+  ): boolean {
+    // `modify` and `evict` report whether they changed anything — no-ops
+    // don't count as writes.
+    const modified = super.modify(options);
+    if (modified && !isTransportEmission()) this.nonTransportWrites++;
+    return modified;
+  }
+
+  evict(options: Cache.EvictOptions): boolean {
+    const evicted = super.evict(options);
+    if (evicted && !isTransportEmission()) this.nonTransportWrites++;
+    return evicted;
   }
 }

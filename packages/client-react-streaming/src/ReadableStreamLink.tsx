@@ -31,6 +31,39 @@ const teeToReadableStreamKey = Symbol.for(
 );
 const readFromReadableStreamKey = Symbol.for("apollo.read.readableStream");
 
+/*
+ * The emission depth lives on `globalThis` (like the other `Symbol.for`
+ * keys in this file) so that it is shared even when multiple copies of this
+ * module are loaded side by side (dual CJS/ESM loading, the separately
+ * bundled `.cc` entry points, or mixed package versions).
+ */
+const transportEmissionDepth = Symbol.for("apollo.transport.emissionDepth");
+interface GlobalWithTransportEmissionDepth {
+  [transportEmissionDepth]?: number;
+}
+
+/**
+ * Whether the current (synchronous) call stack is replaying a result read
+ * from a transported readable stream — as opposed to delivering e.g. a
+ * mutation result or a fresh network response. Cache writes happen
+ * synchronously while a link result is delivered, so this allows the cache
+ * to tell writes that replay a transported (SSR-time) snapshot apart from
+ * writes of newer data.
+ * @internal
+ */
+export function isTransportEmission() {
+  return (
+    ((globalThis as GlobalWithTransportEmissionDepth)[transportEmissionDepth] ??
+      0) > 0
+  );
+}
+
+function adjustTransportEmissionDepth(delta: number) {
+  const global = globalThis as GlobalWithTransportEmissionDepth;
+  global[transportEmissionDepth] =
+    (global[transportEmissionDepth] ?? 0) + delta;
+}
+
 /**
  * Apply to a context that will be passed to a link chain containing `TeeToReadableStreamLink`.
  * @public
@@ -174,9 +207,18 @@ export class ReadFromReadableStreamLink extends ApolloLink {
               if (aborted) break;
               if (event.value) {
                 switch (event.value.type) {
-                  case "next":
-                    observer.next(event.value.value);
+                  case "next": {
+                    // Mark the delivery so cache writes it causes are
+                    // recognized as replaying a transported (SSR-time)
+                    // snapshot rather than writing newer data.
+                    adjustTransportEmissionDepth(1);
+                    try {
+                      observer.next(event.value.value);
+                    } finally {
+                      adjustTransportEmissionDepth(-1);
+                    }
                     break;
+                  }
                   case "completed":
                     observer.complete();
                     break;

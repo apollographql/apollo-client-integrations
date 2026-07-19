@@ -39,6 +39,10 @@ function getQueryManager(
 type SimulatedQueryInfo = {
   controller: ReadableStreamDefaultController<ReadableStreamLinkEvent>;
   options: OrigApolloClient.WatchQueryOptions<any, OperationVariables>;
+  /** the cache's `nonTransportWrites` count when the query started (browser only) */
+  initialNonTransportWrites?: number;
+  /** the transported result has already been checked against the cache (browser only) */
+  cacheChecked?: boolean;
 };
 /** @public */
 export declare namespace ApolloClient {
@@ -158,6 +162,16 @@ class ApolloClientClientBaseImpl extends ApolloClientBase {
 
     const [controller, stream] = getInjectableEventStream();
 
+    const queryInfo: SimulatedQueryInfo = {
+      controller,
+      options: hydratedOptions,
+    };
+    if (process.env.REACT_ENV === "browser") {
+      queryInfo.initialNonTransportWrites = (
+        this.cache as InMemoryCache
+      ).nonTransportWrites;
+    }
+
     const queryManager = getQueryManager(this);
     queryManager.fetchQuery({
       ...hydratedOptions,
@@ -171,10 +185,7 @@ class ApolloClientClientBaseImpl extends ApolloClientBase {
       ),
     });
 
-    this.simulatedStreamingQueries.set(id, {
-      controller,
-      options: hydratedOptions,
-    });
+    this.simulatedStreamingQueries.set(id, queryInfo);
   }
 
   onQueryProgress = (event: ProgressEvent) => {
@@ -214,9 +225,69 @@ class ApolloClientClientBaseImpl extends ApolloClientBase {
       this.simulatedStreamingQueries.delete(event.id);
       queryInfo.controller.enqueue(event);
     } else if (event.type === "next") {
-      queryInfo.controller.enqueue(event);
+      if (
+        process.env.REACT_ENV === "browser" &&
+        !queryInfo.cacheChecked &&
+        this.wouldOverwriteNewerData(queryInfo)
+      ) {
+        this.simulatedStreamingQueries.delete(event.id);
+        invariant.debug(
+          "The cache received newer data while the query was streaming in, rerunning it in the browser:",
+          queryInfo.options
+        );
+        this.rerunSimulatedQuery(queryInfo);
+      } else {
+        // Only check before the first chunk: once a chunk is enqueued, the
+        // simulated query itself starts writing to the cache.
+        queryInfo.cacheChecked = true;
+        queryInfo.controller.enqueue(event);
+      }
     }
   };
+
+  /**
+   * Detects that data newer than this query's transported result was written
+   * to the cache while the result was in flight.
+   *
+   * The transported result is a snapshot from the SSR render. If anything
+   * outside the transport — a mutation result, an optimistic update, a
+   * direct `writeQuery` — has written to the cache since this query started,
+   * and any of this query's fields can now be read from the cache, writing
+   * the transported result could overwrite newer data with the server's
+   * older snapshot, so the query is rerun in the browser instead and the
+   * cache converges on fresh data.
+   * Writes by the transport itself — sibling transported queries,
+   * transported query refs, a restored persisted cache — don't count: they
+   * are not newer than this result.
+   *
+   * Not detected: non-transport writes landing before this query's `started`
+   * event was replayed in the browser or in the short gap between this check
+   * and the transported result's cache write, and writes landing between the
+   * chunks of a multi-chunk (`@defer`) response — later chunks can still
+   * overwrite newer data. Queries containing `@client` fields resolved by
+   * local resolvers are misclassified in the opposite (safe) direction:
+   * their cache writes happen asynchronously after delivery and are counted
+   * as non-transport writes, which can cause a spurious browser refetch of
+   * an overlapping transported query, but never an overwrite.
+   */
+  private wouldOverwriteNewerData(queryInfo: SimulatedQueryInfo) {
+    const cache = this.cache as InMemoryCache;
+    if (cache.nonTransportWrites === queryInfo.initialNonTransportWrites) {
+      return false;
+    }
+    const queryManager = getQueryManager(this);
+    const diff = cache.diff({
+      query: queryManager.transform(queryInfo.options.query),
+      variables: queryInfo.options.variables,
+      optimistic: true,
+      returnPartialData: true,
+    });
+    const result = diff.result as Record<string, unknown> | null;
+    // A root-level fragment or an explicit root `__typename` selection can
+    // always be fulfilled with `{ __typename: "Query" }`, even from an empty
+    // cache — that alone is no evidence of newer data.
+    return !!result && Object.keys(result).some((key) => key !== "__typename");
+  }
 
   /**
    * Can be called when the stream closed unexpectedly while there might still be unresolved
