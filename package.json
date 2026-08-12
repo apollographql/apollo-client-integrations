@@ -31,9 +31,9 @@
     "graphql": "17.0.0-alpha.2",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",
-    "react": "19.2.3",
-    "react-dom": "19.2.3",
-    "react-server-dom-webpack": "19.2.3"
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
+    "react-server-dom-webpack": "19.2.8"
   },
   "devDependencies": {
     "@microsoft/api-documenter": "7.24.3",

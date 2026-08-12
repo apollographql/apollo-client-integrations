@@ -1,4 +1,3 @@
-import { useLoaderData } from "react-router";
 import type { Route } from "./+types/asyncLoader";
 import {
   useApolloClient,
@@ -21,8 +20,8 @@ export const loader = apolloLoader<Route.LoaderArgs>()(async ({
   };
 });
 
-export default function Home() {
-  const { queryRef } = useLoaderData<typeof loader>();
+export default function Home({ loaderData }: Route.ComponentProps) {
+  const { queryRef } = loaderData;
 
   const { refetch } = useQueryRefHandlers(queryRef);
   const [refetching, startTransition] = useTransition();
