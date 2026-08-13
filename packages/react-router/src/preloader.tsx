@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { CreateServerLoaderArgs } from "react-router/route-module";
 import type { ApolloClient } from "./ApolloClient.js";
 import type { QueryRef } from "@apollo/client/react";
 import type {
@@ -34,9 +33,26 @@ export declare namespace createApolloLoaderHandler {
     ): unstable_SerializesTo<QueryRef<TData, TVariables>>;
   }
 
-  export type ApolloLoader = <
-    LoaderArgs extends CreateServerLoaderArgs<any>,
-  >() => <ReturnValue>(
+  /**
+   * The part of a React Router server loader's arguments that this package
+   * actually uses.
+   *
+   * React Router's own `CreateServerLoaderArgs` is not reachable from a public
+   * subpath: `react-router/route-module` was removed from the `exports` map in
+   * 7.7.0, and `react-router/internal` exports only `GetAnnotations`/`GetInfo`.
+   * Constraining structurally keeps the types resolving across the whole
+   * supported react-router range without depending on its internal layout.
+   *
+   * Callers still pass their generated `Route.LoaderArgs`, so the loader they
+   * write and the loader they get back are typed exactly as before.
+   */
+  export interface ServerLoaderArgs {
+    request: Request;
+  }
+
+  export type ApolloLoader = <LoaderArgs extends ServerLoaderArgs>() => <
+    ReturnValue,
+  >(
     loader: (
       args: LoaderArgs & {
         preloadQuery: PreloadQueryFn;

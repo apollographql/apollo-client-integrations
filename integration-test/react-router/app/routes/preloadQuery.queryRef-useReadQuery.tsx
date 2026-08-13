@@ -1,4 +1,3 @@
-import { useLoaderData } from "react-router";
 import type { Route } from "./+types/preloadQuery.queryRef-useReadQuery";
 import {
   useQueryRefHandlers,
@@ -31,8 +30,8 @@ export const loader = apolloLoader<Route.LoaderArgs>()(({
   };
 });
 
-export default function RouteComponent() {
-  const { queryRef } = useLoaderData<typeof loader>();
+export default function RouteComponent({ loaderData }: Route.ComponentProps) {
+  const { queryRef } = loaderData;
   return (
     <Suspense fallback={<>loading</>}>
       <Child queryRef={queryRef} />
