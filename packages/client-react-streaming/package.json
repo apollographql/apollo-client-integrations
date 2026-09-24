@@ -170,10 +170,16 @@
   },
   "peerDependencies": {
     "@apollo/client": "^4.0.0",
+    "@types/react": "^19.0.0",
     "graphql": "^16 || >=17.0.0-alpha.2",
     "react": "^19",
     "react-dom": "^19",
     "rxjs": "^7.3.0"
+  },
+  "peerDependenciesMeta": {
+    "@types/react": {
+      "optional": true
+    }
   },
   "dependencies": {
     "@types/react-dom": "^19.0.0",
