@@ -135,11 +135,16 @@ const buildManualDataTransportBrowserImpl = ({
       if (dataRef.current === UNINITIALIZED) {
         if (store && id in store) {
           dataRef.current = store[id] as T;
-          delete store[id];
         } else {
           dataRef.current = v;
         }
       }
+      // Only clean up after this render has been committed: React can throw away
+      // a hydration render (e.g. when an update interrupts it) and run it again,
+      // and that retry still needs to find the value from the server.
+      useEffect(() => {
+        if (store) delete store[id];
+      }, [store, id]);
       return dataRef;
     }, []);
 
