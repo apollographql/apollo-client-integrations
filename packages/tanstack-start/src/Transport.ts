@@ -104,14 +104,28 @@ export class ClientTransport implements DataTransportAbstraction {
   }
 
   private async consume(stream: ReadableStream<QueryEvent | ValueEvent>) {
-    for await (const event of stream as any as AsyncIterable<
-      QueryEvent | ValueEvent
-    >) {
-      if (event.type === "value") {
-        this.receivedValues[event.id] = event.value;
-      } else {
-        this.bufferedEvents.push(event);
+    // Some supported browsers have ReadableStream readers but no async iterator.
+    const reader = stream.getReader();
+    try {
+      for (
+        let result = await reader.read();
+        !result.done;
+        result = await reader.read()
+      ) {
+        const event = result.value;
+        if (event.type === "value") {
+          this.receivedValues[event.id] = event.value;
+        } else {
+          this.bufferedEvents.push(event);
+        }
       }
+    } catch (error) {
+      // Match async iteration's cancellation on an abrupt exit, preserving the
+      // original error even if cancelling the stream also fails.
+      await reader.cancel().catch(() => {});
+      throw error;
+    } finally {
+      reader.releaseLock();
     }
     this.rerunSimulatedQueries?.();
   }
