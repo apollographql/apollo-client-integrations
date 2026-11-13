@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import type { CreateServerLoaderArgs } from "react-router/route-module";
 import type { ApolloClient } from "./ApolloClient.js";
 import type { QueryRef } from "@apollo/client/react";
 import type {
@@ -14,7 +13,7 @@ import {
 } from "@apollo/client-react-streaming";
 import type { Promiscade } from "promiscade";
 import { promiscadeToReadableStream, streamToPromiscade } from "promiscade";
-import type { unstable_SerializesTo } from "react-router";
+import type { LoaderFunctionArgs, unstable_SerializesTo } from "react-router";
 import type { JsonString } from "@apollo/client-react-streaming/stream-utils";
 import type {
   DocumentNode,
@@ -35,7 +34,7 @@ export declare namespace createApolloLoaderHandler {
   }
 
   export type ApolloLoader = <
-    LoaderArgs extends CreateServerLoaderArgs<any>,
+    LoaderArgs extends LoaderFunctionArgs,
   >() => <ReturnValue>(
     loader: (
       args: LoaderArgs & {
