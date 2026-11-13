@@ -89,7 +89,7 @@ export function registerApolloClient<
   const PreloadQuery = makePreloadQuery(getPreloadClient);
   return {
     getClient,
-    query: async (...args) => {
+    query: (async (options: ApolloClient.QueryOptions<any, any>) => {
       if (checkForStableCache() !== checkForStableCache()) {
         console.warn(
           `
@@ -105,8 +105,8 @@ function and then call \`client.query\` multiple times instead.
           `.trim()
         );
       }
-      return (await getClient()).query(...args);
-    },
+      return (await getClient()).query(options);
+    }) as Awaited<ApolloClientOrPromise>["query"],
     PreloadQuery,
   };
 }
