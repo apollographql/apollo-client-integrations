@@ -28,9 +28,8 @@ describe(
   async () => {
     // @ts-expect-error seems to have a wrong type?
     await import("global-jsdom/register");
-    const { render, cleanup, getQueriesForElement, act } = await import(
-      "@testing-library/react"
-    );
+    const { render, cleanup, getQueriesForElement, act, waitFor } =
+      await import("@testing-library/react");
 
     afterEach(cleanup);
     afterEach(resetApolloSingletons);
@@ -316,11 +315,12 @@ describe(
         $RS("S:1", "P:1");
 
         // at this point, the server value has tried to render twice
-        await new Promise((resolve) => setTimeout(resolve, 20));
-        assert.deepStrictEqual(finishedRenders, [
-          { me: "User" },
-          { me: "User" },
-        ]);
+        await waitFor(() =>
+          assert.deepStrictEqual(finishedRenders, [
+            { me: "User" },
+            { me: "User" },
+          ])
+        );
 
         // meanwhile, in the browser, the cache is modified
         client.cache.writeQuery({
@@ -331,12 +331,13 @@ describe(
         });
 
         // component already reruns the render function
-        await new Promise((resolve) => setTimeout(resolve, 20));
-        assert.deepStrictEqual(finishedRenders, [
-          { me: "User" },
-          { me: "User" },
-          { me: "Future me." },
-        ]);
+        await waitFor(() =>
+          assert.deepStrictEqual(finishedRenders, [
+            { me: "User" },
+            { me: "User" },
+            { me: "Future me." },
+          ])
+        );
 
         // `ParallelSuspending` finishes rendering
         appendToBody`<div hidden id="S:2"><div id="parallel">suspending in parallel</div></div>`;
