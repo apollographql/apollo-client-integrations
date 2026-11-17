@@ -217,7 +217,7 @@ test.describe("CC dynamic", () => {
         });
 
         await page.waitForEvent("console", (message) => {
-          return /^Refused to execute inline script because it violates the following Content Security Policy/.test(
+          return /^(Refused to execute inline script because it|Executing inline script) violates the following Content Security Policy/.test(
             message.text()
           );
         });
