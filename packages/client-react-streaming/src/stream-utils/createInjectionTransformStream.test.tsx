@@ -98,10 +98,25 @@ test("if the head has not been flushed yet, inject before the end of head", asyn
 test("if the head has been flushed, just insert wherever", async () => {
   const { transformStream, injectIntoStream } =
     createInjectionTransformStream();
-  const { resultPromise, controller } = setupStream(transformStream);
+  let markHeadFlushed!: () => void;
+  const headFlushed = new Promise<void>(
+    (resolve) => (markHeadFlushed = resolve)
+  );
+  const { resultPromise, controller } = setupStream(
+    transformStream,
+    (chunk) => {
+      if (chunk.includes("</head>")) markHeadFlushed();
+    }
+  );
 
   controller.enqueue("<html><head><title>Test</title></head><body>");
-  await scheduler.wait(10);
+  // Do not use a fixed delay here: on slow CI runners, the first
+  // `renderToString` call in the transform can take longer than the delay.
+  // Wait until the head chunk has gone through the transform. The transform
+  // then schedules a `setImmediate` that resets `currentlyStreaming`. Our
+  // `setImmediate` is scheduled after it, so it runs after the reset.
+  await headFlushed;
+  await new Promise((resolve) => setImmediate(resolve));
   injectIntoStream(() => <TestComponent />);
   controller.enqueue("</body></html>");
   controller.close();
