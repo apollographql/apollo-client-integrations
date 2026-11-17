@@ -1,5 +1,11 @@
 # @apollo/client-integration-tanstack-start
 
+## 0.14.6-rc.0
+
+### Patch Changes
+
+- d3ca47b: Fix hydration in browsers that support `ReadableStream` readers but not stream async iteration, including older Safari versions.
+
 ## 0.14.5-rc.0
 
 ### Patch Changes
