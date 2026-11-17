@@ -61,15 +61,6 @@ jobs:
             git push
           fi
 
-      - name: Append NPM token to .npmrc
-        run: |
-          cat << EOF > "$NPM_CONFIG_USERCONFIG"
-            provenance=true
-            //registry.npmjs.org/:_authToken=$NPM_TOKEN
-          EOF
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       # shim around npm to convert `npm publish` to `npm stage publish` for staged publishing until changesets adds direct support for staged publishing.
       - run: echo "${{ github.workspace }}/scripts/changesets-wrapper" >> "$GITHUB_PATH"
 
@@ -81,7 +72,8 @@ jobs:
           publish: yarn changeset-publish
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          # Publish with npm trusted publishing (OIDC) only, no npm token.
+          NPM_TOKEN: ""
 
       - name: Output npm logs on failure
         if: failure()
