@@ -89,7 +89,9 @@ export function registerApolloClient<
   const PreloadQuery = makePreloadQuery(getPreloadClient);
   return {
     getClient,
-    query: async (...args) => {
+    // `ApolloClient["query"]` is an overloaded signature in newer versions of
+    // Apollo Client, so the rest parameters cannot be inferred contextually.
+    query: (async (...args: Parameters<ApolloClient["query"]>) => {
       if (checkForStableCache() !== checkForStableCache()) {
         console.warn(
           `
@@ -106,7 +108,7 @@ function and then call \`client.query\` multiple times instead.
         );
       }
       return (await getClient()).query(...args);
-    },
+    }) as Awaited<ApolloClientOrPromise>["query"],
     PreloadQuery,
   };
 }
