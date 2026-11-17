@@ -1,7 +1,7 @@
 import { test } from "node:test";
 import {
   ReadableStream,
-  type TransformStream,
+  TransformStream,
   TextEncoderStream,
 } from "node:stream/web";
 import * as assert from "node:assert";
@@ -35,15 +35,29 @@ function TestComponent() {
   );
 }
 
-function setupStream(transform: globalThis.TransformStream<any, any>) {
+function setupStream(
+  transform: globalThis.TransformStream<any, any>,
+  onOutputChunk?: (chunk: string) => void
+) {
   let controller: ReadableStreamDefaultController<string>;
-  const stream = new ReadableStream<string>({
+  let stream = new ReadableStream<string>({
     start(c) {
       controller = c;
     },
   })
     .pipeThrough(new TextEncoderStream())
     .pipeThrough(transform as TransformStream);
+  if (onOutputChunk) {
+    const decoder = new TextDecoder();
+    stream = stream.pipeThrough(
+      new TransformStream({
+        transform(chunk, controller) {
+          onOutputChunk(decoder.decode(chunk, { stream: true }));
+          controller.enqueue(chunk);
+        },
+      })
+    );
+  }
   const resultPromise = text(stream);
   return { resultPromise, controller: controller! };
 }
@@ -110,11 +124,25 @@ test("if the head has been flushed, just insert wherever", async () => {
 test("race condition: injection queued while currentlyStreaming is true, no async follow-up chunks", async () => {
   const { transformStream, injectIntoStream } =
     createInjectionTransformStream();
-  const { resultPromise, controller } = setupStream(transformStream);
+  let markChunkSeen!: () => void;
+  const chunkSeen = new Promise<void>((resolve) => (markChunkSeen = resolve));
+  const { resultPromise, controller } = setupStream(
+    transformStream,
+    (chunk) => {
+      if (chunk.includes("<di")) markChunkSeen();
+    }
+  );
 
   controller.enqueue("<html><head><title>Test</title></head><body>");
   await scheduler.wait(10);
   controller.enqueue("<di");
+  // Wait until `<di` has gone through the transform (which sets
+  // `currentlyStreaming`). Without this, the number of microtask hops in
+  // Node's web streams decides if the injection is queued before or after
+  // `<di` is transformed, and that changes between Node versions.
+  // Only microtasks pass here, so the `setImmediate` that resets
+  // `currentlyStreaming` has not run yet.
+  await chunkSeen;
   injectIntoStream(() => <TestComponent />);
   controller.enqueue("v>unrelated content</div>");
   controller.enqueue("</body></html>");
