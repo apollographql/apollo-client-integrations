@@ -9,7 +9,7 @@
     "test:react-router": "TEST_PROJECT_DIR=../react-router yarn playwright test --grep=@react-router"
   },
   "devDependencies": {
-    "@playwright/test": "^1.49.1",
+    "@playwright/test": "^1.65.1",
     "typescript": "5.1.3"
   },
   "dependencies": {
