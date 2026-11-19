@@ -20,14 +20,13 @@
     {
       groupName: "all devDependencies",
       groupSlug: "all-dev",
-      matchPackagePatterns: ["*"],
       matchDepTypes: ["devDependencies"],
-      excludePackagePatterns: ["next"],
+      matchPackageNames: ["*", "!/next/"],
     },
     {
       groupName: "all @types",
       groupSlug: "all-types",
-      matchPackagePatterns: ["@types/*"],
+      matchPackageNames: ["/@types/*/"],
     },
   ],
 }
