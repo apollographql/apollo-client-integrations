@@ -79,24 +79,32 @@ export class TeeToReadableStreamLink extends ApolloLink {
             // maybe we already tried to close the stream, nothing to worry about
           }
         };
+        const tryEnqueue = (chunk: ReadableStreamLinkEvent) => {
+          try {
+            controller.enqueue(chunk);
+          } catch {
+            // the consumer may have cancelled the stream (e.g. the request was
+            // aborted) - the result still needs to reach `observer`
+          }
+        };
         return new Observable((observer) => {
           let subscribed = true;
           forward(operation).subscribe({
             next(result) {
-              controller.enqueue({ type: "next", value: result });
+              tryEnqueue({ type: "next", value: result });
               if (subscribed) {
                 observer.next(result);
               }
             },
             error(error) {
-              controller.enqueue({ type: "error" });
+              tryEnqueue({ type: "error" });
               tryClose();
               if (subscribed) {
                 observer.error(error);
               }
             },
             complete() {
-              controller.enqueue({ type: "completed" });
+              tryEnqueue({ type: "completed" });
               tryClose();
               if (subscribed) {
                 observer.complete();
