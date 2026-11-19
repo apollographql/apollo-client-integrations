@@ -17,12 +17,13 @@ setLogVerbosity("debug");
 loadDevMessages();
 loadErrorMessages();
 
-export const { getClient, PreloadQuery, query } = registerApolloClient(() => {
-  return new ApolloClient({
-    cache: new InMemoryCache(),
-    link: delayLink.concat(
-      errorLink.concat(new IncrementalSchemaLink({ schema }))
-    ),
-    incrementalHandler: new Defer20220824Handler(),
+export const { getClient, PreloadQuery, PreloadQueryRef, query } =
+  registerApolloClient(() => {
+    return new ApolloClient({
+      cache: new InMemoryCache(),
+      link: delayLink.concat(
+        errorLink.concat(new IncrementalSchemaLink({ schema }))
+      ),
+      incrementalHandler: new Defer20220824Handler(),
+    });
   });
-});

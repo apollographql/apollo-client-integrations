@@ -7,6 +7,7 @@ const reactErr419 = /(Minified React error #419|Switched to client rendering)/;
 const base = matchesTag("@nextjs")
   ? "/rsc/dynamic/PreloadQuery"
   : "/preloadQuery";
+const preloadQueryRefBase = "/rsc/dynamic/PreloadQueryRef";
 
 const originatesIn = matchesTag("@nextjs") ? "RSC" : "SSR";
 const otherEnvs = matchesTag("@nextjs") ? "ssr,browser" : "browser";
@@ -160,6 +161,52 @@ test.describe("PreloadQuery", () => {
     },
     async ({ page }) => {
       await page.goto(`${base}/queryRef-useReadQuery`, {
+        waitUntil: "commit",
+      });
+
+      await expect(page).toBeInitiallyLoading(true);
+      await expect(page.getByText("loading")).not.toBeVisible();
+      await expect(page.getByText("Soft Warm Apollo Beanie")).toBeVisible();
+      await expect(
+        page.getByText(`Queried in ${originatesIn} environment`)
+      ).toBeVisible();
+
+      await page.getByRole("button", { name: "refetch" }).click();
+      await expect(
+        page.getByText("Queried in Browser environment")
+      ).toBeVisible();
+    }
+  );
+
+  test(
+    "PreloadQueryRef resolves on the server",
+    {
+      tag: ["@nextjs"],
+    },
+    async ({ page }) => {
+      await page.goto(
+        `${preloadQueryRefBase}/queryRef-useReadQuery?errorIn=${otherEnvs}`,
+        {
+          waitUntil: "commit",
+        }
+      );
+
+      await expect(page).toBeInitiallyLoading(true);
+      await expect(page.getByText("loading")).not.toBeVisible();
+      await expect(page.getByText("Soft Warm Apollo Beanie")).toBeVisible();
+      await expect(
+        page.getByText(`Queried in ${originatesIn} environment`)
+      ).toBeVisible();
+    }
+  );
+
+  test(
+    "PreloadQueryRef works with useQueryRefHandlers",
+    {
+      tag: ["@nextjs"],
+    },
+    async ({ page }) => {
+      await page.goto(`${preloadQueryRefBase}/queryRef-useReadQuery`, {
         waitUntil: "commit",
       });
 
