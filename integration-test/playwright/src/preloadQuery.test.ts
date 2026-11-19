@@ -176,4 +176,31 @@ test.describe("PreloadQuery", () => {
       ).toBeVisible();
     }
   );
+
+  test.describe("waitForStaticResult", () => {
+    test(
+      "meta title is set from waitForStaticResult data while deferred content is still loading",
+      {
+        tag: ["@react-router"],
+      },
+      async ({ page }) => {
+        await page.goto(`${base}/awaitable`, {
+          waitUntil: "commit",
+        });
+
+        // The meta function consumed data from waitForStaticResult — the document
+        // title should be set to the first product's title immediately,
+        // while the deferred ratings are still streaming
+        await expect(page).toHaveTitle("Soft Warm Apollo Beanie");
+        await expect(
+          page.getByTestId("rating-product:5")
+        ).toContainText("loading...");
+
+        // Once the deferred fragment arrives, the rating renders
+        await expect(
+          page.getByTestId("rating-product:5")
+        ).toContainText("5/5", { timeout: 5000 });
+      }
+    );
+  });
 });

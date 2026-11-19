@@ -5,6 +5,7 @@ import type { QueryRef } from "@apollo/client/react";
 import type {
   PreloadTransportedQueryOptions,
   ReadableStreamLinkEvent,
+  StaticResult,
   TransportedQueryRef,
 } from "@apollo/client-react-streaming";
 import {
@@ -32,6 +33,25 @@ export declare namespace createApolloLoaderHandler {
       query: DocumentNode | TypedDocumentNode<TData, TVariables>,
       options?: PreloadTransportedQueryOptions<TData, NoInfer<TVariables>>
     ): unstable_SerializesTo<QueryRef<TData, TVariables>>;
+
+    /**
+     * Awaits a query result from an already-created `queryRef`, optionally resolving
+     * early when a predicate is satisfied. Use this to access data in the loader
+     * (e.g. for the `meta()` function) without blocking the full streaming response.
+     */
+    waitForStaticResult: {
+      <TData>(
+        queryRef: unstable_SerializesTo<QueryRef<TData, any>>
+      ): Promise<StaticResult<TData>>;
+      <TData, TResult extends StaticResult<TData>>(
+        queryRef: unstable_SerializesTo<QueryRef<TData, any>>,
+        predicate: (result: StaticResult<TData>) => result is TResult
+      ): Promise<TResult>;
+      <TData>(
+        queryRef: unstable_SerializesTo<QueryRef<TData, any>>,
+        predicate: (result: StaticResult<TData>) => boolean
+      ): Promise<StaticResult<TData>>;
+    };
   }
 
   export type ApolloLoader = <
@@ -40,6 +60,7 @@ export declare namespace createApolloLoaderHandler {
     loader: (
       args: LoaderArgs & {
         preloadQuery: PreloadQueryFn;
+        client: ApolloClient;
       }
     ) => ReturnValue
   ) => (args: LoaderArgs) => ReturnValue;
@@ -54,11 +75,19 @@ export function createApolloLoaderHandler(
     const preloader = createTransportedQueryPreloader(client, {
       notTransportedOptionOverrides: { fetchPolicy: "no-cache" },
     });
-    const preloadQuery: createApolloLoaderHandler.PreloadQueryFn = (...args) =>
+    const preloadQueryFn = (...args: Parameters<typeof preloader>) =>
       replaceStreamWithPromiscade(preloader(...args));
+    preloadQueryFn.waitForStaticResult = (
+      queryRef: any,
+      predicate?: any
+    ) => preloader.waitForStaticResult(queryRef, predicate);
+    const preloadQuery =
+      preloadQueryFn as unknown as createApolloLoaderHandler.PreloadQueryFn;
+
     return loader({
       ...args,
       preloadQuery,
+      client,
     });
   };
 }
