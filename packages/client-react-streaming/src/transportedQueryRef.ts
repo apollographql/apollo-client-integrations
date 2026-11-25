@@ -252,7 +252,14 @@ function getInternalQueryRef(
     );
   }
   // create with `userOptions` so internals like `initialFetchPolicy` are set correctly
-  const observable = client.watchQuery(userOptions);
+  const observable = client.watchQuery({
+    ...userOptions,
+    // like `createQueryPreloader` and the suspense hooks: `InternalQueryReference`
+    // must not receive the loading results of refetches started elsewhere
+    // (e.g. `client.refetchQueries`), or a ref whose last result had no data
+    // hands `useReadQuery` an empty result instead of suspending
+    notifyOnNetworkStatusChange: false,
+  });
   // this might have filled in some defaults, so we need to capture them
   const optionsAfterCreation = {
     // context might still be `undefined`, so we need to make sure the property is at least present
